@@ -7,7 +7,7 @@ import UserSecurityForm from './AdminPanel/Pages/RegisterUser/UserSecurityForm';
 import Registercompanies from './AdminPanel/Pages/RegisterCompanie/Companies';
 import UserRole from  './AdminPanel/Pages/UserRole/Userrole';
 // import {Profile} from './AdminPanel/Pages/Profile/profile';
-// import Profile from './AdminPanel/Pages/Profile/profile';
+import Profile from './AdminPanel/Pages/Profile/profile';
 import Product from './AdminPanel/Pages/Product/product';
 import ProductRegistrationForm from './AdminPanel/Pages/Product/ProductRegistrationForm';
 import Stock from './AdminPanel/Pages/Stock/Stock';
@@ -45,7 +45,7 @@ function App() {
         {/* <Route path="/company-registration-billing-form" element={<CompanyRegistrationBillingForm/>}/> */}
         <Route path="/user-role" element={<UserRole/>}/>
         <Route path="/user-role-registration-form" element={<UserRoleRegistrationForm/>}/>
-        {/* <Route path="/profile" element={<Profile/>}/> */}
+        <Route path="/profile" element={<Profile/>}/>
         <Route path="/product" element={<Product/>}/>
         <Route path="/product-registration-form" element={<ProductRegistrationForm/>}/>
         <Route path="/stock" element={<Stock/>}/>
