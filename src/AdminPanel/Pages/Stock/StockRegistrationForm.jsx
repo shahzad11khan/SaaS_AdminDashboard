@@ -146,7 +146,8 @@ const StockRegistrationForm = () => {
             <div className="flex justify-end mt-6">
               <button
                 type="submit"
-                className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+                className="px-6 py-2 bg-[#F0FFF8] border rounded-md hover:bg-[#F0FFF8] transition duration-200
+"
               >
                 Register Stock
               </button>

@@ -14,6 +14,13 @@ const CompanyRegistrationForm = () => {
     companyAddress:"",
     phoneNumber:"",
     VatNumber: "",
+    ownerName: "",
+    owneremail: "",
+    ownerphoneNumber: "",
+    businessLicense: "",
+      taxId: "",
+      businessType: "",
+      businessAddress: "",
   });
   const [next,setnext]=useState(0)
   const businessTypeOptions = ["Retail", "Service", "Manufacturing", "Wholesale", "Other"];
@@ -58,9 +65,9 @@ const CompanyRegistrationForm = () => {
       <Navbar />
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />
-        <div className="flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen bg-gray-100">
-          <form onSubmit={handleSubmit} className="bg-white mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]">
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">Company Registration</h2>
+        <div className="flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen">
+          <form onSubmit={handleSubmit} className="bg-white mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300">
+            <h2 className="text-2xl font-bold mb-6 text-center text-gray-700 ">Company Registration</h2>
             <div>
       {next === 0 ? (
         <>
@@ -244,8 +251,7 @@ const CompanyRegistrationForm = () => {
             <Link to="/register-companies">
               <button
                 type="button"
-                className="px-4 py-2 rounded bg-gray-700 text-white"
-              >
+                className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300">
                 Close
               </button>
             </Link>
@@ -253,7 +259,7 @@ const CompanyRegistrationForm = () => {
             {/* <Link to="/company-owner-contact-form"> */}
             <button
   type="button"
-  className="px-4 py-2 rounded bg-green-700 text-white"
+  className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
   onClick={() => setnext((prevNext) => prevNext + 1)}
 >
   Next
@@ -407,30 +413,61 @@ const CompanyRegistrationForm = () => {
                 </select>
               </div>
 
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="businessAddress"
-                  className="block text-sm font-medium text-gray-600"
-                >
-                  Business Address 
-                </label>
-                <input
-                  type="text"
-                  name="businessAddress"
-                  id="businessAddress"
-                  value={formData.businessAddress}
-                  onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="Enter Business Address"
-                 
-                />
-              </div>
+              <div className="w-full lg:w-[350px] flex items-center mt-6 lg:mt-0">
+                      <label className="flex items-center mr-4">
+                        <input
+                          type="radio"
+                          name="status"
+                          value="active"
+                          checked={formData.status === "active"}
+                          onChange={handleChange}
+                          className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm font-medium text-gray-600">
+                          Active
+                        </span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="status"
+                          value="inactive"
+                          checked={formData.status === "inactive"}
+                          onChange={handleChange}
+                          className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm font-medium text-gray-600">
+                          InActive
+                        </span>
+                      </label>
+                    </div>
               </div>
 
+
+              <div className="flex flex-col lg:flex-row justify-between mt-5">
+             
+              <div className="w-full lg:w-[350px]">
+  <label
+    htmlFor="companyLogo"
+    className="block text-sm font-medium text-gray-600"
+  >
+    Company Logo <span className="text-red-500">*</span>
+  </label>
+  <input
+    type="file"
+    name="companyLogo"
+    id="companyLogo"
+    onChange={handleChange}
+    className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+    required
+  />
+</div>
+
+              </div>
               <div className="w-full flex justify-end gap-5 mt-5">
               <button
   type="button"
-  className="px-4 py-2 rounded bg-green-700 text-white"
+  className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
   onClick={() => setnext((prevNext) => prevNext - 1)}
 >
   Back
@@ -438,7 +475,7 @@ const CompanyRegistrationForm = () => {
             <Link to="/register-companies">
               <button
                 type="button"
-                className="px-4 py-2 rounded bg-gray-700 text-white"
+                className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
               >
                 Close
               </button>
@@ -448,7 +485,7 @@ const CompanyRegistrationForm = () => {
             {/* <Link to="/company-owner-contact-form"> */}
             <button
   type="button"
-  className="px-4 py-2 rounded bg-green-700 text-white"
+  className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
 >
   Submit
 </button>

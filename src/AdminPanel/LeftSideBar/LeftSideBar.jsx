@@ -79,8 +79,8 @@ const LeftSideBar = () => {
                 <li className="py-1 hover:bg-gray-100 cursor-pointer">Stock</li>
              </Link>
 
-             <Link to="/quantity">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Quantity</li>
+             <Link to="/category">
+                <li className="py-1 hover:bg-gray-100 cursor-pointer">Category</li>
              </Link>
 
              <Link to="/customer">

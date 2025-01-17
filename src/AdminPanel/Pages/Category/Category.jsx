@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import Navbar from "../../Navbar/Navbar";
-import quantityData from "../../../../public/Quantity.json";
+import categoryData from "../../../../public/Category.json";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Quantity = () => {
+const Category = () => {
   return (
     <div>
       <Navbar />
       <div className='flex flex-col lg:flex-row '>
         <LeftSideBar />
         <div className='flex flex-col lg:ml-10 w-full lg:w-[1000px] gap-3 '>
-          <div className="para ">
-            <p className='underline text-xl '>Quantity Detail</p>
+          <div className="para">
+            <p className='underline text-xl '>Category Detail</p>
           </div>
           <div className="info flex flex-col lg:flex-row justify-between items-center gap-2">
             <div className='flex flex-col lg:flex-row gap-2 items-center w-full lg:w-[auto]'>
@@ -29,24 +29,24 @@ const Quantity = () => {
                   <option value="five">05</option>
                 </select>
               </div>
-              <div className="flex items-center gap-2 ">
+              <div className="flex items-center gap-2">
                 <span>Entries :</span>
                 <input
                   type="text"
-                  placeholder="Search by Product Name"
+                  placeholder="Search by Category Name"
                   className="rounded-md px-4 py-1 bg-[#F0FFF8] border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]"
                 />
               </div>
             </div>
             <div className='flex gap-2'>
               <Link to="/">
-                <button className="px-4 py-2 rounded bg-[#F0FFF8] border ">
+                <button className="px-4 py-2 rounded bg-[#F0FFF8] border">
                   Back
                 </button>
               </Link>
-              <Link to="/quantity-registration-form">
-                <button className="px-4 py-2 rounded bg-[#F0FFF8] border ">
-                  Add Quantity
+              <Link to="/category-registration-form">
+                <button className="px-4 py-2 rounded bg-[#F0FFF8] border">
+                  Add Category
                 </button>
               </Link>
             </div>
@@ -55,18 +55,17 @@ const Quantity = () => {
             <table className="border-collapse border border-gray-300 w-full table-auto">
               <thead>
                 <tr>
-                  {quantityData.headers.map((item, index) => (
+                  {categoryData.headers.map((item, index) => (
                     <th key={index} className="bg-[#F0FFF8] px-4 py-2">{item}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {quantityData.data.map((item) => (
+                {categoryData.data.map((item) => (
                   <tr key={item.sNo} className="hover:bg-gray-100">
                     <td className="text-center px-4 py-2">{item.serial_no}</td>
-                    <td className="text-center px-4 py-2">{item.product_name}</td>
-                    <td className="text-center px-4 py-2">{item.category}</td>
-                    <td className="text-center px-4 py-2">{item.quantity}</td>
+                    <td className="text-center px-4 py-2">{item.category_name}</td>
+                    <td className="text-center px-4 py-2">{item.description}</td>
                     <td className="text-center px-4 py-2">{item.status}</td>
                     <td className="text-center px-4 py-2">
                       <FontAwesomeIcon icon={faEdit} className='text-green-500 mr-2 cursor-pointer' />
@@ -94,4 +93,4 @@ const Quantity = () => {
   );
 };
 
-export default Quantity;
+export default Category;

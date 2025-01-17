@@ -12,6 +12,11 @@ const UserRoleRegistrationForm = () => {
     repairManager: {},
     tagManager: {},
   });
+  const [role, setRole] = useState("");
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
 
   const handlePermissionChange = (manager, permission) => {
     setPermissions((prevPermissions) => ({
@@ -71,9 +76,25 @@ const UserRoleRegistrationForm = () => {
             onSubmit={handleSubmit}
             className="bg-white mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px] border border-gray-300"
           >
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
-              User Permissions
-            </h2>
+         <div className="flex justify-between">
+      <h2 className="text-2xl font-bold mb-6 text-gray-700">
+        User Permissions
+      </h2>
+      <div className="text-xl mb-6">
+        <label htmlFor="role" className="text-lg font-medium text-gray-600">
+          Role:
+        </label>
+        <input
+          type="text"
+          id="role"
+          value={role}
+          onChange={handleRoleChange}
+          placeholder="Enter role"
+          className=" bg-[#F0FFF8] border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53] mx-2 px-2 py-1 rounded-md "
+        />
+      </div>
+    </div>
+           
 
             <div className="flex flex-col gap-2">
               {roles.map((role) => (

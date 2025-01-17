@@ -1,0 +1,36 @@
+{
+    "headers": ["S.No", "Category Name", "Description", "Status", "Actions"],
+    "data": [
+      {
+        "serial_no": 1,
+        "category_name": "Electronics",
+        "description": "Devices and gadgets",
+        "status": "Active"
+      },
+      {
+        "serial_no": 2,
+        "category_name": "Clothing",
+        "description": "Apparel and accessories",
+        "status": "Active"
+      },
+      {
+        "serial_no": 3,
+        "category_name": "Home Appliances",
+        "description": "Household items",
+        "status": "Inactive"
+      },
+      {
+        "serial_no": 4,
+        "category_name": "Books",
+        "description": "Educational and recreational books",
+        "status": "Active"
+      },
+      {
+        "serial_no": 5,
+        "category_name": "Sports",
+        "description": "Sports equipment and accessories",
+        "status": "Active"
+      }
+    ]
+  }
+  
