@@ -1,0 +1,65 @@
+{
+  "headers": ["Serial No", "Customer Name", "Email", "Phone", "Address", "Status", "Action"],
+  "data": [
+    {
+      "serial_no": 1,
+      "customer_name": "Ali Khan",
+      "email": "ali.khan@example.com",
+      "phone": "1234567890",
+      "address": "123 Main St, Karachi",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 2,
+      "customer_name": "Ayesha Malik",
+      "email": "ayesha.malik@example.com",
+      "phone": "0987654321",
+      "address": "45 Avenue Rd, Lahore",
+      "status": "Inactive",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 3,
+      "customer_name": "Ahmed Raza",
+      "email": "ahmed.raza@example.com",
+      "phone": "5678901234",
+      "address": "78 Market St, Islamabad",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 4,
+      "customer_name": "Sara Shah",
+      "email": "sara.shah@example.com",
+      "phone": "4567890123",
+      "address": "22 Gulberg Rd, Lahore",
+      "status": "Pending",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 5,
+      "customer_name": "Faisal Ansari",
+      "email": "faisal.ansari@example.com",
+      "phone": "3456789012",
+      "address": "89 Clifton, Karachi",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    }
+  ]
+}

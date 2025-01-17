@@ -1,0 +1,65 @@
+{
+  "headers": ["s.No", "Tag Name", "Description", "Created By", "Created Date", "Status", "Action"],
+  "data": [
+    {
+      "tag_id": 1,
+      "tag_name": "Urgent",
+      "description": "Tasks or items that require immediate attention.",
+      "created_by": "Admin",
+      "created_date": "2025-01-01",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "tag_id": 2,
+      "tag_name": "In Progress",
+      "description": "Items that are currently being worked on.",
+      "created_by": "User1",
+      "created_date": "2025-01-02",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "tag_id": 3,
+      "tag_name": "Completed",
+      "description": "Tasks or items that have been finished.",
+      "created_by": "Admin",
+      "created_date": "2025-01-05",
+      "status": "Completed",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "tag_id": 4,
+      "tag_name": "Review",
+      "description": "Items that need to be reviewed for quality .",
+      "created_by": "User2",
+      "created_date": "2025-01-08",
+      "status": "Pending",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "tag_id": 5,
+      "tag_name": "High Priority",
+      "description": "Items that are of significant importance.",
+      "created_by": "Admin",
+      "created_date": "2025-01-10",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    }
+  ]
+}

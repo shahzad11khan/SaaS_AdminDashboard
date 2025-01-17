@@ -1,0 +1,65 @@
+{
+  "headers": ["S.No", "User Name", "Email", "Password", "Occupation", "Status", "Action"],
+  "data": [
+    {
+      "sno": 1,
+      "username": "Junaid Khalil",
+      "email": "junaid@example.com",
+      "password": "pass123",
+      "occupation": "CEO",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sno": 2,
+      "username": "Uzair Khalil",
+      "email": "uzair@example.com",
+      "password": "design456",
+      "occupation": "Designer",
+      "status": "Inactive",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sno": 3,
+      "username": "Kashif Khalil",
+      "email": "kashif@example.com",
+      "password": "dev789",
+      "occupation": "Developer",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sno": 4,
+      "username": "Muhammad Yousaf",
+      "email": "yousaf@example.com",
+      "password": "manage321",
+      "occupation": "Manager",
+      "status": "Pending",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sno": 5,
+      "username": "Safwan Ahmed",
+      "email": "safwan@example.com",
+      "password": "eng654",
+      "occupation": "Engineer",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    }
+  ]
+}

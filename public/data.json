@@ -1,0 +1,51 @@
+
+ [
+      {
+        "id": 1,
+        "icon": "fas fa-chart-line",
+        "iconBgColor": "bg-orange-500",
+    
+        "title": "Sales",
+        "description": "+25% New",
+        "price": "$163K"
+      },
+
+      {
+        "id": 2,
+        "icon": "fas fa-money-bill-wave",
+        "iconBgColor": "bg-blue-300",
+        "title": "Daily",
+        "description": "+25% New",
+        "price": "$183K"
+      },
+
+      {
+        "id": 3,
+        "icon": "fas fa-users",
+        "iconBgColor": "bg-green-300",
+        "title": "Users",
+        "description": "+25% New",
+        "price": "$120K"
+      },
+
+      {
+        "id": 4,
+        "icon": "fas fa-shopping-cart",
+        "iconBgColor": "bg-blue-700",
+        "title": "Product",
+        "description": "+25% New",
+        "price": "$203K"
+      },
+
+      {
+        "id": 5,
+        "icon": "fas fa-wallet",
+        "iconBgColor": "bg-orange-300",
+        "title": "Expenses",
+        "description": "+25% New",
+        "price": "$203K"
+       }
+
+    ]
+  
+  

@@ -1,0 +1,41 @@
+{
+    "headers": ["S.No", "Product Name", "Category", "Quantity", "Status", "Actions"],
+    "data": [
+      {
+        "serial_no": 1,
+        "product_name": "Product A",
+        "category": "Category 1",
+        "quantity": 150,
+        "status": "In Stock"
+      },
+      {
+        "serial_no": 2,
+        "product_name": "Product B",
+        "category": "Category 2",
+        "quantity": 75,
+        "status": "Low Stock"
+      },
+      {
+        "serial_no": 3,
+        "product_name": "Product C",
+        "category": "Category 3",
+        "quantity": 0,
+        "status": "Out of Stock"
+      } ,   
+      {
+        "serial_no": 4,
+        "product_name": "Product D",
+        "category": "Category 4",
+        "quantity": 175,
+        "status": "Low Stock"
+      },
+      {
+        "serial_no": 5,
+        "product_name": "Product E",
+        "category": "Category 5",
+        "quantity": 55,
+        "status": "Low Stock"
+      }
+    ]
+  }
+  

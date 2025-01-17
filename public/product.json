@@ -1,0 +1,65 @@
+{
+  "headers": ["Serial No", "Product Name", "Category", "Price", "Stock", "Status", "Action"],
+  "data": [
+    {
+      "serial_no": 1,
+      "product_name": "Laptop",
+      "category": "Electronics",
+      "price": 800,
+      "stock": 25,
+      "status": "Available",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 2,
+      "product_name": "Smartphone",
+      "category": "Electronics",
+      "price": 600,
+      "stock": 50,
+      "status": "Available",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 3,
+      "product_name": "Desk Chair",
+      "category": "Furniture",
+      "price": 120,
+      "stock": 0,
+      "status": "Out of Stock",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 4,
+      "product_name": "Water Bottle",
+      "category": "Accessories",
+      "price": 15,
+      "stock": 100,
+      "status": "Available",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 5,
+      "product_name": "Gaming Console",
+      "category": "Electronics",
+      "price": 500,
+      "stock": 0,
+      "status": "Out of Stock",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    }
+  ]
+}

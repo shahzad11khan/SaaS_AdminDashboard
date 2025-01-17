@@ -1,0 +1,75 @@
+{
+  "headers": ["S.No", "User Name", "Role Name", "Email", "Password", "Status", "Action"],
+  "data": [
+    {
+      "sNo": 1,
+      "userName": "adminUser",
+      "roleName": "Admin",
+      "email": "admin@example.com",
+      "password": "admin123",
+      "description": "Has full access to all features and settings.",
+      "permissions": ["Manage Users", "View Reports", "Edit Settings", "Delete Records"],
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sNo": 2,
+      "userName": "editorUser",
+      "roleName": "Editor",
+      "email": "editor@example.com",
+      "password": "editor456",
+      "description": "Can edit and manage content but has limited access to settings.",
+      "permissions": ["Edit Content", "Manage Media", "View Reports"],
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sNo": 3,
+      "userName": "viewerUser",
+      "roleName": "Viewer",
+      "email": "viewer@example.com",
+      "password": "viewer789",
+      "description": "Can view content and reports but cannot make changes.",
+      "permissions": ["View Content", "View Reports"],
+      "status": "Inactive",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sNo": 4,
+      "userName": "contributorUser",
+      "roleName": "Contributor",
+      "email": "contributor@example.com",
+      "password": "contributor101",
+      "description": "Can create and submit content for review but cannot publish.",
+      "permissions": ["Create Content", "Submit Content"],
+      "status": "Pending",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "sNo": 5,
+      "userName": "moderatorUser",
+      "roleName": "Moderator",
+      "email": "moderator@example.com",
+      "password": "moderator202",
+      "description": "Can review and moderate user-submitted content.",
+      "permissions": ["Moderate Comments", "Approve Content", "View Reports"],
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    }
+  ]
+}

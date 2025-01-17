@@ -1,0 +1,60 @@
+{
+  "headers": ["Company Name", "Email", "Password", "Image", "Status", "Action"],
+  "data": [
+    {
+      "companyName": "Encoder Bytes",
+      "email": "info@techfas.com",
+      "password": "pass1234",
+      "image": "/public/images/kashif_pic.jpg",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "companyName": "TriTech",
+      "email": "contact@tritech.com",
+      "password": "secure456",
+      "image": "/public/images/kashifpp.jpg",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "companyName": "Techfas",
+      "email": "info@techfas.com",
+      "password": "admin789",
+      "image": "/public/images/kashifppp.jpg",
+      "status": "Inactive",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "companyName": "DesignWorks",
+      "email": "hello@designworks.com",
+      "password": "design101",
+      "image": "/public/images/justLogo.svg",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "companyName": "Buildify",
+      "email": "admin@buildify.com",
+      "password": "buildify202",
+      "image": "/public/images/kashif_pic.jpg",
+      "status": "Pending",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    }
+  ]
+}

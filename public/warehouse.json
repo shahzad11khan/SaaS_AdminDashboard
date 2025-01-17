@@ -1,0 +1,70 @@
+{
+  "headers": ["Serial No", "Warehouse ID", "Location", "Capacity", "Manager Name", "Contact Number", "Status", "Action"],
+  "data": [
+    {
+      "serial_no": 1,
+      "warehouse_id": "WH001",
+      "location": "Karachi",
+      "capacity": 5000,
+      "manager_name": "Ali Khan",
+      "contact_number": "1234567890",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 2,
+      "warehouse_id": "WH002",
+      "location": "Lahore",
+      "capacity": 7000,
+      "manager_name": "Sara Malik",
+      "contact_number": "0987654321",
+      "status": "Inactive",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 3,
+      "warehouse_id": "WH003",
+      "location": "Islamabad",
+      "capacity": 3000,
+      "manager_name": "Ahmed Raza",
+      "contact_number": "5678901234",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 4,
+      "warehouse_id": "WH004",
+      "location": "Peshawar",
+      "capacity": 4000,
+      "manager_name": "Faisal Ansari",
+      "contact_number": "3456789012",
+      "status": "Pending",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    },
+    {
+      "serial_no": 5,
+      "warehouse_id": "WH005",
+      "location": "Quetta",
+      "capacity": 2500,
+      "manager_name": "Ayesha Shah",
+      "contact_number": "4567890123",
+      "status": "Active",
+      "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+    }
+  ]
+}
