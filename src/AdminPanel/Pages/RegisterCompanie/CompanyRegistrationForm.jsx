@@ -14,6 +14,13 @@ const CompanyRegistrationForm = () => {
     companyAddress:"",
     phoneNumber:"",
     VatNumber: "",
+    ownerName: "",
+    owneremail: "",
+    ownerphoneNumber: "",
+    businessLicense: "",
+    taxId: "",
+    businessType: "",
+    businessAddress: "",
   });
   const [next,setnext]=useState(0)
   const businessTypeOptions = ["Retail", "Service", "Manufacturing", "Wholesale", "Other"];
