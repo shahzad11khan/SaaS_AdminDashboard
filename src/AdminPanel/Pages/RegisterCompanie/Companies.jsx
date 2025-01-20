@@ -5,8 +5,11 @@ import companydata from '../../../../public/companyregistration.json';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
-
+import DeleteModal from '../../Components/DeleteModal';
+import { useState } from 'react';
 const Companies = () => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   return (
     <div>
       <Navbar />
@@ -72,7 +75,7 @@ const Companies = () => {
                     <td className="px-4 py-2 text-center">{item.status}</td>
                     <td className="px-4 py-2 text-center">
                       <FontAwesomeIcon icon={faEdit} className="text-green-500 mr-2 cursor-pointer " />
-                      <FontAwesomeIcon icon={faTrash } className="text-red-500 cursor-pointer " />
+                      <FontAwesomeIcon icon={faTrash } className="text-red-500 cursor-pointer "/>
                     </td>
                   </tr>
                 ))}
@@ -85,6 +88,10 @@ const Companies = () => {
             <button className="px-4 py-2 rounded bg-[#F0FFF8] border">Next</button>
           </div>
         </div>
+        <DeleteModal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+          />
       </div>
     </div>
   );
