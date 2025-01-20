@@ -4,8 +4,16 @@ import LeftSideBar from '../../LeftSideBar/LeftSideBar';
 import userdata from '../../../../public/companyUser.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
+import DeleteModal from '../../Components/DeleteModal';
+import { useState } from 'react';
 
 const Registeruser = () => {
+
+    const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
+
+    const isopendeletemodal = ()=>{
+        setIsDeleteModalOpen(true);
+    }
     return (
         <div>
 
@@ -44,7 +52,7 @@ const Registeruser = () => {
                             </div>
                         </div>
                         <div className='flex gap-2'>
-                        <Link to="/">
+                        <Link to="/admin">
                            <button className="px-4 py-2  rounded bg-[#F0FFF8] border ">
                                 Back
                             </button>
@@ -80,7 +88,7 @@ const Registeruser = () => {
                                         <td className="px-4 py-2 text-center">{item.status}</td>
                                         <td className="px-4 py-2 text-center">
                                         <FontAwesomeIcon icon={faEdit} className="text-green-500 mr-2 cursor-pointer " />
-                                        <FontAwesomeIcon icon={faTrash } className="text-red-500 cursor-pointer " />
+                                        <FontAwesomeIcon icon={faTrash } className="text-red-500 cursor-pointer " onClick={()=>isopendeletemodal()} />
                                             </td>
                                        
                                    
@@ -106,8 +114,11 @@ const Registeruser = () => {
                         </div>
                     </div>
                 </div>
-
-
+                <DeleteModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                />
+                 
             </div>
 
 

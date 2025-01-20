@@ -26,7 +26,7 @@ const Navbar = () => {
     
    <div className="logo ms-10 lg:ms-0">
    
-         <Link to='/'>
+         <Link to='/admin'>
 <div className='flex items-center gap-2'>
          <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " /> 
          <span className='text-2xl'>Company Name</span>
@@ -129,7 +129,7 @@ const Navbar = () => {
 
             {isOpen && (
               <ul className="absolute mt-1 ml-[-25px] bg-[#F0FFF8] border border-gray-300 rounded shadow-lg">
-                <Link to="/Profile">
+                <Link to="/profile">
                 <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">Profiles</li>
                 </Link>
                 <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer flex items-center">

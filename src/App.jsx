@@ -21,6 +21,8 @@ import UserRoleRegistrationForm from './AdminPanel/Pages/UserRole/UserRoleRegist
 import TagRegistrationForm from './AdminPanel/Pages/Tags/TagRegistrationForm';
 import Category from './AdminPanel/Pages/Category/Category';
 import CategoryRegistrationForm from './AdminPanel/Pages/Category/CategoryRegistrationForm';
+import SignIn from './AdminPanel/Pages/SignIn/Signin';
+import Profile from './AdminPanel/Pages/Profile/Profile';
 
 function App() {
 
@@ -30,7 +32,8 @@ function App() {
     
     <Router>
       <Routes>
-        <Route path="/" element={<Admin/>}/>
+      <Route path="/" element={<SignIn/>}/>
+        <Route path="/admin" element={<Admin/>}/>
         <Route path="/register-user" element={<Registeruser/>}/>
         <Route path="/user-registration-form" element={<UserRegistrationForm/>}/>   
         <Route path="/register-companies" element={<Registercompanies/>}/>
@@ -51,6 +54,7 @@ function App() {
         <Route path="/report-registration-form" element={<ReportRegistrationForm/>}/>
         <Route path="/tags" element={<Tags/>}/>
         <Route path="/tag-registration-form" element={<TagRegistrationForm/>}/>
+        <Route path="/profile" element={<Profile/>}/>
         
       </Routes>
     </Router>

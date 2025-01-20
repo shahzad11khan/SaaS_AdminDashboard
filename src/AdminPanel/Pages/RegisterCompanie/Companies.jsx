@@ -9,6 +9,11 @@ import DeleteModal from '../../Components/DeleteModal';
 import { useState } from 'react';
 const Companies = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const isopendeletemodel = () => {
+    setIsDeleteModalOpen(true); 
+  };
+
+  
 
   return (
     <div>
@@ -43,7 +48,7 @@ const Companies = () => {
               </div>
             </div>
             <div className="flex gap-2">
-            <Link to="/">
+            <Link to="/admin">
                            <button className="px-4 py-2  rounded bg-[#F0FFF8] border ">
                                 Back
                             </button>
@@ -75,7 +80,7 @@ const Companies = () => {
                     <td className="px-4 py-2 text-center">{item.status}</td>
                     <td className="px-4 py-2 text-center">
                       <FontAwesomeIcon icon={faEdit} className="text-green-500 mr-2 cursor-pointer " />
-                      <FontAwesomeIcon icon={faTrash } className="text-red-500 cursor-pointer "/>
+                      <FontAwesomeIcon icon={faTrash } className="text-red-500 cursor-pointer "  onClick={() => isopendeletemodel()}/>
                     </td>
                   </tr>
                 ))}
