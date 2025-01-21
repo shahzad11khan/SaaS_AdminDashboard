@@ -2,10 +2,17 @@ import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import logo from "../../../../public/images/justLogo.svg";
+import { useRouter } from "next/router";
 
 
 const SignIn = () => {
   const [next, setNext] = useState(0);
+  const router = useRouter();
+
+  const handleRegisterRoute = () => {
+    router.push("/register-user");
+  };
+
 
   return (
     <>
@@ -39,7 +46,7 @@ const SignIn = () => {
                     name="email"
                     placeholder="Enter your email"
                     className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
-                    required
+                    // required
                   />
                 </div>
 
@@ -56,16 +63,17 @@ const SignIn = () => {
                     name="password"
                     placeholder="Enter your password"
                     className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
-                    required
+                    // required
                   />
                 </div>
 
                 <button
-                  type="submit"
-                  className="w-full bg-[#F0FFF8]  py-2 rounded-md font-semibold  transition border-2"
-                >
-                  Sign In
-                </button>
+      type="button"
+      className="w-full bg-[#F0FFF8] py-2 rounded-md font-semibold transition border-2"
+      onClick={handleRegisterRoute}
+    >
+      Sign In
+    </button>
               </form>
 
               <div className="flex justify-between text-sm text-gray-500 mt-4">
