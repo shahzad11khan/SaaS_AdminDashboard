@@ -1,0 +1,70 @@
+{
+    "headers": ["S.No", "Customer Name", "Product Name", "Quantity", "Order Date", "Status", "Total Price","Action"],
+    "data": [
+      {
+        "serial_no": 1,
+        "customer_name": "John Doe",
+        "product_name": "Smartphone",
+        "quantity": 2,
+        "order_date": "2025-01-20",
+        "status": "Pending",
+        "total_price": "$800",
+        "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+      },
+      {
+        "serial_no": 2,
+        "customer_name": "Jane Smith",
+        "product_name": "Laptop",
+        "quantity": 1,
+        "order_date": "2025-01-19",
+        "status": "Confirmed",
+        "total_price": "$1200",
+        "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+      },
+      {
+        "serial_no": 3,
+        "customer_name": "Mark Johnson",
+        "product_name": "Headphones",
+        "quantity": 3,
+        "order_date": "2025-01-18",
+        "status": "Shipped",
+        "total_price": "$300",
+        "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+      },
+      {
+        "serial_no": 4,
+        "customer_name": "Emily Davis",
+        "product_name": "Tablet",
+        "quantity": 2,
+        "order_date": "2025-01-17",
+        "status": "Cancelled",
+        "total_price": "$500",
+        "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+      },
+      {
+        "serial_no": 5,
+        "customer_name": "Michael Brown",
+        "product_name": "Smartwatch",
+        "quantity": 1,
+        "order_date": "2025-01-16",
+        "status": "Delivered",
+        "total_price": "$200",
+        "action": {
+        "edit": "edit",
+        "actionLogo": "cogs"
+      }
+      }
+    ]
+  }  

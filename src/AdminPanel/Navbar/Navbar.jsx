@@ -50,14 +50,14 @@ const Navbar = () => {
 
 
 
-   <div className="hidden lg:block w-[56%]  max-width-[600px]">
+   <div className="hidden lg:block  w-[715px]  lg:ml-[-85px]">
    <div className="relative ">
           <input
             type="text"
             placeholder="Search..."
-            className="w-full ms-9 pl-5 py-2 rounded-md bg-[#F0FFF8] border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]"
+            className="w-full pl-5 py-2 rounded-md bg-[#F0FFF8] border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]"
           />
-          <div className="absolute inset-y-0 right-0 flex items-center text-gray-400">
+          <div className="absolute inset-y-0 right-5 flex items-center text-gray-400">
                 <i className="fas fa-search"></i>
               </div>
             </div>
