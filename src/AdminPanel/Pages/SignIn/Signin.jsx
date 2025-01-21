@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [next, setNext] = useState(0);
-  const router = useNavigate();
+  const navigate = useNavigate();
 
   const handleRegisterRoute = () => {
     navigate("/register-user");
