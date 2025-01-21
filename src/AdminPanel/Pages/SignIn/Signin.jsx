@@ -2,15 +2,15 @@ import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import logo from "../../../../public/images/justLogo.svg";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 
 
 const SignIn = () => {
   const [next, setNext] = useState(0);
-  const router = useRouter();
+  const router = useNavigate();
 
   const handleRegisterRoute = () => {
-    router.push("/register-user");
+    navigate("/register-user");
   };
 
 
