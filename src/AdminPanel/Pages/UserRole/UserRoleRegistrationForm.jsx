@@ -4,6 +4,7 @@ import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 
 const UserRoleRegistrationForm = () => {
+  const [role, setRole] = useState("");
   const [permissions, setPermissions] = useState({
     productManager: {},
     stockManager: {},
@@ -12,7 +13,6 @@ const UserRoleRegistrationForm = () => {
     repairManager: {},
     tagManager: {},
   });
-  const [role, setRole] = useState("");
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
