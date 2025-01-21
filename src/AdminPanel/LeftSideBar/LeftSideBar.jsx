@@ -98,6 +98,14 @@ const LeftSideBar = () => {
              <Link to="/tags">
                 <li className="py-1 hover:bg-gray-100 cursor-pointer">Tag</li>
              </Link>
+
+             <Link to="/order">
+                <li className="py-1 hover:bg-gray-100 cursor-pointer">Order</li>
+             </Link>
+
+             <Link to="/delever">
+                <li className="py-1 hover:bg-gray-100 cursor-pointer">Delever</li>
+             </Link>
             </ul>
           </div>
 

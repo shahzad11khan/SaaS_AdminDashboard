@@ -23,7 +23,8 @@ import Category from './AdminPanel/Pages/Category/Category';
 import CategoryRegistrationForm from './AdminPanel/Pages/Category/CategoryRegistrationForm';
 import SignIn from './AdminPanel/Pages/SignIn/Signin';
 import Profile from './AdminPanel/Pages/Profile/Profile';
-
+import Order from './AdminPanel/Pages/Order/Order';
+import Delever from './AdminPanel/Pages/Delever/Delever';
 function App() {
 
 
@@ -54,6 +55,8 @@ function App() {
         <Route path="/report-registration-form" element={<ReportRegistrationForm/>}/>
         <Route path="/tags" element={<Tags/>}/>
         <Route path="/tag-registration-form" element={<TagRegistrationForm/>}/>
+        <Route path="/order" element={<Order/>}/>
+        <Route path="/delever" element={<Delever/>}/>
         <Route path="/profile" element={<Profile/>}/>
         
       </Routes>

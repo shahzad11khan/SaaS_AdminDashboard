@@ -67,8 +67,8 @@ const Hero = () => {
         <div className="main mx-2 lg:w-full flex justify-between flex-col lg:flex-row px-2 ">
 
 
-            {/* middle section (cards and graphs) */}
-            <div className='middle flex flex-col w-full lg:w-[800px] mt-2 lg:ms-10'>
+           
+            <div className='middle flex flex-col w-full lg:w-[800px] mt-2 mx-auto '>
 
                 {/* cards */}
                 <div className="cards flex justify-start mx-2 flex-wrap gap-1 md:gap-10 lg:gap-8 ">
