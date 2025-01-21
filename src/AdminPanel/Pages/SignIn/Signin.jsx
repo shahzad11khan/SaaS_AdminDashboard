@@ -10,7 +10,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const handleRegisterRoute = () => {
-    navigate("/register-user");
+    navigate("/admin");
   };
 
 
