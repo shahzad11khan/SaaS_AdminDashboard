@@ -25,11 +25,16 @@ import SignIn from './AdminPanel/Pages/SignIn/Signin';
 import Profile from './AdminPanel/Pages/Profile/Profile';
 import Order from './AdminPanel/Pages/Order/Order';
 import Delever from './AdminPanel/Pages/Delever/Delever';
+import { useSelector } from 'react-redux';
+
 function App() {
+  const currentTheme = useSelector((state) => state.theme.theme);
+
+
 
 
   return (
-    <>
+    <div className={`${currentTheme ==='dark' ? 'bg-[#404040]' : 'bg-white'}`}>
     
     <Router>
       <Routes>
@@ -63,7 +68,7 @@ function App() {
     </Router>
     
   
-    </>
+    </div>
   )
 }
 

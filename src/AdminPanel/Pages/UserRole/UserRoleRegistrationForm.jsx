@@ -2,8 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
+import { useSelector } from 'react-redux';
+
 
 const UserRoleRegistrationForm = () => {
+  const currentTheme = useSelector((state=>state.theme.theme))
+
   const [permissions, setPermissions] = useState({
     productManager: { all: false, add: false, read: false, edit: false, delete: false },
     stockManager: { all: false, add: false, read: false, edit: false, delete: false },
@@ -18,23 +22,23 @@ const UserRoleRegistrationForm = () => {
     const selectedRole = e.target.value;
     setRole(selectedRole);
 
-    setPermissions((prevPermissions) => {
-      const newPermissions = Object.keys(prevPermissions).reduce((acc, key) => {
-        if (key === selectedRole) {
-          acc[key] = { all: true, add: true, read: true, edit: true, delete: true };
-        } else {
-          acc[key] = { all: false, add: false, read: false, edit: false, delete: false };
-        }
-        return acc;
-      }, {});
-      return { ...newPermissions };
-    });
+    // setPermissions((prevPermissions) => {
+    //   const newPermissions = Object.keys(prevPermissions).reduce((acc, key) => {
+    //     if (key === selectedRole) {
+    //       acc[key] = { all: true, add: true, read: true, edit: true, delete: true };
+    //     } else {
+    //       acc[key] = { all: false, add: false, read: false, edit: false, delete: false };
+    //     }
+    //     return acc;
+    //   }, {});
+    //   return { ...newPermissions };
+    // });
   };
 
   const handlePermissionChange = (manager, permission) => {
     setPermissions((prevPermissions) => {
       const updatedManagerPermissions = {
-        ...prevPermissions[manager],
+        ...prevPermissions[manager], 
         [permission]: !prevPermissions[manager][permission],
       };
 
@@ -104,7 +108,7 @@ const UserRoleRegistrationForm = () => {
         <div className="flex flex-col items-center lg:ml-10 w-full lg:w-[1000px]">
           <form
             onSubmit={handleSubmit}
-            className="bg-white mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px] border border-gray-300"
+            className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}
           >
             <div className="flex justify-between flex-wrap">
               <h2 className="text-2xl font-bold mb-6 text-gray-700 w-full lg:w-auto">

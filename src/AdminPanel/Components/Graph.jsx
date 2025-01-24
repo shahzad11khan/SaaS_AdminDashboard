@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -21,28 +22,32 @@ ChartJS.register(
 );
 
 const SalesGraph = () => {
+  const currentTheme = useSelector((state) => state.theme.theme); // Get current theme
+
   const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     datasets: [
       {
         label: "Sales",
         data: [10, 15, 20, 13, 25, 30, 22, 26, 30, 35, 33, 37],
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: currentTheme === "dark" ? "rgba(75, 192, 192, 1)" : "rgba(54, 162, 235, 1)", // Line color
+        backgroundColor: currentTheme === "dark" ? "rgba(75, 192, 192, 0.2)" : "rgba(54, 162, 235, 0.2)", // Area fill color
         tension: 0.4,
         pointRadius: 5,
-        pointBackgroundColor: "rgba(75, 192, 192, 1)",
+        pointBackgroundColor: currentTheme === "dark" ? "rgba(75, 192, 192, 1)" : "rgba(54, 162, 235, 1)", // Point color
       },
     ],
   };
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false, 
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false,
-        position: "top",
+        display: true,
+        labels: {
+          color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)", // Legend text color
+        },
       },
       tooltip: {
         enabled: true,
@@ -50,20 +55,22 @@ const SalesGraph = () => {
     },
     scales: {
       x: {
-        title: {
-          display: false,
-          text: "Months",
+        ticks: {
+          color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)", 
+        },
+        grid: {
+          color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)", 
         },
       },
       y: {
-        title: {
-          display: false,
-          text: "Sales in K ($)",
-        },
         ticks: {
+          color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)", 
           callback: function (value) {
             return `${value}K`;
           },
+        },
+        grid: {
+          color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)", 
         },
         beginAtZero: true,
       },

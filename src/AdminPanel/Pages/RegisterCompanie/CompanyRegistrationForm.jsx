@@ -2,8 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
+import { useSelector } from 'react-redux';
+
 
 const CompanyRegistrationForm = () => {
+  const currentTheme = useSelector((state=>state.theme.theme))
+
   const [formData, setFormData] = useState({
     companyName: "",
     registrationNumber: "",
@@ -62,11 +66,11 @@ const CompanyRegistrationForm = () => {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col lg:flex-row">
+      <div className="flex flex-col lg:flex-row ">
         <LeftSideBar />
-        <div className="flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen">
-          <form onSubmit={handleSubmit} className="bg-white mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300">
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-700 ">Company Registration</h2>
+        <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme=== 'dark' ?'text-white':'text-gray-600'} `}>
+          <form onSubmit={handleSubmit} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>
+            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>Company Registration</h2>
             <div>
               {next === 0 ? (
                 <>
@@ -75,7 +79,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="companyName"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Company Name <span className="text-red-500">*</span>
                       </label>
@@ -85,7 +89,7 @@ const CompanyRegistrationForm = () => {
                         id="companyName"
                         value={formData.companyName}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter company name"
                         required
                       />
@@ -95,7 +99,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Email Address <span className="text-red-500">*</span>
                       </label>
@@ -105,7 +109,7 @@ const CompanyRegistrationForm = () => {
                         id="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter email address"
                         required
                       />
@@ -118,7 +122,7 @@ const CompanyRegistrationForm = () => {
                       <div className="w-[45%] lg:w-[170px]">
                         <label
                           htmlFor="password"
-                          className="block text-sm font-medium text-gray-600"
+                          className="block text-sm font-medium  "
                         >
                           Password <span className="text-red-500">*</span>
                         </label>
@@ -128,7 +132,7 @@ const CompanyRegistrationForm = () => {
                           id="password"
                           value={formData.password}
                           onChange={handleChange}
-                          className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                          className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                           placeholder="Enter password"
                           required
                         />
@@ -137,7 +141,7 @@ const CompanyRegistrationForm = () => {
                       <div className="w-[45%] lg:w-[170px]">
                         <label
                           htmlFor="confirmPassword"
-                          className="block text-sm font-medium text-gray-600"
+                          className="block text-sm font-medium  "
                         >
                           Confirm Password <span className="text-red-500">*</span>
                         </label>
@@ -147,7 +151,7 @@ const CompanyRegistrationForm = () => {
                           id="confirmPassword"
                           value={formData.confirmPassword}
                           onChange={handleChange}
-                          className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                          className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                           placeholder="Confirm password"
                           required
                         />
@@ -157,7 +161,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="registrationNumber"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Registration Number
                       </label>
@@ -167,7 +171,7 @@ const CompanyRegistrationForm = () => {
                         id="registrationNumber"
                         value={formData.registrationNumber}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter registration number"
                       />
                     </div>
@@ -177,7 +181,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="companyAddress"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Company Address
                       </label>
@@ -187,7 +191,7 @@ const CompanyRegistrationForm = () => {
                         id="companyAddress"
                         value={formData.companyAddress}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter company address"
                       />
                     </div>
@@ -195,7 +199,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="phoneNumber"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Phone Number
                       </label>
@@ -205,7 +209,7 @@ const CompanyRegistrationForm = () => {
                         id="phoneNumber"
                         value={formData.phoneNumber}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter phone number"
                       />
                     </div>
@@ -216,7 +220,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="vatNumber"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         VAT Number
                       </label>
@@ -226,7 +230,7 @@ const CompanyRegistrationForm = () => {
                         id="vatNumber"
                         value={formData.vatNumber}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter VAT number"
                       />
                     </div>
@@ -234,7 +238,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px] flex justify-center items-center mt-7">
                       <button
                         type="button"
-                        className="w-full px-4 py-2 rounded border bg-gray-200 hover:bg-gray-300"
+                        className={`w-full px-4 py-2 rounded border ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} hover:bg-gray-300`}
                       >
                         Show
                       </button>
@@ -245,14 +249,14 @@ const CompanyRegistrationForm = () => {
                     <Link to="/register-companies">
                       <button
                         type="button"
-                        className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300">
+                        className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
                         Close
                       </button>
                     </Link>
 
                     <button
                       type="button"
-                      className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
+                      className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                       onClick={() => setnext((prevNext) => prevNext + 1)}
                     >
                       Next
@@ -266,7 +270,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="ownerName"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Owner Name <span className="text-red-500">*</span>
                       </label>
@@ -276,7 +280,7 @@ const CompanyRegistrationForm = () => {
                         id="ownerName"
                         value={formData.ownerName}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Owner Name"
                         required
                       />
@@ -284,7 +288,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="companyAddress"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Company Address
                       </label>
@@ -294,7 +298,7 @@ const CompanyRegistrationForm = () => {
                         id="companyAddress"
                         value={formData.companyAddress}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Company Address"
 
                       />
@@ -305,7 +309,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Email
                       </label>
@@ -315,7 +319,7 @@ const CompanyRegistrationForm = () => {
                         id="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Email"
 
                       />
@@ -323,7 +327,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="phoneNumber"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Phone Number
                       </label>
@@ -333,7 +337,7 @@ const CompanyRegistrationForm = () => {
                         id="phoneNumber"
                         value={formData.phoneNumber}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Phone Number"
 
                       />
@@ -344,7 +348,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="businessLicense"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Business License
                       </label>
@@ -354,7 +358,7 @@ const CompanyRegistrationForm = () => {
                         id="businessLicense"
                         value={formData.businessLicense}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Business License"
 
                       />
@@ -362,7 +366,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="taxId"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Tax ID
                       </label>
@@ -372,7 +376,7 @@ const CompanyRegistrationForm = () => {
                         id="taxId"
                         value={formData.taxId}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Tax ID"
 
                       />
@@ -382,7 +386,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="businessType"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Business Type <span className="text-red-500">*</span>
                       </label>
@@ -391,7 +395,7 @@ const CompanyRegistrationForm = () => {
                         id="businessType"
                         value={formData.businessType}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         required
                       >
                         <option value="" disabled>
@@ -415,7 +419,7 @@ const CompanyRegistrationForm = () => {
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="ml-2 text-sm font-medium text-gray-600">
+                        <span className="ml-2 text-sm font-medium  ">
                           Active
                         </span>
                       </label>
@@ -428,7 +432,7 @@ const CompanyRegistrationForm = () => {
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="ml-2 text-sm font-medium text-gray-600">
+                        <span className="ml-2 text-sm font-medium  ">
                           InActive
                         </span>
                       </label>
@@ -441,7 +445,7 @@ const CompanyRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="companyLogo"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium  "
                       >
                         Company Logo <span className="text-red-500">*</span>
                       </label>
@@ -450,7 +454,7 @@ const CompanyRegistrationForm = () => {
                         name="companyLogo"
                         id="companyLogo"
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         required
                       />
                     </div>
@@ -459,7 +463,7 @@ const CompanyRegistrationForm = () => {
                   <div className="w-full flex justify-end gap-5 mt-5">
                     <button
                       type="button"
-                      className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
+                      className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                       onClick={() => setnext((prevNext) => prevNext - 1)}
                     >
                       Back
@@ -467,7 +471,7 @@ const CompanyRegistrationForm = () => {
                     <Link to="/register-companies">
                       <button
                         type="button"
-                        className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
+                        className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                       >
                         Close
                       </button>
@@ -477,7 +481,7 @@ const CompanyRegistrationForm = () => {
 
                     <button
                       type="button"
-                      className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
+                      className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                     >
                       Submit
                     </button>

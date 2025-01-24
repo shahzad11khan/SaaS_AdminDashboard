@@ -5,7 +5,10 @@ import logo from "../../../../public/images/justLogo.svg";
 import { useNavigate } from "react-router-dom";
 
 
+
 const SignIn = () => {
+    
+
   const [next, setNext] = useState(0);
   const navigate = useNavigate();
 
@@ -16,7 +19,7 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F0FFF8] px-4">
+      <div className={`flex flex-col items-center justify-center min-h-screen bg-[#F0FFF8] px-4`}>
         <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg relative">
           <div className="flex justify-center mb-6">
             <img src={logo} alt="Logo" className="w-16" />
@@ -36,7 +39,7 @@ const SignIn = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-600"
+                    className="block text-sm font-medium "
                   >
                     Email Address
                   </label>
@@ -53,7 +56,7 @@ const SignIn = () => {
                 <div>
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-gray-600"
+                    className="block text-sm font-medium "
                   >
                     Password
                   </label>
@@ -100,7 +103,7 @@ const SignIn = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-600"
+                    className="block text-sm font-medium "
                   >
                     Email Address
                   </label>
@@ -139,7 +142,7 @@ const SignIn = () => {
                 <div>
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-gray-600"
+                    className="block text-sm font-medium "
                   >
                     Password
                   </label>
@@ -156,7 +159,7 @@ const SignIn = () => {
                 <div>
                   <label
                     htmlFor="confirmPassword"
-                    className="block text-sm font-medium text-gray-600"
+                    className="block text-sm font-medium "
                   >
                     Confirm Password
                   </label>

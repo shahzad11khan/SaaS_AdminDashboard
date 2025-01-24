@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-
+import { useSelector } from 'react-redux';
 
 const LeftSideBar = () => {
 
   const [isOpen, setisOpen] = useState(false);
   const [compDropdownOpen, setcompDropdownOpen] = useState(false);
-
+const currentTheme = useSelector((state=>state.theme.theme))
   
   
   const companiesToggle = () => {
@@ -30,7 +30,9 @@ const LeftSideBar = () => {
       </button>
 
 
-      <div className={`${isOpen ? 'w-full sm:w-full' : 'hidden'} relative lg:block  flex flex-col bg-[#F0FFF8] w-full sm:w-full md:w-full lg:w-[250px] min-h-screen  border border-gray-300  z-40 rounded-xl`}>
+      <div className={`${isOpen ? 'w-full sm:w-full' : 'hidden'} relative lg:block  flex flex-col  
+      ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} 
+      ${currentTheme=== 'dark' ?'text-white':'text-black'} w-full sm:w-full md:w-full lg:w-[250px] min-h-screen  border border-gray-300  z-40 rounded-xl`}>
         <div className='middle ms-5 mt-5'>
 
 
@@ -38,7 +40,7 @@ const LeftSideBar = () => {
             <h2 className='text-xl'>Dashboard</h2>
             <ul>
               <li className='py-1 '>
-                <div className='flex justify-between items-center cursor-pointer hover:bg-gray-200'  onClick={companiesToggle}>
+                <div className={`flex justify-between items-center cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}onClick={companiesToggle}>
                   Companies
                   <span className={`text-2xl mr-2 pt-2 transition-transform duration-300 ${compDropdownOpen ? 'rotate-0' : 'rotate-180'} `} > ^ </span>
                 </div>
@@ -46,17 +48,17 @@ const LeftSideBar = () => {
                   <ul className="pl-4">
               
                       <Link to="/register-companies">
-                       <li className="py-1 hover:bg-gray-100 cursor-pointer">Register Companie </li>
+                       <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Register Companie </li>
                        </Link>
                      
                     
                       <Link to="/register-user">
-                        <li className="py-1 hover:bg-gray-100 cursor-pointer">Register User  </li>
+                        <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Register User  </li>
                         </Link>
                     
                    
                       <Link to='/user-role'>
-                      <li className="py-1 hover:bg-gray-100 cursor-pointer"> User Role </li>
+                      <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}> User Role </li>
                       </Link>
                    
                   </ul>
@@ -72,39 +74,39 @@ const LeftSideBar = () => {
             <h2 className='text-xl'>Management</h2>
             <ul>
             <Link to="/product">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Product</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Product</li>
              </Link>
 
              <Link to="/stock">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Stock</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Stock</li>
              </Link>
 
              <Link to="/category">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Category</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Category</li>
              </Link>
 
              <Link to="/customer">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Customer</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Customer</li>
              </Link>
 
                 <Link to="/warehouse">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Warehouse</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Warehouse</li>
              </Link>
               
              <Link to="/reports">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Reports</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Reports</li>
              </Link>
 
              <Link to="/tags">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Tag</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Tag</li>
              </Link>
 
              <Link to="/order">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Order</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Order</li>
              </Link>
 
              <Link to="/delever">
-                <li className="py-1 hover:bg-gray-100 cursor-pointer">Delever</li>
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Delever</li>
              </Link>
             </ul>
           </div>
@@ -113,8 +115,8 @@ const LeftSideBar = () => {
           <div className='menu flex flex-col mt-5'>
             <h2 className='text-xl'>Notification</h2>
             <ul>
-              <li className='py-1 hover:bg-gray-200 cursor-pointer'>Transaction</li>
-              <li className='py-1 hover:bg-gray-200 cursor-pointer'>Message</li>
+              <li className={`py-1 ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'} cursor-pointer`}>Transaction</li>
+              <li className={`py-1 ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'} cursor-pointer`}>Message</li>
             </ul>
           </div>
         </div>

@@ -1,8 +1,12 @@
 import { useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
+import { useSelector } from 'react-redux';
+
 
 const CustomerRegistrationForm = () => {
+      const currentTheme = useSelector((state=>state.theme.theme))
+
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -47,12 +51,12 @@ const CustomerRegistrationForm = () => {
       <Navbar />
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />
-        <div className="flex flex-col items-center lg:ml-10 w-full lg:w-[1000px] h-screen ">
+        <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme=== 'dark' ?'text-white':'text-gray-600'} `}>
           <form
             onSubmit={handleSubmit}
-            className="bg-white mt-5 shadow-lg rounded-lg p-2 w-full lg:w-[800px] border border-gray-300"
+            className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}
           >
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
+            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>
               Customer Registration
             </h2>
 
@@ -61,7 +65,7 @@ const CustomerRegistrationForm = () => {
             <div className="w-full lg:w-[350px]">
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-sm font-medium "
                 >
                   Username <span className="text-red-500">*</span>
                 </label>
@@ -71,7 +75,7 @@ const CustomerRegistrationForm = () => {
                   id="username"
                   value={formData.username}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                   placeholder="Enter your username"
                   required
                 />
@@ -79,7 +83,7 @@ const CustomerRegistrationForm = () => {
               <div className="w-full lg:w-[350px]">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-sm font-medium "
                 >
                   Email Address <span className="text-red-500">*</span>
                 </label>
@@ -89,7 +93,7 @@ const CustomerRegistrationForm = () => {
                   id="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                   placeholder="Enter your email"
                   required
                 />
@@ -101,7 +105,7 @@ const CustomerRegistrationForm = () => {
             <div className="w-full lg:w-[350px] ">
               <label
                   htmlFor="contactNumber"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-sm font-medium "
                 >
                   Contact Number 
                 </label>
@@ -111,7 +115,7 @@ const CustomerRegistrationForm = () => {
                   id="contactNumber"
                   value={formData.contactNumber}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                   placeholder="Enter your contact number"
                 
                 />
@@ -122,7 +126,7 @@ const CustomerRegistrationForm = () => {
               <div className="w-full lg:w-[350px] ">
                 <label
                   htmlFor="address"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-sm font-medium "
                 >
                   Address 
                 </label>
@@ -131,7 +135,7 @@ const CustomerRegistrationForm = () => {
                   id="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                   placeholder="Enter your address"
                   required
                 />
@@ -143,7 +147,7 @@ const CustomerRegistrationForm = () => {
               <div className="w-full lg:w-[350px] ">
               <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-sm font-medium "
                 >
                   Password <span className="text-red-500">*</span>
                 </label>
@@ -153,7 +157,7 @@ const CustomerRegistrationForm = () => {
                   id="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                   placeholder="Enter your password"
                   required
                   />
@@ -162,7 +166,7 @@ const CustomerRegistrationForm = () => {
             
                    <label
                   htmlFor="confirmPassword"
-                  className="block text-sm font-medium text-gray-600"
+                  className="block text-sm font-medium "
                 >
                   Confirm Password <span className="text-red-500">*</span>
                 </label>
@@ -172,7 +176,7 @@ const CustomerRegistrationForm = () => {
                   id="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                   placeholder="Re-enter your password"
                   required
                 />
@@ -191,8 +195,7 @@ const CustomerRegistrationForm = () => {
             <div className="flex justify-end mt-6">
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#F0FFF8] border rounded-md hover:bg-[#F0FFF8] transition duration-200
-"
+                className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
               >
                 Register Customer
               </button>
