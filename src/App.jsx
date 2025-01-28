@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Admin from './AdminPanel/Admin'
 import './App.css'
+import './i18'
 import Registeruser from './AdminPanel/Pages/RegisterUser/Registeruser';
 import UserRegistrationForm from './AdminPanel/Pages/RegisterUser/UserRegistrationForm';
 import Registercompanies from './AdminPanel/Pages/RegisterCompanie/Companies';
@@ -24,8 +25,11 @@ import CategoryRegistrationForm from './AdminPanel/Pages/Category/CategoryRegist
 import SignIn from './AdminPanel/Pages/SignIn/Signin';
 import Profile from './AdminPanel/Pages/Profile/Profile';
 import Order from './AdminPanel/Pages/Order/Order';
+import OrderForm from './AdminPanel/Pages/Order/OrderForm';
 import Delever from './AdminPanel/Pages/Delever/Delever';
+import DeliveryForm from './AdminPanel/Pages/Delever/DeliveryForm';
 import { useSelector } from 'react-redux';
+
 
 function App() {
   const currentTheme = useSelector((state) => state.theme.theme);
@@ -61,7 +65,9 @@ function App() {
         <Route path="/tags" element={<Tags/>}/>
         <Route path="/tag-registration-form" element={<TagRegistrationForm/>}/>
         <Route path="/order" element={<Order/>}/>
+        <Route path="/order-form" element={<OrderForm/>}/>
         <Route path="/delever" element={<Delever/>}/>
+        <Route path="/delivery-form" element={<DeliveryForm/>}/>
         <Route path="/profile" element={<Profile/>}/>
         
       </Routes>

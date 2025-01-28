@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import { useSelector } from 'react-redux';
@@ -49,6 +49,19 @@ const Order = () => {
                                         className={`rounded-md px-4 py-1 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
                                 />
                             </div>
+                        </div>
+                        <div className='flex gap-2'>
+                        <Link to="/admin">
+                            <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
+                                Back
+                            </button>
+                           </Link>
+
+                            <Link to="/order-form">
+                          <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
+                                Add Order
+                            </button>
+                         </Link>
                         </div>
 
                     </div>

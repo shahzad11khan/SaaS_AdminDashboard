@@ -3,17 +3,14 @@ import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
 
-
 const ReportRegistrationForm = () => {
-  const currentTheme = useSelector((state=>state.theme.theme))
+  const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
     reportTitle: "",
-    reportType: "",
-    dateGenerated: "",
-    generatedBy: "",
-    status: "",
-    description: "",
+    startDate: "",
+    endDate: "",
+    reportType: "sales", // default value
   });
 
   const handleChange = (e) => {
@@ -28,11 +25,9 @@ const ReportRegistrationForm = () => {
     alert("Report registered successfully!");
     setFormData({
       reportTitle: "",
-      reportType: "",
-      dateGenerated: "",
-      generatedBy: "",
-      status: "",
-      description: "",
+      startDate: "",
+      endDate: "",
+      reportType: "sales", // reset to default
     });
   };
 
@@ -41,21 +36,18 @@ const ReportRegistrationForm = () => {
       <Navbar />
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />
-        <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme=== 'dark' ?'text-white':'text-gray-600'} `}>
+        <div className={`flex flex-col items-center lg:ml-10 w-full lg:w-[1000px] h-screen ${currentTheme === 'dark' ? 'text-white' : 'text-gray-600'}`}>
           <form
             onSubmit={handleSubmit}
-            className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}
+            className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'} mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px] border border-gray-300`}
           >
-            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>
+            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
               Report Registration
             </h2>
 
             <div className="flex flex-col lg:flex-row justify-between">
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="reportTitle"
-                  className="block text-sm font-medium "
-                >
+                <label htmlFor="reportTitle" className="block text-sm font-medium">
                   Report Title <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -64,111 +56,67 @@ const ReportRegistrationForm = () => {
                   id="reportTitle"
                   value={formData.reportTitle}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
                   placeholder="Enter report title"
                   required
                 />
               </div>
+
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="reportType"
-                  className="block text-sm font-medium "
-                >
-                  Report Type <span className="text-red-500">*</span>
+                <label htmlFor="startDate" className="block text-sm font-medium">
+                  Start Date <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
+                  type="date"
+                  name="startDate"
+                  id="startDate"
+                  value={formData.startDate}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col lg:flex-row justify-between mt-5">
+              <div className="w-full lg:w-[350px]">
+                <label htmlFor="endDate" className="block text-sm font-medium">
+                  End Date <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="date"
+                  name="endDate"
+                  id="endDate"
+                  value={formData.endDate}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
+                  required
+                />
+              </div>
+
+              <div className="w-full lg:w-[350px]">
+                <label htmlFor="reportType" className="block text-sm font-medium">
+                  Report Type <span className="text-red-500">*</span>
+                </label>
+                <select
                   name="reportType"
                   id="reportType"
                   value={formData.reportType}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                  placeholder="Enter report type"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
                   required
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col lg:flex-row justify-between mt-5">
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="dateGenerated"
-                  className="block text-sm font-medium "
                 >
-                  Date Generated <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  name="dateGenerated"
-                  id="dateGenerated"
-                  value={formData.dateGenerated}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                  required
-                />
-              </div>
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="generatedBy"
-                  className="block text-sm font-medium "
-                >
-                  Generated By <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="generatedBy"
-                  id="generatedBy"
-                  value={formData.generatedBy}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                  placeholder="Enter generated by"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col lg:flex-row justify-between mt-5">
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="status"
-                  className="block text-sm font-medium "
-                >
-                  Status <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="status"
-                  id="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                  placeholder="Enter report status"
-                  required
-                />
-              </div>
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium "
-                >
-                  Description <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  name="description"
-                  id="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                  placeholder="Enter description"
-                  required
-                />
+                  <option value="sales">Sales</option>
+                  <option value="inventory">Inventory</option>
+                  <option value="customer">Customer</option>
+                </select>
               </div>
             </div>
 
             <div className="flex justify-end mt-6">
               <button
                 type="submit"
-                className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
+                className={`px-4 py-2 rounded ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300`}
               >
                 Register Report
               </button>

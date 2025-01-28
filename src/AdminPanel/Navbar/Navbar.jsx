@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toggleTheme } from '../Slice/ThemeSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
-
+  const {t ,i18n} = useTranslation();
   const dispatch = useDispatch();
   const currentTheme = useSelector((state) => state.theme.theme);
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,10 @@ const Navbar = () => {
   const toggleMode = () => {
     dispatch(toggleTheme());
   };
-
+  const handleChange = (lang) => {
+  i18n.changeLanguage(lang)
+  }
+  
   return (
     <div className='flex justify-between items-center '>
       <nav className='w-full px-5 py-3'>
@@ -37,7 +41,7 @@ const Navbar = () => {
             <Link to='/admin'>
               <div className='flex items-center gap-2'>
                 <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " />
-                <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>Company Name</span>
+                <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{t('navbar.left.cName')}</span>
               </div>
             </Link>
           </div>
@@ -55,7 +59,7 @@ const Navbar = () => {
             <div className="relative ">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder={t('navbar.center.search')}
                 className={`w-full pl-5 py-2 rounded-md  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`} />
               <div className="absolute inset-y-0 right-5 flex items-center text-gray-400">
                 <i className="fas fa-search"></i>
@@ -81,20 +85,20 @@ const Navbar = () => {
               </button>
               {LangisOpen && (
                 <ul className={`absolute ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
-                  <li className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
+                  <li onClick={()=> handleChange("ur")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
                     <img
                       src="https://flagcdn.com/w40/pk.png"
                       alt="Pakistan Flag"
                       className="w-8 h-8 pl-0 mx-2 rounded-full"
                     />
                   </li>
-                  <li className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">US
+                  <li onClick={()=> handleChange("en")}  className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">US
                     <img
                       src="https://flagcdn.com/w40/us.png"
                       alt="USA Flag"
                       className="w-8 h-8 pl-0 mx-2 rounded-full"/>
                   </li>
-                  <li className="flex px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">ES
+                  <li onClick={()=> handleChange("sp")}  className="flex px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">ES
                     <img
                       src="https://flagcdn.com/w40/es.png"
                       alt="Spain Flag"
@@ -118,13 +122,13 @@ const Navbar = () => {
               {isOpen && (
                 <ul className={`absolute mt-1 ml-[-25px] ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded shadow-lg`}>
                   <Link to="/profile">
-                    <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">Profiles</li>
+                    <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">{t("navbar.right.profile")}</li>
                   </Link>
                   <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer flex items-center">
                     <i className="fas fa-sign-out-alt "></i>
-                    Logout
+                    {t("navbar.right.logout")}
                   </li>
-                </ul>
+                </ul> 
               )}
 
             </div>
@@ -136,7 +140,7 @@ const Navbar = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder={t('navbar.center.search')}
                 className={`w-full pl-5 py-2 rounded-md  ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
               />
               <div className='absolute inset-y-0 right-1 flex items-center text-gray-400'>
@@ -198,10 +202,10 @@ const Navbar = () => {
 
                 {isOpen && (
                   <ul className={`absolute mt-1 ml-[-25px] ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded shadow-lg`}>
-                    <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">Profiles</li>
+                    <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">{t("navbar.right.profile")}</li>
                     <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer flex items-center">
                       <i className="fas fa-sign-out-alt "></i>
-                      Logout
+                      {t("navbar.right.logout")}
                     </li>
                   </ul>
                 )}

@@ -1,0 +1,63 @@
+{
+    "signInPage": {
+        "top": {
+            "p": "Welcome to Delly"
+        },
+        "middle": {
+            "emailLable": "Email Address",
+            "emailPlaceholder": "Enter your email",
+            "passwordLable": "Password",
+            "passwordPlaceholder": "Enter your password",
+            "signIn": "Sign In"
+        },
+        "bottom": {
+            "forgotPassword": "Forgot Password ?"
+        }
+    },
+    "navbar": {
+        "left": {
+            "cName": "Company Name"
+        },
+        "center": {
+            "search": "search..."
+        },
+        "right": {
+            "profile": "Profile",
+            "logout": "Logout"
+        }
+    },
+    "leftSidebar": {
+        "sections": {
+            "dashboard": {
+                "title": "Dashboard",
+                "companies": {
+                    "title": "Companies",
+                    "registerCompanies": "Register Companies",
+                    "registerUser": "Register User",
+                    "userRole": "User Role"
+                }
+            },
+            "management": {
+                "title": "Management",
+                "items": {
+                    "product": "Product",
+                    "stock": "Stock",
+                    "category": "Category",
+                    "customer": "Customer",
+                    "warehouse": "Warehouse",
+                    "reports": "Reports",
+                    "tag": "Tag",
+                    "order": "Order",
+                    "deliver": "Deliver"
+                }
+            },
+            "notification": {
+                "title": "Notification",
+                "items": {
+                    "transaction": "Transaction",
+                    "message": "Message"
+                }
+            }
+        }
+    }
+}

@@ -15,6 +15,5 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 )
 
-// ${currentTheme=== 'dark' ?'bg-[#404040]]'
-//   ${currentTheme=== 'dark' ?'bg-[#404040]]'
+
   

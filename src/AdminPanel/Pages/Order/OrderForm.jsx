@@ -3,16 +3,16 @@ import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
 
-const CustomerRegistrationForm = () => {
+const OrderForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
-    customerName: "",
-    customerEmail: "",
-    customerPhone: "",
-    customerAddress: "",
-    customerCity: "",
-    customerCountry: "",
+    orderId: "",
+    customerId: "",
+    productId: "",
+    orderQuantity: "",
+    totalPrice: "",
+    orderStatus: "pending",
   });
 
   const handleChange = (e) => {
@@ -23,15 +23,15 @@ const CustomerRegistrationForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Customer Registered:", formData);
-    alert("Customer registered successfully!");
+    console.log("Order Submitted:", formData);
+    alert("Order submitted successfully!");
     setFormData({
-      customerName: "",
-      customerEmail: "",
-      customerPhone: "",
-      customerAddress: "",
-      customerCity: "",
-      customerCountry: "",
+      orderId: "",
+      customerId: "",
+      productId: "",
+      orderQuantity: "",
+      totalPrice: "",
+      orderStatus: "pending",
     });
   };
 
@@ -46,38 +46,38 @@ const CustomerRegistrationForm = () => {
             className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'} mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px] border border-gray-300`}
           >
             <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
-              Customer Registration
+              Order Form
             </h2>
 
             <div className="flex flex-col lg:flex-row justify-between">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerName" className="block text-sm font-medium">
-                  Customer Name <span className="text-red-500">*</span>
+                <label htmlFor="orderId" className="block text-sm font-medium">
+                  Order ID <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="customerName"
-                  id="customerName"
-                  value={formData.customerName}
+                  name="orderId"
+                  id="orderId"
+                  value={formData.orderId}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter customer name"
+                  placeholder="Enter order ID"
                   required
                 />
               </div>
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerEmail" className="block text-sm font-medium">
-                  Email <span className="text-red-500">*</span>
+                <label htmlFor="customerId" className="block text-sm font-medium">
+                  Customer ID <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="email"
-                  name="customerEmail"
-                  id="customerEmail"
-                  value={formData.customerEmail}
+                  type="text"
+                  name="customerId"
+                  id="customerId"
+                  value={formData.customerId}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter email"
+                  placeholder="Enter customer ID"
                   required
                 />
               </div>
@@ -85,64 +85,73 @@ const CustomerRegistrationForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerPhone" className="block text-sm font-medium">
-                  Phone
+                <label htmlFor="productId" className="block text-sm font-medium">
+                  Product ID <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="tel"
-                  name="customerPhone"
-                  id="customerPhone"
-                  value={formData.customerPhone}
+                  type="text"
+                  name="productId"
+                  id="productId"
+                  value={formData.productId}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter phone number"
+                  placeholder="Enter product ID"
+                  required
                 />
               </div>
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerAddress" className="block text-sm font-medium">
-                  Address
+                <label htmlFor="orderQuantity" className="block text-sm font-medium">
+                  Quantity <span className="text-red-500">*</span>
                 </label>
                 <input
-                  name="customerAddress"
-                  id="customerAddress"
-                  value={formData.customerAddress}
+                  type="number"
+                  name="orderQuantity"
+                  id="orderQuantity"
+                  value={formData.orderQuantity}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter address"
+                  placeholder="Enter quantity"
+                  required
                 />
               </div>
             </div>
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerCity" className="block text-sm font-medium">
-                  City
+                <label htmlFor="totalPrice" className="block text-sm font-medium">
+                  Total Price <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
-                  name="customerCity"
-                  id="customerCity"
-                  value={formData.customerCity}
+                  type="number"
+                  name="totalPrice"
+                  id="totalPrice"
+                  value={formData.totalPrice}
                   onChange={handleChange}
+                  step="0.01"
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter city"
+                  placeholder="Enter total price"
+                  required
                 />
               </div>
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerCountry" className="block text-sm font-medium">
-                  Country
+                <label htmlFor="orderStatus" className="block text-sm font-medium">
+                  Status <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="customerCountry"
-                  id="customerCountry"
-                  value={formData.customerCountry}
+                <select
+                  name="orderStatus"
+                  id="orderStatus"
+                  value={formData.orderStatus}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter country"
-                />
+                  required
+                >
+                  <option value="pending">Pending</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
               </div>
             </div>
 
@@ -161,4 +170,4 @@ const CustomerRegistrationForm = () => {
   );
 };
 
-export default CustomerRegistrationForm;
+export default OrderForm;

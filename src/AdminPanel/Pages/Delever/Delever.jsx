@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
 import DeleteModal from '../../Components/DeleteModal';
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 
 
 const Delever = () => {
@@ -49,6 +51,19 @@ const Delever = () => {
                                     className={`rounded-md px-4 py-1 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
                             />
                              </div>
+                        </div>
+                        <div className='flex gap-2'>
+                        <Link to="/admin">
+                            <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
+                                Back
+                            </button>
+                           </Link>
+
+                            <Link to="/delivery-form">
+                          <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
+                                Add Delivery
+                            </button>
+                         </Link>
                         </div>
                         
                     </div>
