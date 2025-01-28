@@ -1,6 +1,7 @@
 // import React from 'react';
 import Data from '../../../public/data.json';
 import Card from '../Components/Card';
+import { useSelector } from 'react-redux';
 
 import SalesGraph from '../Components/Graph';
 
@@ -8,6 +9,7 @@ import SalesGraph from '../Components/Graph';
 
 
 const Hero = () => {
+    const currentTheme = useSelector((state) => state.theme.theme);
     const balanceDetails = [
         {
             "id": 1,
@@ -97,9 +99,9 @@ const Hero = () => {
             </div>
                            
                 
-            <div className="rightSidebar min-h-screen mt-2  bg-[#F0FFF8] flex flex-col  w-full md:w-full lg:w-[240px] gap-4  p-4">
+            <div className={`rightSidebar min-h-screen mt-2  ${currentTheme=== 'dark' ?'bg-[#404040]]':'bg-[#F0FFF8]'}  flex flex-col  w-full md:w-full lg:w-[240px] gap-4  p-4 rounded-md border border-gray-300`}>
 
-                <div className="top bg-orange-400 rounded-lg w-full p-5 text-white">
+                <div className={`top ${currentTheme ==='dark' ? 'bg-[#404040]' : 'bg-orange-400 '} border border-gray-300 rounded-lg w-full p-5 text-white `}>
                     <div className="balance">
                         <h3 className="font-bold text-2xl">$ 44.40</h3>
                         <p className="text-sm">Active balance</p>
@@ -124,7 +126,7 @@ const Hero = () => {
                 </div>
 
 
-                <div className="bottam rounded-lg p-5 text-black w-full bg-white border-2">
+                <div className={`  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black' }  border border-gray-300 rounded rounded-lg p-5  border-2 `}>
                     <div className="balance">
                         <h3 className="text-lg font-medium">Upcoming Payment</h3>
                     </div>

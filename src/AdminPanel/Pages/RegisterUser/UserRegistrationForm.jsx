@@ -2,8 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
+import { useSelector } from 'react-redux';
+
 
 const UserRegistrationForm = () => {
+  const currentTheme = useSelector((state=>state.theme.theme))
+
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -56,13 +60,12 @@ const UserRegistrationForm = () => {
       <Navbar />
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />
-     <div className="flex flex-col items-center lg:ml-10 w-full lg:w-[1000px] h-screen ">
+        <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme=== 'dark' ?'text-white':'text-gray-600'} `}>
           <form
             onSubmit={handleSubmit}
-            className="bg-white mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px] border border-gray-300"
-          >
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">
-              User Registration
+            className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>          
+            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>
+            User Registration
             </h2>
             <div>
 
@@ -72,7 +75,7 @@ const UserRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="fullName"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium "
                       >
                         Full Name <span className="text-red-500">*</span>
                       </label>
@@ -82,7 +85,7 @@ const UserRegistrationForm = () => {
                         id="fullName"
                         value={formData.fullName}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter your full name"
                         required
                       />
@@ -90,7 +93,7 @@ const UserRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="email"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium "
                       >
                         Email Address <span className="text-red-500">*</span>
                       </label>
@@ -100,7 +103,7 @@ const UserRegistrationForm = () => {
                         id="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter your email"
                         required
                       />
@@ -112,7 +115,7 @@ const UserRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="password"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium "
                       >
                         Password <span className="text-red-500">*</span>
                       </label>
@@ -122,7 +125,7 @@ const UserRegistrationForm = () => {
                         id="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter password"
                         required
                       />
@@ -131,7 +134,7 @@ const UserRegistrationForm = () => {
 
                       <label
                         htmlFor="confirmPassword"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium "
                       >
                         Confirm Password <span className="text-red-500">*</span>
                       </label>
@@ -141,7 +144,7 @@ const UserRegistrationForm = () => {
                         id="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Confirm password"
                         required
                       />
@@ -160,7 +163,7 @@ const UserRegistrationForm = () => {
 
                   <div className="w-full flex justify-end gap-5 mt-5">
                     <Link to="/register-user">
-                      <button type="button" className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300">
+                      <button type="button" className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
                         Back
                       </button>
                     </Link>
@@ -168,7 +171,7 @@ const UserRegistrationForm = () => {
 
                     <button
                       type="button"
-                      className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
+                      className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                       onClick={() => setnext((prevNext) => prevNext + 1)}
                     >
                       Next
@@ -179,10 +182,10 @@ const UserRegistrationForm = () => {
               ) : next === 1 ? (
                 <>
                   <div className="flex flex-col lg:flex-row justify-between">
-                    <div className="w-full lg:w-[350px]">
+                    <div className="w-full lg:w-[350px] ">
                       <label
                         htmlFor="dateOfBirth"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium "
                       >
                         Date of Birth <span className="text-red-500">*</span>
                       </label>
@@ -192,14 +195,14 @@ const UserRegistrationForm = () => {
                         id="dateOfBirth"
                         value={formData.dateOfBirth}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         required
                       />
                     </div>
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="permission"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium "
                       >
                         Permission <span className="text-red-500">*</span>
                       </label>
@@ -209,7 +212,7 @@ const UserRegistrationForm = () => {
                         id="permission"
                         value={formData.permission}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter permission"
                         required
                       />
@@ -220,7 +223,7 @@ const UserRegistrationForm = () => {
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="role"
-                        className="block text-sm font-medium text-gray-600"
+                        className="block text-sm font-medium "
                       >
                         Role <span className="text-red-500">*</span>
                       </label>
@@ -229,7 +232,7 @@ const UserRegistrationForm = () => {
                         id="role"
                         value={formData.role}
                         onChange={handleChange}
-                        className="w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'} `}
                         required
                       >
                         <option value="" disabled>
@@ -250,7 +253,7 @@ const UserRegistrationForm = () => {
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="ml-2 text-sm font-medium text-gray-600">
+                        <span className="ml-2 text-sm font-medium ">
                           Active
                         </span>
                       </label>
@@ -263,7 +266,7 @@ const UserRegistrationForm = () => {
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="ml-2 text-sm font-medium text-gray-600">
+                        <span className="ml-2 text-sm font-medium ">
                           InActive
                         </span>
                       </label>
@@ -273,7 +276,7 @@ const UserRegistrationForm = () => {
                   <div className="w-full flex justify-end gap-5 mt-5">
                     <button
                       type="button"
-                      className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300"
+                      className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                       onClick={() => setnext((prevNext) => prevNext - 1)}
                     >
                       Back
@@ -282,7 +285,7 @@ const UserRegistrationForm = () => {
                     <Link to="/user-registration-form">
                       <button
                         type="button"
-                        className="px-4 py-2 rounded  bg-[#F0FFF8] border border-gray-300">
+                        className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
                         Save
                       </button>
                     </Link>

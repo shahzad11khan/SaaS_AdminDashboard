@@ -6,4 +6,8 @@
 
 *{
   font-family: "Outfit";
+
+}
+*body{
+@apply bg-black
 }

@@ -1,0 +1,63 @@
+{
+    "signInPage": {
+        "top": {
+            "p": "ڈیلے میں خوش آمدید"
+        },
+        "middle": {
+            "emailLable": "ای میل پتہ",
+            "emailPlaceholder": "اپنی ای میل درج کریں",
+            "passwordLable": "پاس ورڈ",
+            "passwordPlaceholder": "اپنا پاس ورڈ درج کریں",
+            "signIn": "لاگ ان کریں"
+        },
+        "bottom": {
+            "forgotPassword": "پاس ورڈ بھول گئے؟"
+        }
+    },
+    "navbar": {
+        "left": {
+            "cName": "کمپنی کا نام"
+        },
+        "center": {
+            "search": "تلاش کریں..."
+        },
+        "right": {
+            "profile": "پروفائل",
+            "logout": "لاگ آؤٹ"
+        }
+    },
+    "leftSidebar": {
+        "sections": {
+            "dashboard": {
+                "title": "ڈیش بورڈ",
+                "companies": {
+                    "title": "کمپنیاں",
+                    "registerCompanies": "کمپنیاں رجسٹر کریں",
+                    "registerUser": "صارف رجسٹر کریں",
+                    "userRole": "صارف کا کردار"
+                }
+            },
+            "management": {
+                "title": "انتظامیہ",
+                "items": {
+                    "product": "پروڈکٹ",
+                    "stock": "اسٹاک",
+                    "category": "زمرہ",
+                    "customer": "گاہک",
+                    "warehouse": "گودام",
+                    "reports": "رپورٹس",
+                    "tag": "ٹگ",
+                    "order": "آرڈر",
+                    "deliver": "ترسیل"
+                }
+            },
+            "notification": {
+                "title": "اطلاع",
+                "items": {
+                    "transaction": "لین دین",
+                    "message": "پیغام"
+                }
+            }
+        }
+    }
+}
