@@ -11,6 +11,7 @@ const ProductRegistrationForm = () => {
     productQuantity: "",
     productCategory: "",
     productImage: "",
+    productTag: "", // Added for Tag
   });
 
   const handleChange = (e) => {
@@ -30,6 +31,7 @@ const ProductRegistrationForm = () => {
       productQuantity: "",
       productCategory: "",
       productImage: "",
+      productTag: "", // Reset the tag value
     });
   };
 
@@ -51,10 +53,7 @@ const ProductRegistrationForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productName"
-                  className="block text-sm font-medium"
-                >
+                <label htmlFor="productName" className="block text-sm font-medium">
                   Product Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -69,11 +68,8 @@ const ProductRegistrationForm = () => {
                 />
               </div>
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productDescription"
-                  className="block text-sm font-medium"
-                >
-                  Description 
+                <label htmlFor="productDescription" className="block text-sm font-medium">
+                  Description
                 </label>
                 <input
                   name="productDescription"
@@ -82,17 +78,13 @@ const ProductRegistrationForm = () => {
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   placeholder="Enter product description"
-                  
                 />
               </div>
             </div>
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productPrice"
-                  className="block text-sm font-medium"
-                >
+                <label htmlFor="productPrice" className="block text-sm font-medium">
                   Price <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -108,10 +100,7 @@ const ProductRegistrationForm = () => {
                 />
               </div>
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productQuantity"
-                  className="block text-sm font-medium"
-                >
+                <label htmlFor="productQuantity" className="block text-sm font-medium">
                   Quantity <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -129,10 +118,7 @@ const ProductRegistrationForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productCategory"
-                  className="block text-sm font-medium"
-                >
+                <label htmlFor="productCategory" className="block text-sm font-medium">
                   Category <span className="text-red-500">*</span>
                 </label>
                 <select
@@ -150,10 +136,28 @@ const ProductRegistrationForm = () => {
                 </select>
               </div>
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productImage"
-                  className="block text-sm font-medium"
+                <label htmlFor="productTag" className="block text-sm font-medium">
+                  Tag <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="productTag"
+                  id="productTag"
+                  value={formData.productTag}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
+                  required
                 >
+                  <option value="">Select tag</option>
+                  <option value="new-arrival">New Arrival</option>
+                  <option value="best-seller">Best Seller</option>
+                  <option value="discount">Discount</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex flex-col lg:flex-row justify-between mt-5">
+              <div className="w-full lg:w-[350px]">
+                <label htmlFor="productImage" className="block text-sm font-medium">
                   Image <span className="text-red-500">*</span>
                 </label>
                 <input

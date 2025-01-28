@@ -65,23 +65,32 @@ const StockRegistrationForm = () => {
                 />
               </div>
               <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productName"
-                  className="block text-sm font-medium "
-                >
-                  Product Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="productName"
-                  id="productName"
-                  value={formData.productName}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter product name"
-                  required
-                />
-              </div>
+  <label
+    htmlFor="productName"
+    className="block text-sm font-medium"
+  >
+    Product Name <span className="text-red-500">*</span>
+  </label>
+  <select
+    name="productName"
+    id="productName"
+    value={formData.productName}
+    onChange={handleChange}
+    className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${
+      currentTheme === "dark" ? "text-white" : "text-black"
+    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
+    required
+  >
+    <option value="" disabled>
+      Select a product
+    </option>
+    <option value="Product 1">Product 1</option>
+    <option value="Product 2">Product 2</option>
+    <option value="Product 3">Product 3</option>
+    <option value="Product 4">Product 4</option>
+  </select>
+</div>
+
             </div>
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">

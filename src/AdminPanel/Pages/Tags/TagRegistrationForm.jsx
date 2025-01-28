@@ -108,7 +108,7 @@ const TagRegistrationForm = () => {
                   id="textColor"
                   value={formData.textColor}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md"
+                  className="w-full mt-2 px-4 py-2 border rounded-md h-16"
                   required
                 />
               </div>
@@ -125,7 +125,7 @@ const TagRegistrationForm = () => {
                   id="backgroundColor"
                   value={formData.backgroundColor}
                   onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md"
+                  className="w-full mt-2 px-4 py-2 border rounded-md h-16"
                   required
                 />
               </div>
