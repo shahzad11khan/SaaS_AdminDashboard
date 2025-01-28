@@ -4,6 +4,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import logo from "../../../../public/images/justLogo.svg";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 
@@ -13,7 +14,7 @@ const SignIn = () => {
   const { t, i18n } = useTranslation();
   const [next, setNext] = useState(0);
   const navigate = useNavigate();
-  const [LangIsOpen, setLanguageIsOpen ] = useState(false);
+  const [LangIsOpen, setLanguageIsOpen] = useState(false);
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang)
@@ -32,6 +33,7 @@ const SignIn = () => {
 
   return (
     <>
+    
       <div className={`flex flex-col items-center justify-center min-h-screen bg-[#F0FFF8] px-4`}>
         <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg relative">
           <div className="flex justify-center mb-6">
@@ -104,38 +106,38 @@ const SignIn = () => {
                 </a>
 
                 <div className="relative ">
-                 
+
                   <button className="flex"
                     onClick={toggleLanguage}>
                     <i className={`fas fa-globe text-xl`}></i>
                   </button>
-                 
+
                   {LangIsOpen && (
                     <ul className="absolute flex justify-between ml-[-100px]">
-                     <li onClick={()=> handleLanguageChange("ur")} className="flex px-2 text-xs cursor-pointer">
-                      PK
-                    <img
-                      src="https://flagcdn.com/w40/pk.png"
-                      alt="Pakistan Flag"
-                      className="w-4 h-4  mx-2 rounded-full"
-                    />
-                  </li>
-                  <li onClick={()=> handleLanguageChange("en")} className="flex px-2 text-xs cursor-pointer">
-                  US
-                    <img
-                      src="https://flagcdn.com/w40/us.png"
-                      alt="USA Flag"
-                      className="w-4 h-4  mx-2 rounded-full"
-                      />
-                  </li>
-                  <li onClick={()=> handleLanguageChange("sp")} className="flex px-2 text-xs cursor-pointer">
-                  ES
-                    <img
-                      src="https://flagcdn.com/w40/es.png"
-                      alt="Spain Flag"
-                      className="w-4 h-4  mx-2 rounded-full"
-                    />
-                  </li>
+                      <li onClick={() => handleLanguageChange("ur")} className="flex px-2 text-xs cursor-pointer">
+                        PK
+                        <img
+                          src="https://flagcdn.com/w40/pk.png"
+                          alt="Pakistan Flag"
+                          className="w-4 h-4  mx-2 rounded-full"
+                        />
+                      </li>
+                      <li onClick={() => handleLanguageChange("en")} className="flex px-2 text-xs cursor-pointer">
+                        US
+                        <img
+                          src="https://flagcdn.com/w40/us.png"
+                          alt="USA Flag"
+                          className="w-4 h-4  mx-2 rounded-full"
+                        />
+                      </li>
+                      <li onClick={() => handleLanguageChange("sp")} className="flex px-2 text-xs cursor-pointer">
+                        ES
+                        <img
+                          src="https://flagcdn.com/w40/es.png"
+                          alt="Spain Flag"
+                          className="w-4 h-4  mx-2 rounded-full"
+                        />
+                      </li>
                     </ul>
                   )}
 
@@ -204,7 +206,7 @@ const SignIn = () => {
                     id="password"
                     name="password"
                     placeholder="Enter password"
-                    className="w-full mt-1 px-4 py-2 border  rounded-md hov focus:outline-none focus:ring focus:ring-[#219b53]"
+                    className="w-full mt-1 px-4 py-2 border rounded-md hov focus:outline-none focus:ring focus:ring-[#219b53]"
                     required
                   />
                 </div>
@@ -237,10 +239,22 @@ const SignIn = () => {
 
 
               </form>
+  
             </>
-
+            
           ) : null}
+                         <div className="flex justify-center">
+                         <GoogleLogin
+                  onSuccess={credentialResponse => {
+                    console.log(credentialResponse);
+                  }}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                ></GoogleLogin>
+                         </div>
         </div>
+        
       </div>
     </>
   );

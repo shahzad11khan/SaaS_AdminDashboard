@@ -22,7 +22,7 @@ ChartJS.register(
 );
 
 const SalesGraph = () => {
-  const currentTheme = useSelector((state) => state.theme.theme); // Get current theme
+  const currentTheme = useSelector((state) => state.theme.theme); 
 
   const data = {
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -44,7 +44,7 @@ const SalesGraph = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true,
+        display: false,
         labels: {
           color: currentTheme === "dark" ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.8)", // Legend text color
         },
