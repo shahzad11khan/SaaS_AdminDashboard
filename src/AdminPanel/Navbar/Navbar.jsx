@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import { toggleTheme } from '../Slice/ThemeSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { googleLogout } from '@react-oauth/google';
 
 const Navbar = () => {
   const {t ,i18n} = useTranslation();
@@ -11,6 +12,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mobileView, setmobileView] = useState(false);
   const [LangisOpen, setLangIsOpen] = useState(false);
+
+  const Navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -31,6 +34,13 @@ const Navbar = () => {
   const handleChange = (lang) => {
   i18n.changeLanguage(lang)
   }
+
+  const handleLogout = () =>{
+    googleLogout();
+  alert("logout successfuly") ;
+  Navigate('/');
+
+ }
   
   return (
     <div className='flex justify-between items-center '>
@@ -124,10 +134,13 @@ const Navbar = () => {
                   <Link to="/profile">
                     <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">{t("navbar.right.profile")}</li>
                   </Link>
-                  <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer flex items-center">
+
+               
+                  <li onClick={() => handleLogout()}  className="px-2 py-1 hover:bg-gray-100 cursor-pointer flex items-center">
                     <i className="fas fa-sign-out-alt "></i>
-                    {t("navbar.right.logout")}
+                    {t("navbar.right.logout")}                    
                   </li>
+             
                 </ul> 
               )}
 
@@ -165,14 +178,14 @@ const Navbar = () => {
                 </button>
                 {LangisOpen && (
                   <ul className={`absolute ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
-                    <li className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
+                    <li onClick={()=> handleChange("ur")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
                       <img
                         src="https://flagcdn.com/w40/pk.png"
                         alt="Pakistan Flag"
                         className="w-8 h-8 pl-0 mx-2 rounded-full"
                       />
                     </li>
-                    <li className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">US
+                    <li onClick={()=> handleChange("us")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">US
                       <img
                         src="https://flagcdn.com/w40/us.png"
                         alt="USA Flag"
@@ -180,7 +193,7 @@ const Navbar = () => {
                       />
 
                     </li>
-                    <li className="flex px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">ES
+                    <li onClick={()=> handleChange("sp")} className="flex px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">ES
                       <img
                         src="https://flagcdn.com/w40/es.png"
                         alt="Spain Flag"
@@ -202,11 +215,16 @@ const Navbar = () => {
 
                 {isOpen && (
                   <ul className={`absolute mt-1 ml-[-25px] ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded shadow-lg`}>
+                    <Link to="/profile">
                     <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">{t("navbar.right.profile")}</li>
-                    <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer flex items-center">
+                    </Link>
+
+                  
+                    <li onClick={() => handleLogout()} className="px-2 py-1 hover:bg-gray-100 cursor-pointer flex items-center">
                       <i className="fas fa-sign-out-alt "></i>
                       {t("navbar.right.logout")}
                     </li>
+                 
                   </ul>
                 )}
               </div>

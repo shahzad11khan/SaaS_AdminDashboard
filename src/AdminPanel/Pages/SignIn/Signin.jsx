@@ -29,6 +29,7 @@ const SignIn = () => {
     setLanguageIsOpen(!LangIsOpen);
 
   };
+  
 
 
   return (
@@ -113,8 +114,8 @@ const SignIn = () => {
                   </button>
 
                   {LangIsOpen && (
-                    <ul className="absolute flex justify-between ml-[-100px]">
-                      <li onClick={() => handleLanguageChange("ur")} className="flex px-2 text-xs cursor-pointer">
+                    <ul className="absolute flex flex-col  ">
+                      <li onClick={() => handleLanguageChange("ur")} className="flex  text-xs cursor-pointer">
                         PK
                         <img
                           src="https://flagcdn.com/w40/pk.png"
@@ -122,7 +123,7 @@ const SignIn = () => {
                           className="w-4 h-4  mx-2 rounded-full"
                         />
                       </li>
-                      <li onClick={() => handleLanguageChange("en")} className="flex px-2 text-xs cursor-pointer">
+                      <li onClick={() => handleLanguageChange("en")} className="flex pt-2 text-xs cursor-pointer">
                         US
                         <img
                           src="https://flagcdn.com/w40/us.png"
@@ -130,7 +131,7 @@ const SignIn = () => {
                           className="w-4 h-4  mx-2 rounded-full"
                         />
                       </li>
-                      <li onClick={() => handleLanguageChange("sp")} className="flex px-2 text-xs cursor-pointer">
+                      <li onClick={() => handleLanguageChange("sp")} className="flex pt-2 text-xs cursor-pointer">
                         ES
                         <img
                           src="https://flagcdn.com/w40/es.png"
