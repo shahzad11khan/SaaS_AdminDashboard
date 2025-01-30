@@ -16,7 +16,6 @@ const UserRoleRegistrationForm = () => {
     repairManager: { all: false, add: false, read: false, edit: false, delete: false },
     tagManager: { all: false, add: false, read: false, edit: false, delete: false },
   });
-  const [role, setRole] = useState("");
 
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;

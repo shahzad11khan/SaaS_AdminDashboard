@@ -8,7 +8,6 @@ import { GoogleLogin } from '@react-oauth/google';
 
 
 
-
 const SignIn = () => {
 
   const { t, i18n } = useTranslation();
@@ -22,6 +21,7 @@ const SignIn = () => {
   }
 
   const handleRegisterRoute = () => {
+
     navigate("/admin");
   }
 
