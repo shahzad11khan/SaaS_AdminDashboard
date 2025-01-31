@@ -5,7 +5,8 @@ import logo from "../../../../public/images/justLogo.svg";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from '@react-oauth/google';
-
+// import Spinner from "../../Components/Spinner";
+// import { useDispatch ,useSelector } from "react-redux";
 
 
 const SignIn = () => {
@@ -14,6 +15,8 @@ const SignIn = () => {
   const [next, setNext] = useState(0);
   const navigate = useNavigate();
   const [LangIsOpen, setLanguageIsOpen] = useState(false);
+  // const dispatch =useDispatch();
+  // const {isLoading} =useSelector((state)=>state)
   
   const [form ,setForm] = useState({
     email:"",
