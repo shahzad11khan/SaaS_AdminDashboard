@@ -5,8 +5,13 @@ import logo from "../../../../public/images/justLogo.svg";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from '@react-oauth/google';
-// import Spinner from "../../Components/Spinner";
-// import { useDispatch ,useSelector } from "react-redux";
+import Spinner from "../../Components/Spinner";
+import { useDispatch, useSelector } from "react-redux";
+import { baseUri } from '../../Components/api/baseUri'
+import { User_Middle_Point } from '../../Components/api/middlePoints'
+import { User_End_Point } from '../../Components/api/endPoint'
+import fetchData from '../../Components/api/axios'
+import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 
 
 const SignIn = () => {
@@ -15,42 +20,61 @@ const SignIn = () => {
   const [next, setNext] = useState(0);
   const navigate = useNavigate();
   const [LangIsOpen, setLanguageIsOpen] = useState(false);
-  // const dispatch =useDispatch();
-  // const {isLoading} =useSelector((state)=>state)
-  
-  const [form ,setForm] = useState({
-    email:"",
-    password:""
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.loading.isLoading)
+
+  const [form, setForm] = useState({
+    email: "",
+    password: ""
   });
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang)
   }
 
-
-
   const toggleLanguage = () => {
     setLanguageIsOpen(!LangIsOpen);
 
   };
-  const handleOnChange= (e)=>{
-    let {name , value} =e.target;
-    setForm({...form ,[name]:value });
+  const handleOnChange = (e) => {
+    let { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   }
 
-  const handleSubmit=(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form)
-    navigate("/admin");
-  }
-  
+    dispatch(setLoading());
 
+    const url = baseUri + User_Middle_Point + User_End_Point;
+    const method = "POST";
+
+    try {
+      const data = await fetchData(url, method, form);
+      dispatch(setLoading());
+      if (data.response?.status === 400) {
+        navigate("/");
+      } else {
+        navigate("/admin");
+      }
+    } catch (error) {
+      dispatch(setLoading());
+      console.error(error);
+
+    }
+  };
 
   return (
     <>
-    
+
       <div className={`flex flex-col items-center justify-center min-h-screen bg-[#F0FFF8] px-4`}>
         <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg relative">
+
+          {selector && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white opacity-45 rounded-lg">
+              <Spinner />
+
+            </div>
+          )}
           <div className="flex justify-center mb-6">
             <img src={logo} alt="Logo" className="w-16" />
           </div>
@@ -79,7 +103,9 @@ const SignIn = () => {
                     name="email"
                     placeholder={t('signInPage.middle.emailPlaceholder')}
                     className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
-                    onChange={handleOnChange} 
+                    onChange={handleOnChange}
+
+
                   />
                 </div>
 
@@ -103,8 +129,8 @@ const SignIn = () => {
 
                 <button
                   type="submit"
+
                   className="w-full bg-[#F0FFF8] py-2 rounded-md font-semibold transition border-2"
-                
                 >
                   {t('signInPage.middle.signIn')}
 
@@ -254,23 +280,26 @@ const SignIn = () => {
 
 
               </form>
-  
+
             </>
-            
+
           ) : null}
-                         <div className="flex justify-center">
-                         <GoogleLogin
-                  onSuccess={credentialResponse => {
-                    console.log(credentialResponse);
-                  }}
-                  onError={() => {
-                    console.log('Login Failed');
-                  }}
-                ></GoogleLogin>
-                         </div>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            ></GoogleLogin>
+          </div>
+
+
         </div>
-        
+
       </div>
+
     </>
   );
 };

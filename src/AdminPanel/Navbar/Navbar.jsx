@@ -37,7 +37,6 @@ const Navbar = () => {
 
   const handleLogout = () =>{
     googleLogout();
-  alert("logout successfuly") ;
   Navigate('/');
 
  }
