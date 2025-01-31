@@ -5,6 +5,10 @@ import logo from "../../../../public/images/justLogo.svg";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from '@react-oauth/google';
+import { baseUri } from '../../Components/api/baseUri'
+import { User_Middle_Point } from '../../Components/api/middlePoints'
+import { User_End_Point } from '../../Components/api/endPoint'
+import fetchData from '../../Components/api/axios'
 
 
 
@@ -14,38 +18,49 @@ const SignIn = () => {
   const [next, setNext] = useState(0);
   const navigate = useNavigate();
   const [LangIsOpen, setLanguageIsOpen] = useState(false);
-  
-  const [form ,setForm] = useState({
-    email:"",
-    password:""
+
+  const [form, setForm] = useState({
+    email: "",
+    password: ""
   });
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang)
   }
 
-
-
   const toggleLanguage = () => {
     setLanguageIsOpen(!LangIsOpen);
 
   };
-  const handleOnChange= (e)=>{
-    let {name , value} =e.target;
-    setForm({...form ,[name]:value });
+  const handleOnChange = (e) => {
+    let { name, value } = e.target;
+    setForm({ ...form, [name]: value });
   }
 
-  const handleSubmit=(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form)
-    navigate("/admin");
+    // console.log(form)
+    const url = baseUri + User_Middle_Point + User_End_Point
+    console.log(url)
+    const method = 'POST'
+    try {
+      const data = await fetchData(url, method, form);
+      console.log('Item created:', data);
+      const allow = data.response.data;
+      if (data.response.status === 400) {
+        console.log(allow.message);
+        navigate("/");
+      } else {
+        console.log(data.response.message);
+        navigate("/admin");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
-  
-
-
   return (
     <>
-    
+
       <div className={`flex flex-col items-center justify-center min-h-screen bg-[#F0FFF8] px-4`}>
         <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg relative">
           <div className="flex justify-center mb-6">
@@ -76,7 +91,7 @@ const SignIn = () => {
                     name="email"
                     placeholder={t('signInPage.middle.emailPlaceholder')}
                     className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
-                    onChange={handleOnChange} 
+                    onChange={handleOnChange}
                   />
                 </div>
 
@@ -101,7 +116,7 @@ const SignIn = () => {
                 <button
                   type="submit"
                   className="w-full bg-[#F0FFF8] py-2 rounded-md font-semibold transition border-2"
-                
+
                 >
                   {t('signInPage.middle.signIn')}
 
@@ -251,22 +266,22 @@ const SignIn = () => {
 
 
               </form>
-  
+
             </>
-            
+
           ) : null}
-                         <div className="flex justify-center">
-                         <GoogleLogin
-                  onSuccess={credentialResponse => {
-                    console.log(credentialResponse);
-                  }}
-                  onError={() => {
-                    console.log('Login Failed');
-                  }}
-                ></GoogleLogin>
-                         </div>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            ></GoogleLogin>
+          </div>
         </div>
-        
+
       </div>
     </>
   );

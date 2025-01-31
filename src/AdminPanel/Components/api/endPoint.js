@@ -1,1 +1,1 @@
-export const User_End_Ponit = "/user";
+export const User_End_Point = "/login";
