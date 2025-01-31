@@ -16,22 +16,12 @@ const UserRoleRegistrationForm = () => {
     repairManager: { all: false, add: false, read: false, edit: false, delete: false },
     tagManager: { all: false, add: false, read: false, edit: false, delete: false },
   });
-
+  const [role ,setRole]= useState("");
+   
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
     setRole(selectedRole);
 
-    // setPermissions((prevPermissions) => {
-    //   const newPermissions = Object.keys(prevPermissions).reduce((acc, key) => {
-    //     if (key === selectedRole) {
-    //       acc[key] = { all: true, add: true, read: true, edit: true, delete: true };
-    //     } else {
-    //       acc[key] = { all: false, add: false, read: false, edit: false, delete: false };
-    //     }
-    //     return acc;
-    //   }, {});
-    //   return { ...newPermissions };
-    // });
   };
 
   const handlePermissionChange = (manager, permission) => {

@@ -14,21 +14,32 @@ const SignIn = () => {
   const [next, setNext] = useState(0);
   const navigate = useNavigate();
   const [LangIsOpen, setLanguageIsOpen] = useState(false);
+  
+  const [form ,setForm] = useState({
+    email:"",
+    password:""
+  });
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang)
-
   }
 
-  const handleRegisterRoute = () => {
 
-    navigate("/admin");
-  }
 
   const toggleLanguage = () => {
     setLanguageIsOpen(!LangIsOpen);
 
   };
+  const handleOnChange= (e)=>{
+    let {name , value} =e.target;
+    setForm({...form ,[name]:value });
+  }
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    console.log(form)
+    navigate("/admin");
+  }
   
 
 
@@ -49,7 +60,7 @@ const SignIn = () => {
             <>
 
               <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit}
                 className="flex flex-col gap-4"
               >
                 <div>
@@ -65,7 +76,7 @@ const SignIn = () => {
                     name="email"
                     placeholder={t('signInPage.middle.emailPlaceholder')}
                     className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
-
+                    onChange={handleOnChange} 
                   />
                 </div>
 
@@ -81,16 +92,16 @@ const SignIn = () => {
                     id="password"
                     name="password"
                     placeholder={t('signInPage.middle.passwordPlaceholder')}
-
+                    onChange={handleOnChange}
                     className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
 
                   />
                 </div>
 
                 <button
-                  type="button"
+                  type="submit"
                   className="w-full bg-[#F0FFF8] py-2 rounded-md font-semibold transition border-2"
-                  onClick={handleRegisterRoute}
+                
                 >
                   {t('signInPage.middle.signIn')}
 

@@ -57,7 +57,7 @@ const Navbar = () => {
           </div>
 
 
-          {/* Mobil Menu Toggle  */}
+         
           <div className="lg:hidden">
             <button className="text-gray-300 focus outline-none"
               onClick={toggleMobile}>
