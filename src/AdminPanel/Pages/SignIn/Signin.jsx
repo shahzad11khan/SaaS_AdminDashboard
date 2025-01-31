@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import logo from "../../../../public/images/justLogo.svg";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ import { User_Middle_Point } from '../../Components/api/middlePoints'
 import { User_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 const SignIn = () => {
@@ -23,11 +24,16 @@ const SignIn = () => {
   const [LangIsOpen, setLanguageIsOpen] = useState(false);
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.loading.isLoading)
+  const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
     password: ""
   });
+
+  const passwordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang)
@@ -112,7 +118,7 @@ const SignIn = () => {
                   />
                 </div>
 
-                <div>
+                <div className="relative">
                   <label
                     htmlFor="password"
                     className="block text-sm font-medium "
@@ -120,13 +126,18 @@ const SignIn = () => {
                     {t('signInPage.middle.passwordLable')}
                   </label>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     placeholder={t('signInPage.middle.passwordPlaceholder')}
                     onChange={handleOnChange}
-                    className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
+                    className="relative w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
 
+                  />
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                    className="absolute right-3 top-9 text-gray-500 cursor-pointer"
+                    onClick={passwordVisibility}
                   />
                 </div>
 
