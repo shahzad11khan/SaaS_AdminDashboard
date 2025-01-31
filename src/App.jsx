@@ -33,10 +33,7 @@ import { useSelector } from 'react-redux';
 
 function App() {
   const currentTheme = useSelector((state) => state.theme.theme);
-
-
-
-
+  
   return (
     <div className={`${currentTheme ==='dark' ? 'bg-[#404040]' : 'bg-white'}`}>
     

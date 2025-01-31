@@ -12,6 +12,7 @@ import { User_Middle_Point } from '../../Components/api/middlePoints'
 import { User_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
+import { toast} from 'react-toastify';
 
 
 const SignIn = () => {
@@ -52,8 +53,10 @@ const SignIn = () => {
       const data = await fetchData(url, method, form);
       dispatch(setLoading());
       if (data.response?.status === 400) {
+        toast.error(data.response.data.message);
         navigate("/");
       } else {
+        console.log(data.response?.message);
         navigate("/admin");
       }
     } catch (error) {
