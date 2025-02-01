@@ -9,10 +9,15 @@ import { User_Middle_Point } from '../../Components/api/middlePoints'
 import { User_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import GenericTable from '../../Components/Table/GenericTable';
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
+
+
 
 const Registeruser = () => {
-
+    const dispatch = useDispatch();
     const currentTheme = useSelector((state=>state.theme.theme))
+    const selector = useSelector((state) => state.loading.isLoading)
     const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
     const [userData, setUserData] = useState({
         headers: ['SNo', 'Username', 'Email', 'Password', 'Occupation', 'Status','Actions'],
@@ -41,6 +46,7 @@ const Registeruser = () => {
             const url = baseUri + User_Middle_Point + User_End_Point;
             const method = "GET";
           const response = await fetchData(url, method);// Replace with your actual API endpoint
+          dispatch(setLoading());
           console.log(response.user)
           setUserData((prevState) => ({
             ...prevState,
