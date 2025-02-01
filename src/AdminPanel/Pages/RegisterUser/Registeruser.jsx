@@ -1,22 +1,70 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../../Navbar/Navbar';
 import LeftSideBar from '../../LeftSideBar/LeftSideBar';
-import userdata from '../../../../public/companyUser.json';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
 import DeleteModal from '../../Components/DeleteModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-
+import { baseUri } from '../../Components/api/baseUri'
+import { User_Middle_Point } from '../../Components/api/middlePoints'
+import { User_End_Point } from '../../Components/api/endPoint'
+import fetchData from '../../Components/api/axios'
+import GenericTable from '../../Components/Table/GenericTable';
 
 const Registeruser = () => {
 
     const currentTheme = useSelector((state=>state.theme.theme))
     const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
+    const [userData, setUserData] = useState({
+        headers: ['SNo', 'Username', 'Email', 'Password', 'Occupation', 'Status','Actions'],
+        data: [
+        //   {
+        //     sno: 1,
+        //     username: 'JohnDoe',
+        //     email: 'john@example.com',
+        //     password: '********',
+        //     occupation: 'Developer',
+        //     status: 'Active',
+        //   },
+        //   {
+        //     sno: 2,
+        //     username: 'JaneDoe',
+        //     email: 'jane@example.com',
+        //     password: '********',
+        //     occupation: 'Designer',
+        //     status: 'Inactive',
+        //   },
+        ]
+      });
 
-    const isopendeletemodal = ()=>{
+      const fetchUsers = async () => {
+        try {
+            const url = baseUri + User_Middle_Point + User_End_Point;
+            const method = "GET";
+          const response = await fetchData(url, method);// Replace with your actual API endpoint
+          console.log(response.user)
+          setUserData((prevState) => ({
+            ...prevState,
+            data: response.user,
+          }));
+        } catch (error) {
+            console.log(error)
+        //   setError('Failed to load data');
+        } 
+      };
+  
+      useEffect(() => {
+       
+        fetchUsers();
+      }, []); 
+    const handleEdit = (item) => {
+        console.log('Edit item:', item);
+        // Add your edit logic here
+      };
+    
+      const handleDelete = (item) => {
         setIsDeleteModalOpen(true);
-    }
+        // Add your delete logic here
+      };
     return (
         <div>
 
@@ -68,9 +116,15 @@ const Registeruser = () => {
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
+                    <GenericTable
+        headers={userData.headers}
+        data={userData.data}
+        currentTheme={currentTheme}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
-
-                        <table className="border-collapse border border-gray-300 w-full ">
+                        {/* <table className="border-collapse border border-gray-300 w-full ">
                             <thead>
                                 <tr>
                                     {userdata.headers.map((item, index) => (
@@ -98,7 +152,7 @@ const Registeruser = () => {
                                     </tr>
                                 ))}
                             </tbody>
-                        </table>
+                        </table> */}
 
                     </div>
 
