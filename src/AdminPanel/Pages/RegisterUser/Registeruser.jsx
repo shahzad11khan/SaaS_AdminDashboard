@@ -40,12 +40,27 @@ const Registeruser = () => {
         //   },
         ]
       });
+  const [limit, setLimit] = useState(5);
+  const [page, setPage] = useState(1);
+    const [order_type, setOrder_type] = useState("desc");
+  const changeOrderBy = (value, order) => {
+    if (order === "asc") setOrder_type("asc");
+    else if (order === "desc") setOrder_type("desc");
+    setOrder_by(value);
+  };
 
       const fetchUsers = async () => {
         try {
             const url = baseUri + User_Middle_Point + User_End_Point;
             const method = "GET";
-          const response = await fetchData(url, method);// Replace with your actual API endpoint
+            const params = {
+                limit,
+                page,
+                order_type,
+                asc, // Add this if you want to sort in ascending order
+                search, // Add this if you want to include a search term
+              };
+          const response = await fetchData(url, method,{},params);// Replace with your actual API endpoint
           dispatch(setLoading());
           console.log(response.user)
           setUserData((prevState) => ({
@@ -59,9 +74,8 @@ const Registeruser = () => {
       };
   
       useEffect(() => {
-       
         fetchUsers();
-      }, []); 
+      }, [limit,page,order_type,]); 
     const handleEdit = (item) => {
         console.log('Edit item:', item);
         // Add your edit logic here
