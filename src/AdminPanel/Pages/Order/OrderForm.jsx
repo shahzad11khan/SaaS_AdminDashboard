@@ -7,12 +7,10 @@ const OrderForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
-    orderId: "",
-    customerId: "",
-    productId: "",
-    orderQuantity: "",
-    totalPrice: "",
-    orderStatus: "pending",
+    products: "",
+    shippingAddress: "",
+    paymentMethod: "",
+
   });
 
   const handleChange = (e) => {
@@ -26,12 +24,9 @@ const OrderForm = () => {
     console.log("Order Submitted:", formData);
     alert("Order submitted successfully!");
     setFormData({
-      orderId: "",
-      customerId: "",
-      productId: "",
-      orderQuantity: "",
-      totalPrice: "",
-      orderStatus: "pending",
+      products: "",
+      shippingAddress: "",
+      paymentMethod: "",
     });
   };
 
@@ -51,33 +46,33 @@ const OrderForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="orderId" className="block text-sm font-medium">
-                  Order ID <span className="text-red-500">*</span>
+                <label htmlFor="product" className="block text-sm font-medium">
+                Product <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="orderId"
-                  id="orderId"
-                  value={formData.orderId}
+                  name="product"
+                  id="product"
+                  value={formData.product}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter order ID"
+                  placeholder="Enter Product"
                   required
                 />
               </div>
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerId" className="block text-sm font-medium">
-                  Customer ID <span className="text-red-500">*</span>
+                <label htmlFor="shippingAddress" className="block text-sm font-medium">
+                  Shipping Address <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="customerId"
-                  id="customerId"
-                  value={formData.customerId}
+                  name="shippingAddress"
+                  id="shippingAddress"
+                  value={formData.shippingAddress}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter customer ID"
+                  placeholder="Enter shipping address"
                   required
                 />
               </div>
@@ -85,75 +80,25 @@ const OrderForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="productId" className="block text-sm font-medium">
-                  Product ID <span className="text-red-500">*</span>
+                <label htmlFor="paymentMethod" className="block text-sm font-medium">
+                Payment Method  <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="productId"
-                  id="productId"
-                  value={formData.productId}
+                  name="paymentMethod"
+                  id="paymentMethod"
+                  value={formData.paymentMethod}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter product ID"
+                  placeholder="Enter payment method"
                   required
                 />
               </div>
 
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="orderQuantity" className="block text-sm font-medium">
-                  Quantity <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="orderQuantity"
-                  id="orderQuantity"
-                  value={formData.orderQuantity}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter quantity"
-                  required
-                />
-              </div>
+           
             </div>
 
-            <div className="flex flex-col lg:flex-row justify-between mt-5">
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="totalPrice" className="block text-sm font-medium">
-                  Total Price <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="totalPrice"
-                  id="totalPrice"
-                  value={formData.totalPrice}
-                  onChange={handleChange}
-                  step="0.01"
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter total price"
-                  required
-                />
-              </div>
-
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="orderStatus" className="block text-sm font-medium">
-                  Status <span className="text-red-500">*</span>
-                </label>
-                <select
-                  name="orderStatus"
-                  id="orderStatus"
-                  value={formData.orderStatus}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  required
-                >
-                  <option value="pending">Pending</option>
-                  <option value="shipped">Shipped</option>
-                  <option value="delivered">Delivered</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
-              </div>
-            </div>
+          
 
             <div className="flex justify-end mt-6">
               <button

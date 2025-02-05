@@ -7,12 +7,12 @@ const CustomerRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
-    customerName: "",
-    customerEmail: "",
-    customerPhone: "",
-    customerAddress: "",
-    customerCity: "",
-    customerCountry: "",
+    productName: "",
+    quantity: "1",
+    productPrice: "",
+    customerTotalPrice: "",
+    username: "",
+    userAddress: "",
   });
 
   const handleChange = (e) => {
@@ -26,12 +26,12 @@ const CustomerRegistrationForm = () => {
     console.log("Customer Registered:", formData);
     alert("Customer registered successfully!");
     setFormData({
-      customerName: "",
-      customerEmail: "",
-      customerPhone: "",
-      customerAddress: "",
-      customerCity: "",
-      customerCountry: "",
+      productName: "",
+      quantity: "1",
+      productPrice: "",
+      customerTotalPrice: "",
+      username: "",
+      userAddress: "",
     });
   };
 
@@ -50,98 +50,127 @@ const CustomerRegistrationForm = () => {
             </h2>
 
             <div className="flex flex-col lg:flex-row justify-between">
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerName" className="block text-sm font-medium">
-                  Customer Name <span className="text-red-500">*</span>
+            <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="productName"
+                  className="block text-sm font-medium"
+                >
+                  Product Name <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
-                  name="customerName"
-                  id="customerName"
-                  value={formData.customerName}
+                  name="productName"
+                  id="productName"
+                  placeholder="Enter Product Name"
+                  value={formData.productName}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter customer name"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
+                    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
                   required
-                />
-              </div>
+                >
 
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerEmail" className="block text-sm font-medium">
-                  Email <span className="text-red-500">*</span>
+                </input>
+              </div>
+             
+                 <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="quantity"
+                  className="block text-sm font-medium"
+                >
+                   Quantity <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="email"
-                  name="customerEmail"
-                  id="customerEmail"
-                  value={formData.customerEmail}
+                type="number"
+                  name="quantity"
+                  placeholder="Enter Product Quantity"
+                  min="0"
+                  id="quantity"
+                  value={formData.quantity}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter email"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-white'
+                    }`}
                   required
-                />
+                >
+    
+                </input>
               </div>
             </div>
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerPhone" className="block text-sm font-medium">
-                  Phone
+            <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="productPrice"
+                  className="block text-sm font-medium"
+                >
+                Product Price <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="tel"
-                  name="customerPhone"
-                  id="customerPhone"
-                  value={formData.customerPhone}
+                type="number"
+                  name="productPrice"
+                  id="productPrice"
+                  placeholder="Enter Product Price"
+                  min="0"
+                  value={formData.productPrice}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter phone number"
-                />
-              </div>
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
+                    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
+                  required
+                >
+
+                </input>
+              </div> 
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerAddress" className="block text-sm font-medium">
-                  Address
+                <label
+                  htmlFor="customerTotalPrice"
+                  className="block text-sm font-medium"
+                >
+                   Total Price <span className="text-red-500">*</span>
                 </label>
                 <input
-                  name="customerAddress"
-                  id="customerAddress"
-                  value={formData.customerAddress}
+                type="number"
+                  name="customerTotalPrice"
+                  id="customerTotalPrice"
+                  placeholder="Customer Total Price"
+                  min="0"
+                  value={formData.customerTotalPrice}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter address"
-                />
-              </div>
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-white'
+                    }`}
+                  required
+                >
+    
+                </input>
+              </div> 
             </div>
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerCity" className="block text-sm font-medium">
-                  City
+                <label htmlFor="username" className="block text-sm font-medium">
+                  User Name
                 </label>
                 <input
                   type="text"
-                  name="customerCity"
-                  id="customerCity"
-                  value={formData.customerCity}
+                  name="username"
+                  id="username"
+                  value={formData.username}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter city"
+                  placeholder="User name"
                 />
               </div>
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="customerCountry" className="block text-sm font-medium">
-                  Country
+                <label htmlFor="userAddress" className="block text-sm font-medium">
+                  User Address
                 </label>
                 <input
                   type="text"
-                  name="customerCountry"
-                  id="customerCountry"
-                  value={formData.customerCountry}
+                  name="userAddress"
+                  id="userAddress"
+                  value={formData.userAddress}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter country"
+                  placeholder="User Address"
                 />
               </div>
             </div>

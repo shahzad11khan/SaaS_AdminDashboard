@@ -7,7 +7,7 @@ const WarehouseRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
-    warehouseName: "",
+    warehouse: "",
     warehouseLocation: "",
     warehouseManager: "",
     warehouseCapacity: "",
@@ -24,7 +24,7 @@ const WarehouseRegistrationForm = () => {
     console.log("Warehouse Registered:", formData);
     alert("Warehouse registered successfully!");
     setFormData({
-      warehouseName: "",
+      warehouse: "",
       warehouseLocation: "",
       warehouseManager: "",
       warehouseCapacity: "",
@@ -47,14 +47,14 @@ const WarehouseRegistrationForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="warehouseName" className="block text-sm font-medium">
+                <label htmlFor="warehouse" className="block text-sm font-medium">
                   Warehouse Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="warehouseName"
-                  id="warehouseName"
-                  value={formData.warehouseName}
+                  name="warehouse"
+                  id="warehouse"
+                  value={formData.warehouse}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
                   placeholder="Enter warehouse name"
@@ -95,21 +95,7 @@ const WarehouseRegistrationForm = () => {
                 />
               </div>
 
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="warehouseCapacity" className="block text-sm font-medium">
-                  Capacity <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="warehouseCapacity"
-                  id="warehouseCapacity"
-                  value={formData.warehouseCapacity}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
-                  placeholder="Enter capacity"
-                  required
-                />
-              </div>
+            
             </div>
 
             <div className="flex justify-end mt-6">

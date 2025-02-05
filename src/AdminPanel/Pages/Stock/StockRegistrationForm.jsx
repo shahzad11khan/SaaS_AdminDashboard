@@ -7,16 +7,26 @@ const StockRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme))
 
   const [formData, setFormData] = useState({
-    stockName: "",
+  
     productName: "",
-    availableQuantity: "",
-    warehouse: "",
+    quantity: "",
+    productCategory: "",
+    productSubCategory: "",
+    productPrice: "",
+    productTotalPrice: "",
+    productAddedDate: "",
+    warehouse:"",
+    status: "active"
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value ,type, checked } = e.target;
+    setFormData(
+      {
+      ...formData,
+      [name]: type === "radio" ? (checked ? value : formData[name]) : value,
+    
+    });  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,10 +34,15 @@ const StockRegistrationForm = () => {
     console.log("Stock Submitted:", formData);
     alert("Stock registered successfully!");
     setFormData({
-      stockName: "",
       productName: "",
-      availableQuantity: "",
-      warehouse: "",
+      quantity: "",
+      productCategory: "",
+      productSubCategory: "",
+      productPrice: "",
+      productTotalPrice: "",
+      productAddedDate: "",
+      warehouse:"",
+      status: "active"
     });
   };
 
@@ -45,101 +60,220 @@ const StockRegistrationForm = () => {
               Stock Registration
             </h2>
 
+
             <div className="flex flex-col lg:flex-row justify-between">
-              <div className="w-full lg:w-[350px]">
+            <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="stockName"
-                  className="block text-sm font-medium "
-                >
-                  Stock Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="stockName"
-                  id="stockName"
-                  value={formData.stockName}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter stock name"
-                  required
-                />
-              </div>
-              <div className="w-full lg:w-[350px]">
-  <label
-    htmlFor="productName"
-    className="block text-sm font-medium"
-  >
-    Product Name <span className="text-red-500">*</span>
-  </label>
-  <select
-    name="productName"
-    id="productName"
-    value={formData.productName}
-    onChange={handleChange}
-    className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${
-      currentTheme === "dark" ? "text-white" : "text-black"
-    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
-    required
-  >
-    <option value="" disabled>
-      Select a product
-    </option>
-    <option value="Product 1">Product 1</option>
-    <option value="Product 2">Product 2</option>
-    <option value="Product 3">Product 3</option>
-    <option value="Product 4">Product 4</option>
-  </select>
-</div>
-
-            </div>
-
-            <div className="flex flex-col lg:flex-row justify-between mt-5">
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="availableQuantity"
+                  htmlFor="productName"
                   className="block text-sm font-medium"
                 >
-                  Available Quantity <span className="text-red-500">*</span>
+                  Product Name <span className="text-red-500">*</span>
                 </label>
-                <select
-                  name="availableQuantity"
-                  id="availableQuantity"
-                  value={formData.availableQuantity}
+                <input
+                  name="productName"
+                  id="productName"
+                  placeholder="Enter Product Name"
+                  value={formData.productName}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
+                    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
+                  required
+                >
+
+                </input>
+              </div>
+              <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="quantity"
+                  className="block text-sm font-medium"
+                >
+                   Quantity <span className="text-red-500">*</span>
+                </label>
+                <input
+                type="number"
+                  name="quantity"
+                  placeholder="Enter Product Quantity"
+                  min="0"
+                  id="quantity"
+                  value={formData.quantity}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-white'
                     }`}
                   required
                 >
-                  <option value="" disabled>Select available quantity</option>
-
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
+    
+                </input>
               </div>
 
+            </div>
+
+            <div className="flex flex-col lg:flex-row justify-between mt-2">
+            <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="productPrice"
+                  className="block text-sm font-medium"
+                >
+                  Price <span className="text-red-500">*</span>
+                </label>
+                <input
+                type="number"
+                  name="productPrice"
+                  id="productPrice"
+                  placeholder="Enter Product Price"
+                  min="0"
+                  value={formData.productPrice}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
+                    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
+                  required
+                >
+
+                </input>
+              </div>
               <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="warehouse"
-                  className="block text-sm font-medium "
+                  htmlFor="productTotalPrice"
+                  className="block text-sm font-medium"
                 >
-                  Warehouse <span className="text-red-500">*</span>
+                   Product Total Price <span className="text-red-500">*</span>
+                </label>
+                <input
+                type="number"
+                  name="productTotalPrice"
+                  id="productTotalPrice"
+                  placeholder="Enter Product Total Price"
+                  min="0"
+                  value={formData.productTotalPrice}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-white'
+                    }`}
+                  required
+                >
+    
+                </input>
+              </div>
+
+            </div>
+
+
+            <div className="flex flex-col lg:flex-row justify-between mt-2">
+              <div className="w-full lg:w-[350px]">
+                <label htmlFor="productCategory" className="block text-sm font-medium">
+                  Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="productCategory"
+                  id="productCategory"
+                  placeholder="Enter product Category"
+
+                  value={formData.productCategory}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
+                  required
+                >
+                  <option value="">Select category</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="accessories">Accessories</option>
+                </select>
+              </div>
+            
+               <div className="w-full lg:w-[350px]">
+                <label htmlFor="productSubCategory" className="block text-sm font-medium">
+                Sub Category <span className="text-red-500">*</span>
+                </label>
+                <select
+                  name="productSubCategory"
+                  id="productSubCategory"
+                  value={formData.productSubCategory}
+                  placeholder="Enter product Sub Category"
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
+                  required
+                >
+                  <option value="">Select Sub Category</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="accessories">Accessories</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex flex-col lg:flex-row justify-between mt-3">
+            <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="productAddedDate"
+                  className="block text-sm font-medium"
+                >
+                  Added Date <span className="text-red-500">*</span>
+                </label>
+                <input
+                type="date"
+                  name="productAddedDate"
+                  id="productAddedDate"
+                  value={formData.productAddedDate}
+                  onChange={handleChange}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
+                    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
+                  required
+                >
+
+                </input>
+              </div>
+         
+                      <div className="w-full lg:w-[350px]">
+                <label htmlFor="warehouse" className="block text-sm font-medium">
+                Warehouse<span className="text-red-500">*</span>
                 </label>
                 <select
                   name="warehouse"
                   id="warehouse"
+                  placeholder="Enter Warehouse"
                   value={formData.warehouse}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   required
                 >
-                  <option value="">Select warehouse</option>
-                  <option value="Warehouse A">Warehouse A</option>
-                  <option value="Warehouse B">Warehouse B</option>
+                  <option value="">Select Warehouse</option>
+                  <option value="electronics">Warehouse A</option>
+                  <option value="clothing">Warehouse B</option>
+                  <option value="accessories">Warehouse C</option>
                 </select>
               </div>
+
             </div>
+
+            <div className="flex flex-col lg:flex-row justify-between mt-3">
+            <div className="w-full lg:w-[350px] flex items-center mt-6 lg:mt-5">
+                      <label className="flex items-center mr-4">
+                        <input
+                          type="radio"
+                          name="status"
+                          value="active"
+                          checked={formData.status === "active"}
+                          onChange={handleChange}
+                          className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm font-medium ">
+                          Active
+                        </span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="status"
+                          value="inactive"
+                          checked={formData.status === "inactive"}
+                          onChange={handleChange}
+                          className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                        <span className="ml-2 text-sm font-medium ">
+                          InActive
+                        </span>
+                      </label>
+                    </div>
+           
+           </div>
 
             <div className="flex justify-end mt-6">
               <button

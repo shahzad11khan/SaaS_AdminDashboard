@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 
 const UserRegistrationForm = () => {
-  const currentTheme = useSelector((state=>state.theme.theme))
+  const currentTheme = useSelector((state => state.theme.theme))
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -16,22 +18,54 @@ const UserRegistrationForm = () => {
     confirmPassword: "",
     dateOfBirth: "",
     permission: "",
-    role: "",
-    status: "active",
+    role: "user",
+    status: "inactive",
+    userLogo :null
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordErrorMessage,setPasswordErrorMessage]=useState("");
 
+  const confirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword)
+  }
 
-  const [next, setnext] = useState(0)
+  const passwordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
+  
+
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
+    const { name, value, type, checked ,files } = e.target;
+    if(type==='file'){
+      setFormData(
+        {
+          ...formData,
+          [name]:files[0]
+        }
+      )
+    }
+    setFormData(
+      {
       ...formData,
       [name]: type === "radio" ? (checked ? value : formData[name]) : value,
+    
     });
-  };
+
+    if(name === "password"){
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+      if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
+        setPasswordErrorMessage("Passwords do not match!");
+        console.log("password not match ")
+      }
+    }
 
 
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -50,8 +84,9 @@ const UserRegistrationForm = () => {
       confirmPassword: "",
       dateOfBirth: "",
       permission: "",
-      role: "",
-      status: "active",
+      role: "user",
+      status: "inactive",
+      userLogo:null
     });
   };
 
@@ -60,17 +95,17 @@ const UserRegistrationForm = () => {
       <Navbar />
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />
-        <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme=== 'dark' ?'text-white':'text-gray-600'} `}>
+        <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme === 'dark' ? 'text-white' : 'text-gray-600'} `}>
           <form
             onSubmit={handleSubmit}
-            className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>          
-            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>
-            User Registration
+            className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>
+            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'} `}>
+              User Registration
             </h2>
             <div>
 
-              {next === 0 ? (
-                <>
+             
+             
                   <div className="flex flex-col lg:flex-row justify-between">
                     <div className="w-full lg:w-[350px]">
                       <label
@@ -85,11 +120,35 @@ const UserRegistrationForm = () => {
                         id="fullName"
                         value={formData.fullName}
                         onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
                         placeholder="Enter your full name"
                         required
                       />
                     </div>
+
+                    <div className="w-full lg:w-[350px]">
+                      <label
+                        htmlFor="username"
+                        className="block text-sm font-medium "
+                      >
+                        User Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
+                        placeholder="Enter user name"
+                        required
+                      />
+                    </div>
+                  </div>
+
+
+                  <div className="flex flex-col lg:flex-row justify-between mt-3">
+
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="email"
@@ -103,16 +162,32 @@ const UserRegistrationForm = () => {
                         id="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
                         placeholder="Enter your email"
                         required
                       />
                     </div>
+
+                    <div className="w-full lg:w-[350px] ">
+                      <label
+                        htmlFor="dateOfBirth"
+                        className="block text-sm font-medium "
+                      >
+                        Date of Birth 
+                      </label>
+                      <input
+                        type="date"
+                        name="dateOfBirth"
+                        id="dateOfBirth"
+                        value={formData.dateOfBirth}
+                        onChange={handleChange}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
+                      />
+                    </div>
                   </div>
 
-
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
-                    <div className="w-full lg:w-[350px]">
+                  <div className="flex flex-col lg:flex-row justify-between mt-3">
+                    <div className="relative w-full lg:w-[350px] ">
                       <label
                         htmlFor="password"
                         className="block text-sm font-medium "
@@ -120,17 +195,23 @@ const UserRegistrationForm = () => {
                         Password <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         name="password"
                         id="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
                         placeholder="Enter password"
                         required
                       />
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEyeSlash : faEye}
+                        className="absolute right-3 top-10 text-gray-500 cursor-pointer"
+                        onClick={passwordVisibility}
+                      />
                     </div>
-                    <div className="w-full lg:w-[350px]">
+
+                    <div className="relative w-full lg:w-[350px]">
 
                       <label
                         htmlFor="confirmPassword"
@@ -139,72 +220,62 @@ const UserRegistrationForm = () => {
                         Confirm Password <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         name="confirmPassword"
                         id="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
                         placeholder="Confirm password"
                         required
                       />
+                      <FontAwesomeIcon
+                        icon={showConfirmPassword ? faEyeSlash : faEye}
+                        className="absolute right-3 top-10 text-gray-500 cursor-pointer"
+                        onClick={confirmPasswordVisibility}
+                      />
+                   
+                        <p className="text-red-700 text-sm">{passwordErrorMessage}</p>
+                   
 
                     </div>
                   </div>
 
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
-
-                    <button type="button" className="w-full lg:w-[350px] flex justify-center items-center rounded mt-7 h-[40px] border">
-                      Show
-                    </button>
 
 
-                  </div>
-
-                  <div className="w-full flex justify-end gap-5 mt-5">
-                    <Link to="/register-user">
-                      <button type="button" className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
-                        Back
-                      </button>
-                    </Link>
-
-
-                    <button
-                      type="button"
-                      className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
-                      onClick={() => setnext((prevNext) => prevNext + 1)}
-                    >
-                      Next
-                    </button>
-                  </div>
-                </>
-
-              ) : next === 1 ? (
-                <>
-                  <div className="flex flex-col lg:flex-row justify-between">
-                    <div className="w-full lg:w-[350px] ">
+           
+                  <div className="flex flex-col lg:flex-row justify-between mt-3">
+                  <div className="w-full lg:w-[350px]">
                       <label
-                        htmlFor="dateOfBirth"
+                        htmlFor="role"
                         className="block text-sm font-medium "
                       >
-                        Date of Birth <span className="text-red-500">*</span>
+                        Role 
                       </label>
-                      <input
-                        type="date"
-                        name="dateOfBirth"
-                        id="dateOfBirth"
-                        value={formData.dateOfBirth}
+                      <select
+                        name="role"
+                        id="role"
+                        value={formData.role}
                         onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'} `}
                         required
-                      />
+                      >
+                        <option value="" disabled>
+                          Select a role
+                        </option>
+                        <option value="superAdmin">Super Admin</option>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="user">User</option>
+
+                      </select>
                     </div>
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="permission"
                         className="block text-sm font-medium "
                       >
-                        Permission <span className="text-red-500">*</span>
+                        Permission 
                       </label>
                       <input
                         type="text"
@@ -212,36 +283,39 @@ const UserRegistrationForm = () => {
                         id="permission"
                         value={formData.permission}
                         onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
                         placeholder="Enter permission"
-                        required
+                      
                       />
                     </div>
                   </div>
 
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
+                  <div className="flex flex-col lg:flex-row justify-between mt-3">
                     <div className="w-full lg:w-[350px]">
                       <label
-                        htmlFor="role"
+                        htmlFor="image"
                         className="block text-sm font-medium "
                       >
-                        Role <span className="text-red-500">*</span>
+                        Image 
                       </label>
-                      <select
-                        name="role"
-                        id="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'} `}
-                        required
+                      <div className="mt-2">
+                      <label htmlFor="userLogo"
+                      className={`cursor-pointer inline-block px-4 py-2 rounded-md border ${currentTheme === 'dark' ? 'bg-[#404040] text-white' : 'bg-[#F0FFF8] text-black'} focus:outline-none`}
+
                       >
-                        <option value="" disabled>
-                          Select a role
-                        </option>
-                        <option value="admin">Admin</option>
-                        <option value="manager">Manager</option>
-                        <option value="employee">Employee</option>
-                      </select>
+                      Choose Image
+                      </label>
+                      <input
+                        type="file"
+                        name="userLogo"
+                        id="userLogo"
+                        value={formData.userLogo}
+                        onChange={handleChange}
+                       className="hidden"
+                
+                      />
+                       </div>
+                
                     </div>
                     <div className="w-full lg:w-[350px] flex items-center mt-6 lg:mt-0">
                       <label className="flex items-center mr-4">
@@ -273,31 +347,28 @@ const UserRegistrationForm = () => {
                     </div>
                   </div>
 
-                  <div className="w-full flex justify-end gap-5 mt-5">
-                    <button
+                  
+
+                  <div className="w-full flex justify-end gap-5 mt-2">
+                  <Link to="/register-user">
+                  <button
                       type="button"
-                      className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
-                      onClick={() => setnext((prevNext) => prevNext - 1)}
+                      className={`px-4 py-2 rounded  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300`}
+                    
                     >
                       Back
                     </button>
+                   
+                   </Link>
 
-                    <Link to="/user-registration-form">
                       <button
-                        type="button"
-                        className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
+                        type="submit"
+                        className={`px-4 py-2 rounded  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300`}>
                         Save
                       </button>
-                    </Link>
                   </div>
 
-                </>
-
-              )
-
-
-
-                : null}
+          
             </div>
           </form>
         </div>

@@ -7,10 +7,9 @@ const DeliveryForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
-    deliveryId: "",
-    orderId: "",
+    productName:"",
+    quantity:"1",
     deliveryDate: "",
-    courierName: "",
     deliveryStatus: "pending",
   });
 
@@ -25,10 +24,9 @@ const DeliveryForm = () => {
     console.log("Delivery Information Submitted:", formData);
     alert("Delivery information submitted successfully!");
     setFormData({
-      deliveryId: "",
-      orderId: "",
+      productName:"",
+      quantity:"1",
       deliveryDate: "",
-      courierName: "",
       deliveryStatus: "pending",
     });
   };
@@ -48,36 +46,48 @@ const DeliveryForm = () => {
             </h2>
 
             <div className="flex flex-col lg:flex-row justify-between">
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="deliveryId" className="block text-sm font-medium">
-                  Delivery ID <span className="text-red-500">*</span>
+            <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="productName"
+                  className="block text-sm font-medium"
+                >
+                  Product Name <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
-                  name="deliveryId"
-                  id="deliveryId"
-                  value={formData.deliveryId}
+                  name="productName"
+                  id="productName"
+                  placeholder="Enter Product Name"
+                  value={formData.productName}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter delivery ID"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
+                    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
                   required
-                />
-              </div>
+                >
 
-              <div className="w-full lg:w-[350px]">
-                <label htmlFor="orderId" className="block text-sm font-medium">
-                  Order ID <span className="text-red-500">*</span>
+                </input>
+              </div>
+             
+                 <div className="w-full lg:w-[350px]">
+                <label
+                  htmlFor="quantity"
+                  className="block text-sm font-medium"
+                >
+                   Quantity <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
-                  name="orderId"
-                  id="orderId"
-                  value={formData.orderId}
+                type="number"
+                  name="quantity"
+                  placeholder="Enter Product Quantity"
+                  min="0"
+                  id="quantity"
+                  value={formData.quantity}
                   onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter order ID"
+                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-white'
+                    }`}
                   required
-                />
+                >
+    
+                </input>
               </div>
             </div>
 
@@ -98,24 +108,6 @@ const DeliveryForm = () => {
               </div>
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="courierName" className="block text-sm font-medium">
-                  Courier <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="courierName"
-                  id="courierName"
-                  value={formData.courierName}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter courier name"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col lg:flex-row justify-between mt-5">
-              <div className="w-full lg:w-[350px]">
                 <label htmlFor="deliveryStatus" className="block text-sm font-medium">
                   Status <span className="text-red-500">*</span>
                 </label>
@@ -133,6 +125,8 @@ const DeliveryForm = () => {
                 </select>
               </div>
             </div>
+
+           
 
             <div className="flex justify-end mt-6">
               <button

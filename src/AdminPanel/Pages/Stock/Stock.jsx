@@ -1,131 +1,177 @@
 import { Link } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
-import stockData from "../../../../public/Stock.json";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
+// import stockData from "../../../../public/Stock.json";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
 import DeleteModal from '../../Components/DeleteModal';
-import { useState } from "react";
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { baseUri } from "../../Components/api/baseUri";
+import { Stock_Middle_Point } from "../../Components/api/middlePoints";
+import fetchData from "../../Components/api/axios";
+import { setLoading } from "../../Slice/LoadingSlice";
+import GenericTable from "../../Components/Table/GenericTable";
 
 
 const Stock = () => {
-    const currentTheme = useSelector((state=>state.theme.theme))
+    const currentTheme = useSelector((state => state.theme.theme))
+    const dispatch = useDispatch();
+    const [showRows, setRowsToShow] = useState(5);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [stockData, setStockData] = useState({
+        headers: ['SNo', 'category', 'subcategory', 'quantity', 'price', 'totalPrice', 'warehouseName', 'dateAdded'],
+        data: []
+    })
 
-    const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
+    const FetchStock = async () => {
+        try {
+            dispatch(setLoading());
+            const Url = baseUri + Stock_Middle_Point;
+            const method = 'GET';
+            const response = await fetchData(Url, method);
+             console.log(response);
+            setStockData((prevStock) => ({
+                ...prevStock,
+                data: response
+            }
+            ))
+            dispatch(setLoading());
+        }
+        catch (error) {
+            console.log("error fetching stock ", error)
+        }
 
-    const isopendeletemodal = ()=>{
-        setIsDeleteModalOpen(true);
     }
-  return (
-    <div>
-      
 
-    <Navbar/>
-    <div className='flex flex-col lg:flex-row '>
-        <LeftSideBar/>
-        <div className='flex flex-col  lg:ml-10 w-full lg:w-[1000px] gap-3 '>
-        <div className="para ">
-                        <p className={`underline text-xl ${currentTheme=== 'dark' ?'text-white':'text-black'}`}>Stock Detail</p>
+    useEffect(() => {
+        FetchStock();
+    }, [])
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    const handleShowRows = (e) => {
+        const selectedValue = parseInt(e.target.value, 10);
+        setRowsToShow(selectedValue)
+
+    }
+
+    const handleSearchQuery =(e)=>{
+        setSearchQuery(e.target.value.toLowerCase());
+
+    }
+
+    const handleEdit = (item) => {
+        console.log('Edit item:', item);
+    };
+
+    const handleDelete = () => {
+        setIsDeleteModalOpen(true);
+    };
+
+   const filterData =stockData.data.filter((stock)=>{
+    return stock.category.toLowerCase().includes(searchQuery) ||
+    stock.warehouseName.toLowerCase().includes(searchQuery)
+   })
+
+   const displayData =filterData.slice(0,showRows)
+    return (
+        <div>
+
+
+            <Navbar />
+            <div className='flex flex-col lg:flex-row '>
+                <LeftSideBar />
+                <div className='flex flex-col  lg:ml-10 w-full lg:w-[1000px] gap-3 '>
+                    <div className="para ">
+                        <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Stock Detail</p>
                     </div>
                     <div className="info flex flex-col lg:flex-row justify-between items-center gap-2">
                         <div className='flex flex-col lg:flex-row gap-2 items-center w-full lg:w-[auto]'>
-                        <div className={`flex items-center ${currentTheme=== 'dark' ?'text-white':'text-black'} gap-2`}>
+                            <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <span>Show:</span>
                                 <select
-                                   className={`rounded-md px-4 py-1 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    value={showRows}
+                                    onChange={handleShowRows}
                                 >
-                                    <option value="one">01</option>
-                                    <option value="two">02</option>
-                                    <option value="three">03</option>
-                                    <option value="four">04</option>
-                                    <option value="five">05</option>
+                                    <option value={1}>01</option>
+                                    <option value={2}>02</option>
+                                    <option value={3}>03</option>
+                                    <option value={4}>04</option>
+                                    <option value={5}>05</option>
+                                    <option value={6}>06</option>
+                                    <option value={7}>07</option>
+                                    <option value={8}>08</option>
+                                    <option value={9}>09</option>
+                                    <option value={10}>10</option>
                                 </select>
                             </div>
-                            <div className={`flex items-center ${currentTheme=== 'dark' ?'text-white':'text-black'} gap-2`}>
-                            
-                            <span >Entries :</span>
-                            <input
-                                type="text"
-                                placeholder="Search by Product Name"
-                                    className={`rounded-md px-4 py-1 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                            />
-                             </div>
+                            <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
+
+                                <span >Entries :</span>
+                                <input
+                                    type="text"
+                                    placeholder="Search Category & Warehouse name"
+                                    className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    value={searchQuery}
+                                    onChange={handleSearchQuery}
+                                  
+                                />
+                            </div>
                         </div>
                         <div className='flex gap-2'>
-                        <Link to="/admin">
-                            <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                                Back
-                            </button>
-                           </Link>
+                            <Link to="/admin">
+                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                                    Back
+                                </button>
+                            </Link>
 
-                           <Link to="/stock-registration-form">
-                            <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                                Add Stock
-                                
-                            </button>
-                           </Link>
+                            <Link to="/stock-registration-form">
+                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                                    Add Stock
+
+                                </button>
+                            </Link>
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
 
-                    <table className="border-collapse border border-gray-300 w-full table-auto">
+                        <GenericTable
+                            headers={stockData.headers}
+                            data={displayData}
+                            currentTheme={currentTheme}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
 
-                    <thead>
-                        <tr>
-                            {stockData.headers.map((item, index) => (
-                                 <th key={index} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'}  ${currentTheme=== 'dark' ?'text-white':'text-black'} border-b px-4 py-2`}>{item}</th>
-                            ))}
-                        </tr>
-                    </thead>
+                    </div>
 
-                    <tbody>
-                        {stockData.data.map((item) => (
-                            <tr key={item.sNo} className={`hover:bg-gray-100 ${currentTheme === 'dark' ? 'hover:bg-[#404052]' : ''  }`}>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.serial_no}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.product_name}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.category}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.stock_quantity}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.price}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.status}</td>
-                            
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>
-                                <FontAwesomeIcon icon={faEdit} className='text-green-500 mr-2 cursor-pointer'></FontAwesomeIcon>
-                                <FontAwesomeIcon icon={faTrash} className='text-red-500 cursor-pointer'onClick={()=>isopendeletemodal()}></FontAwesomeIcon>
-                                </td>
+                    <div className="pages flex justify-center gap-1 mt-4">
 
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+
+                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                            Previous
+                        </button>
+                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                            1 of 1
+                        </button>
+                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                            Next
+                        </button>
+
+                    </div>
+                </div>
+                <DeleteModal
+                    isOpen={isDeleteModalOpen}
+                    onClose={() => setIsDeleteModalOpen(false)}
+                />
+
 
             </div>
 
-            <div className="pages flex justify-center gap-1 mt-4">
-
-              
-                    <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                        Previous
-                    </button>
-                    <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                        1 of 1
-                    </button>
-                    <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                        Next
-                    </button>
-             
-            </div>
         </div>
-        <DeleteModal
-    isOpen={isDeleteModalOpen}
-    onClose={() => setIsDeleteModalOpen(false)}
-    />
-
-
-    </div>
-
-    </div>
-  )
+    )
 }
 
 export default Stock

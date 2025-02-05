@@ -7,7 +7,7 @@ const TagRegistrationForm = () => {
   const currentTheme = useSelector((state) => state.theme.theme);
 
   const [formData, setFormData] = useState({
-    tagName: "",
+    tagNumber: "",
     description: "",
     textColor: "", 
     backgroundColor: "", 
@@ -24,7 +24,7 @@ const TagRegistrationForm = () => {
     console.log("Tag Registered:", formData);
     alert("Tag registered successfully!");
     setFormData({
-      tagName: "",
+      tagNumber: "",
       description: "",
       textColor: "",
       backgroundColor: "",
@@ -57,19 +57,19 @@ const TagRegistrationForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="tagName" className="block text-sm font-medium">
-                  Tag Name <span className="text-red-500">*</span>
+                <label htmlFor="tagNumber" className="block text-sm font-medium">
+                  Tag Number <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="tagName"
-                  id="tagName"
-                  value={formData.tagName}
+                  name="tagNumber"
+                  id="tagNumber"
+                  value={formData.tagNumber}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${
                     currentTheme === "dark" ? "text-white" : "text-black"
                   } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
-                  placeholder="Enter tag name"
+                  placeholder="Enter tag number"
                   required
                 />
               </div>
@@ -81,6 +81,7 @@ const TagRegistrationForm = () => {
                   Description <span className="text-red-500">*</span>
                 </label>
                 <input
+             
                   name="description"
                   id="description"
                   value={formData.description}
@@ -94,42 +95,7 @@ const TagRegistrationForm = () => {
               </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row justify-between mt-6">
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="textColor"
-                  className="block text-sm font-medium"
-                >
-                  Tag Text Color
-                </label>
-                <input
-                  type="color"
-                  name="textColor"
-                  id="textColor"
-                  value={formData.textColor}
-                  onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md h-16"
-                  required
-                />
-              </div>
-              <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="backgroundColor"
-                  className="block text-sm font-medium"
-                >
-                  Tag Background Color 
-                </label>
-                <input
-                  type="color"
-                  name="backgroundColor"
-                  id="backgroundColor"
-                  value={formData.backgroundColor}
-                  onChange={handleChange}
-                  className="w-full mt-2 px-4 py-2 border rounded-md h-16"
-                  required
-                />
-              </div>
-            </div>
+       
 
             <div className="flex justify-end mt-6">
               <button

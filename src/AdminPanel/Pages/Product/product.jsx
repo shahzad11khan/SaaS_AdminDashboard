@@ -14,7 +14,7 @@ const Product = () => {
     const dispatch = useDispatch();
 
     const [productData, setProductData] = useState({
-        headers: ['createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'role', 'updatedAt', 'userName'],
+        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'role', 'updatedAt', 'userName'],
         data: []
     });
 
