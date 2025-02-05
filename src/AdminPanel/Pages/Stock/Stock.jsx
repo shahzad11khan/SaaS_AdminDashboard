@@ -1,9 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
-// import stockData from "../../../../public/Stock.json";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
 import DeleteModal from '../../Components/DeleteModal';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,10 +14,11 @@ import GenericTable from "../../Components/Table/GenericTable";
 const Stock = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [showRows, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
     const [stockData, setStockData] = useState({
-        headers: ['SNo', 'category', 'subcategory', 'quantity', 'price', 'totalPrice', 'warehouseName', 'dateAdded'],
+        headers: ['SNo', 'category', 'subcategory', 'quantity', 'price', 'totalPrice', 'warehouseName', 'dateAdded','Actions'],
         data: []
     })
 
@@ -62,9 +60,15 @@ const Stock = () => {
     }
 
     const handleEdit = (item) => {
-        console.log('Edit item:', item);
+        routerSystemSettingDetail("edit",item)
     };
 
+const routerSystemSettingDetail = (state,stock)=>{
+    const path =`/stock-registration-form`;
+    const data ={state,stock}
+    navigate(path ,{state:data})
+
+}
     const handleDelete = () => {
         setIsDeleteModalOpen(true);
     };

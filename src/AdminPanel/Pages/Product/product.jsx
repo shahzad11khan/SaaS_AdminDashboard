@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
@@ -12,9 +12,10 @@ import fetchData from "../../Components/api/axios";
 
 const Product = () => {
     const dispatch = useDispatch();
+    const navigate =useNavigate();
 
     const [productData, setProductData] = useState({
-        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'role', 'updatedAt', 'userName'],
+        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'role', 'updatedAt', 'userName','Actions'],
         data: []
     });
 
@@ -58,18 +59,22 @@ const Product = () => {
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const currentTheme = useSelector((state => state.theme.theme))
+    
     const handleEdit = (item) => {
-        console.log('Edit item:', item);
-        // Add your edit logic here
+        routerSystemSettingDetail("edit",item)
     };
+    const routerSystemSettingDetail = (state ,product)=>{
+        const path =`/product-registration-form`;
+        const data ={state ,product}
+        navigate(path ,{state:data})
+     
+    }
 
     const handleDelete = () => {
         setIsDeleteModalOpen(true);
         // Add your delete logic here
     };
-    // const isopendeletemodal = ()=>{
-    //     setIsDeleteModalOpen(true);
-    // }
+ 
     const filterData = productData.data.filter((product) =>{
         return(
             product.productName.toLowerCase().includes(searchQuerry) ||

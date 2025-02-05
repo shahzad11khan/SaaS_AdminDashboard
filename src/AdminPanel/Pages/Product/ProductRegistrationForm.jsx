@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 
 const ProductRegistrationForm = () => {
+
+  const location = useLocation();
+
   const [formData, setFormData] = useState({
     productName: "",
     productDescription: "",
@@ -32,10 +36,29 @@ const ProductRegistrationForm = () => {
       productPrice: "",
       productQuantity: "",
       productCategory: "",
+      productSubCategory: "",
       productImage: "",
       productTag: "",
     });
+
   };
+  useEffect(()=>{
+    console.log(location?.state?.product)
+    if(location?.state?.product){
+      setFormData({
+        productName:location.state.product.productName,
+        productDescription:location.state.product.productDescription,
+        productPrice:location.state.product.productPrice,
+        productQuantity:location.state.product.productQuantity,
+        productCategory:location.state.product.productCategory,
+        productSubCategory:location.state.product.productSubCategory,
+        productImage:location.state.product.productImage,
+        productTag:location.state.product.productTag,
+
+      })
+    }
+
+  },[location.state])
 
   const currentTheme = useSelector((state) => state.theme.theme);
 
@@ -50,7 +73,7 @@ const ProductRegistrationForm = () => {
             className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'} mt-4 shadow-lg rounded-lg p-6 w-full lg:w-[800px] border border-gray-300`}
           >
             <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'}`}>
-              Product Registration
+               {location?.state?.state ==="edit" ? "Update" : "Add"} Product
             </h2>
 
             <div className="flex flex-col lg:flex-row justify-between mt-3">

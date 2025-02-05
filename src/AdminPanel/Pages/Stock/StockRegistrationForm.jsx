@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 
 const StockRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme))
-
+ const location= useLocation();
   const [formData, setFormData] = useState({
   
     productName: "",
@@ -46,6 +47,24 @@ const StockRegistrationForm = () => {
     });
   };
 
+  useEffect(()=>{
+if(location?.state?.stock){
+  console.log(location?.state?.stock)
+  setFormData({
+    productName: location.state.stock.productName,
+    quantity:location.state.stock.quantity,
+    productCategory:location.state.stock.category,
+    productSubCategory:location.state.stock.subcategory,
+    productPrice:location.state.stock.price,
+    productTotalPrice:location.state.stock.totalPrice,
+    productAddedDate:location.state.stock.dateAdded,
+    warehouse:location.state.stock.warehouseName,
+    status:location.state.stock.isActive,
+
+  });
+}
+  },[location.state])
+
   return (
     <>
       <Navbar />
@@ -57,7 +76,7 @@ const StockRegistrationForm = () => {
             className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}
           >
             <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'} `}>
-              Stock Registration
+              {location?.state?.state==="edit"? "Update" : "Add"} Stock
             </h2>
 
 

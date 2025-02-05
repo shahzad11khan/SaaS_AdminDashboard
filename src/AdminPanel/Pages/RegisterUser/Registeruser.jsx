@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import Navbar from '../../Navbar/Navbar';
 import LeftSideBar from '../../LeftSideBar/LeftSideBar';
 import DeleteModal from '../../Components/DeleteModal';
@@ -15,7 +15,7 @@ import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 
 
 const Registeruser = () => {
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
     // const selector = useSelector((state) => state.loading.isLoading)
@@ -58,8 +58,8 @@ const Registeruser = () => {
     }
 
     const handleEdit = (item) => {
-        console.log('Edit item:', item);
-        // Add your edit logic here
+    routerSystemSettingDetail("edit", item);
+     // Add your edit logic here
     };
 
     const handleDelete = () => {
@@ -76,6 +76,13 @@ const Registeruser = () => {
 
 
     const displayData = filterData.slice(0, showRows);
+
+
+    const routerSystemSettingDetail = (state, user) => {
+        const path = `/user-registration-form`;
+        const data = { state, user };
+        navigate(path, { state: data });
+      };
     return (
         <div>
 

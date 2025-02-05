@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState,useEffect } from "react";
+import { Link,useLocation } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
@@ -7,9 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 
-const UserRegistrationForm = () => {
-  const currentTheme = useSelector((state => state.theme.theme))
 
+const UserRegistrationForm = () => {
+  const currentTheme = useSelector((state=>state.theme.theme))
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -35,6 +35,7 @@ const UserRegistrationForm = () => {
   }
   
 
+  const location = useLocation();
 
   const handleChange = (e) => {
     const { name, value, type, checked ,files } = e.target;
@@ -90,6 +91,25 @@ const UserRegistrationForm = () => {
     });
   };
 
+  useEffect(() => {
+    console.log(location?.state?.user)
+    if (location?.state?.user) {
+      setFormData({
+        fullName:location.state.user.fullName,
+        username: location.state.user.username,
+        email: location.state.user.email,
+        // password: location.state.user.password,
+        // confirmPassword: location.state.user.confirmPassword,
+        dateOfBirth: location.state.user.dateOfBirth,
+        permission: location.state.user.permission,
+        role: location.state.user.role,
+        // status: location.state.user.state,
+        userLogo:location.state.user.userLogo
+      })
+    }
+  }, [location.state]);
+
+
   return (
     <>
       <Navbar />
@@ -98,9 +118,9 @@ const UserRegistrationForm = () => {
         <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme === 'dark' ? 'text-white' : 'text-gray-600'} `}>
           <form
             onSubmit={handleSubmit}
-            className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>
-            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme === 'dark' ? 'text-white' : 'text-gray-700'} `}>
-              User Registration
+            className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>          
+            <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>
+            {location?.state?.state === "edit" ? "Update" : "Add"} User 
             </h2>
             <div>
 
