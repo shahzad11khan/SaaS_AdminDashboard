@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState,useEffect } from "react";
+import { Link,useLocation } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
 
 
+
 const UserRegistrationForm = () => {
   const currentTheme = useSelector((state=>state.theme.theme))
-
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -20,7 +20,7 @@ const UserRegistrationForm = () => {
     status: "active",
   });
 
-
+  const location = useLocation();
   const [next, setnext] = useState(0)
 
   const handleChange = (e) => {
@@ -55,6 +55,15 @@ const UserRegistrationForm = () => {
     });
   };
 
+  useEffect(() => {
+    console.log(location?.state?.user)
+    if (location?.state?.user) {
+      // getBannerSpecific();
+      console.log(location?.state?.user?._id)
+    }
+  }, [location.state]);
+
+
   return (
     <>
       <Navbar />
@@ -65,7 +74,7 @@ const UserRegistrationForm = () => {
             onSubmit={handleSubmit}
             className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>          
             <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>
-            User Registration
+            {location?.state?.state === "edit" ? "Update" : "Add"} User 
             </h2>
             <div>
 
