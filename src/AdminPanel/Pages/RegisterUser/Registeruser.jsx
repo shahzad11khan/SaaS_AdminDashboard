@@ -25,7 +25,7 @@ const Registeruser = () => {
         headers: ['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status', 'Actions'],
         data: []
     });
-    const [searchQuerry ,setSearchQuery] = useState('');
+    const [searchQuery ,setSearchQuery] = useState('');
 
     const fetchUsers = async () => {
         try {
@@ -69,8 +69,8 @@ const Registeruser = () => {
      
     const filterData =userData.data.filter((user) => {
         return(
-         user.username.toLowerCase().includes(searchQuerry) || user.email.toLowerCase().includes(searchQuerry)
-        || user.role.toLowerCase().includes(searchQuerry)
+         user.username.toLowerCase().includes(searchQuery) || user.email.toLowerCase().includes(searchQuery)
+        || user.role.toLowerCase().includes(searchQuery)
         );
     })
 
@@ -124,7 +124,7 @@ const Registeruser = () => {
                                     type="text"
                                     placeholder="Search by Username ,email and role"
                                     className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                                    value={searchQuerry}
+                                    value={searchQuery}
                                     onChange={handleSearchQuery}
                                />
                             </div>

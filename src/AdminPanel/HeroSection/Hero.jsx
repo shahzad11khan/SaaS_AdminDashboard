@@ -1,4 +1,3 @@
-// import React from 'react';
 import Data from '../../../public/data.json';
 import Card from '../Components/Card';
 import { useSelector } from 'react-redux';

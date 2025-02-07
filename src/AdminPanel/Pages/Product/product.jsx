@@ -15,12 +15,12 @@ const Product = () => {
     const navigate =useNavigate();
 
     const [productData, setProductData] = useState({
-        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'role', 'updatedAt', 'userName','Actions'],
+        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'updatedAt', 'userName','Actions'],
         data: []
     });
 
     const [showRows, setRowsToShow] = useState(5);
-    const [searchQuerry , setSearchQuery] = useState('');
+    const [searchQuery , setSearchQuery] = useState('');
 
     const handleSearchQuery = (e) =>{
         setSearchQuery(e.target.value.toLowerCase());
@@ -77,9 +77,9 @@ const Product = () => {
  
     const filterData = productData.data.filter((product) =>{
         return(
-            product.productName.toLowerCase().includes(searchQuerry) ||
-            product.productCategory.toLowerCase().includes(searchQuerry) ||
-            product.role.toLowerCase().includes(searchQuerry) 
+            product.productName.toLowerCase().includes(searchQuery) ||
+            product.productCategory.toLowerCase().includes(searchQuery) ||
+            product.role.toLowerCase().includes(searchQuery) 
 
         )
     })
@@ -124,7 +124,7 @@ const Product = () => {
                                 type="text"
                                 placeholder="Search by ProductName,category and role"
                                 className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                                value={searchQuerry}
+                                value={searchQuery}
                                 onChange={handleSearchQuery}
                                 />
                             </div>

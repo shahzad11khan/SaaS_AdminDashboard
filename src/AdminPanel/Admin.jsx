@@ -1,4 +1,3 @@
-// import React from 'react'
 import LeftSideBar from './LeftSideBar/LeftSideBar'
 import Navbar from './Navbar/Navbar'
 import Hero from './HeroSection/Hero'

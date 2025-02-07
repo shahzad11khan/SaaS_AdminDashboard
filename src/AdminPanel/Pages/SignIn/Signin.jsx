@@ -9,8 +9,8 @@ import { GoogleLogin } from '@react-oauth/google';
 import Spinner from "../../Components/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { baseUri } from '../../Components/api/baseUri'
-import { User_Middle_Point } from '../../Components/api/middlePoints'
-import { User_End_Point } from '../../Components/api/endPoint'
+import { Login_Middle_Point } from '../../Components/api/middlePoints'
+import { Login_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 import { toast } from 'react-toastify';
@@ -52,7 +52,7 @@ const SignIn = () => {
     e.preventDefault();
     dispatch(setLoading());
 
-    const url = baseUri + User_Middle_Point + User_End_Point;
+    const url = baseUri + Login_Middle_Point + Login_End_Point;
     const method = "POST";
 
     try {
