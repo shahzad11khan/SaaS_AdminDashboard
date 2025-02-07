@@ -6,5 +6,4 @@ export const Order_Middle_Point ="/api/orders";
 export const Category_Middle_Point ="/api/category";
 export const Tag_Middle_Point ="/api/tag";
 export const Warehouse_Middle_Point ="/api/warehouse";
-
-
+export const Deliver_Middle_Point ="/api/orders";

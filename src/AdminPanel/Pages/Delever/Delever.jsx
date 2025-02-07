@@ -1,130 +1,141 @@
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
-import { useSelector } from 'react-redux';
-import DeleverData from "../../../../public/Delever.json"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
+import { useSelector ,useDispatch } from 'react-redux';
 import DeleteModal from '../../Components/DeleteModal';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { fetchOrder } from "../../Slice/OrderSlice";
+import GenericTable from "../../Components/Table/GenericTable";
 
 
 
 const Delever = () => {
-    const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
-    const currentTheme = useSelector((state=>state.theme.theme))
+    const dispatch =useDispatch();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const currentTheme = useSelector((state => state.theme.theme))
+    const [rows, setRowsToShow] = useState(5);
+    const [searchQuery, setSearchQuery] = useState("")
 
-    const isopendeletemodal = ()=>{
-        setIsDeleteModalOpen(true);
+    const { data: deliverData, loading, error } = useSelector(
+        (state) => state.deliver
+      );
+
+    const handleRowChange = (e) => {
+        setRowsToShow(parseInt(e.target.value, 10))
     }
-  return (
-    <div>
-      
 
-    <Navbar/>
-    <div className='flex flex-col lg:flex-row '>
-        <LeftSideBar/>
-        <div className='flex flex-col  lg:ml-10 w-full lg:w-[1000px] gap-3 '>
-        <div className="para ">
-                        <p className={`underline text-xl ${currentTheme=== 'dark' ?'text-white':'text-black'}`}>Delever Orders Details</p>
+    const handleSearchQuery = (e) => {
+        setSearchQuery(e.target.value.toLoweCase())
+    }
+
+    const handleEdit = ()=>{
+        console.log("edit function executed")
+    }
+
+    const handleDelete = () =>{
+     setIsDeleteModalOpen(true)
+    }
+
+
+   useEffect(()=>{
+    dispatch(fetchOrder())
+    console.log(fetchOrder)
+   },[dispatch])
+
+    
+   const filterData =deliverData.filter((deliver)=>{
+    console.log(deliverData)
+    return deliver.deliverStatus.toLoweCase().includes(searchQuery)
+   })
+
+   const displayData = filterData.slice(0,rows)
+    return (
+        <div>
+
+
+            <Navbar />
+            <div className='flex flex-col lg:flex-row '>
+                <LeftSideBar />
+                <div className='flex flex-col  lg:ml-10 w-full lg:w-[1000px] gap-3 '>
+                    <div className="para ">
+                        <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Delever Orders Details</p>
                     </div>
                     <div className="info flex flex-col lg:flex-row justify-between  items-center gap-2">
                         <div className='flex flex-col lg:flex-row gap-2 items-center w-full lg:w-[auto]'>
-                        <div className={`flex items-center ${currentTheme=== 'dark' ?'text-white':'text-black'} gap-2`}>
+                            <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <span>Show:</span>
                                 <select
-                                   className={`rounded-md px-4 py-1 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    onChange={handleRowChange}
+                                    value={rows}
                                 >
-                                    <option value="one">01</option>
-                                    <option value="two">02</option>
-                                    <option value="three">03</option>
-                                    <option value="four">04</option>
-                                    <option value="five">05</option>
+                                    {[...Array(10).keys()].map(num => (
+                                        <option key={num + 1} value={num + 1}>{num + 1}</option>
+                                    ))}
                                 </select>
                             </div>
-                            <div className={`flex items-center ${currentTheme=== 'dark' ?'text-white':'text-black'} gap-2`}>
-                            
-                            <span >Entries :</span>
-                            <input
-                                type="text"
-                                placeholder="Search by customer name"
-                                    className={`rounded-md px-4 py-1 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                            />
-                             </div>
+                            <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
+
+                                <span >Entries :</span>
+                                <input
+                                    type="text"
+                                    placeholder="Search"
+                                    className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    onChange={handleSearchQuery}
+                                />
+                            </div>
                         </div>
                         <div className='flex gap-2'>
-                        <Link to="/admin">
-                            <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                                Back
-                            </button>
-                           </Link>
+                            <Link to="/admin">
+                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                                    Back
+                                </button>
+                            </Link>
 
                             <Link to="/delivery-form">
-                          <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                                Add Delivery
-                            </button>
-                         </Link>
+                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                                    Add Delivery
+                                </button>
+                            </Link>
                         </div>
-                        
+
                     </div>
                     <div className="table-container overflow-x-auto">
+                               {loading && <p>Loading...</p>}
+                               {error && <p>Error: {error}</p>}
+                               <GenericTable
+                                 headers={['SNo',  'createdAt', 'updatedAt', 'Actions']}
+                                 data={displayData}
+                                 currentTheme={currentTheme}
+                                 onEdit={handleEdit}
+                                 onDelete={handleDelete}
+                               />
+                             </div>
 
-                    <table className="border-collapse border border-gray-300 w-full table-auto">
+                    <div className="pages flex justify-center gap-1 mt-4">
 
-                    <thead>
-                        <tr>
-                            {DeleverData.headers.map((item, index) => (
-                                 <th key={index} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'}  ${currentTheme=== 'dark' ?'text-white':'text-black'} border-b px-4 py-2`}>{item}</th>
-                            ))}
-                        </tr>
-                    </thead>
 
-                    <tbody>
-                        {DeleverData.data.map((item) => (
-                            <tr key={item.sNo} className={`hover:bg-gray-100 ${currentTheme === 'dark' ? 'hover:bg-[#404052]' : ''  }`}>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.serial_no}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.customer_name}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.product_name}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.quantity}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.delivery_date}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.delivery_status}</td>
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.total_price}</td>
-                            
-                                <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>
-                                <FontAwesomeIcon icon={faEdit} className='text-green-500 mr-2 cursor-pointer'></FontAwesomeIcon>
-                                <FontAwesomeIcon icon={faTrash} className='text-red-500 cursor-pointer'onClick={()=>isopendeletemodal()}></FontAwesomeIcon>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                            Previous
+                        </button>
+                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                            1 of 1
+                        </button>
+                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                            Next
+                        </button>
 
+                    </div>
+                </div>
+
+                <DeleteModal
+                    isOpen={isDeleteModalOpen}
+                    onClose={() => setIsDeleteModalOpen(false)}
+                />
             </div>
 
-            <div className="pages flex justify-center gap-1 mt-4">
-
-              
-                    <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                        Previous
-                    </button>
-                    <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                        1 of 1
-                    </button>
-                    <button className= {`px-4 py-2 ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black'}  rounded  border`}>
-                        Next
-                    </button>
-             
-            </div>
         </div>
-
-        <DeleteModal
-    isOpen={isDeleteModalOpen}
-    onClose={() => setIsDeleteModalOpen(false)}
-    />
-    </div>
-
-    </div>
-  )
+    )
 }
 
 export default Delever

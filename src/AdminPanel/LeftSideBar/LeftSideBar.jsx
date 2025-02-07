@@ -100,9 +100,9 @@ const currentTheme = useSelector((state=>state.theme.theme))
                   </li>
              </Link>
 
-             <Link to="/customer">
+             <Link to="/byHand-order">
                 <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
-                {t('leftSidebar.sections.management.items.customer')}
+                {t('leftSidebar.sections.management.items.byHandOrder')}
                   </li>
              </Link>
 
@@ -124,9 +124,9 @@ const currentTheme = useSelector((state=>state.theme.theme))
                   </li>
              </Link>
 
-             <Link to="/order">
+             <Link to="/online-order">
                 <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
-                {t('leftSidebar.sections.management.items.order')}
+                {t('leftSidebar.sections.management.items.onlineOrder')}
                   </li>
              </Link>
 

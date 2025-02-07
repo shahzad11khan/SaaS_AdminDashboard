@@ -43,11 +43,11 @@
                     "product": "پروڈکٹ",
                     "stock": "اسٹاک",
                     "category": "زمرہ",
-                    "customer": "گاہک",
+                    "byHandOrder": "ہاتھ سے دیا گیا آرڈر",
                     "warehouse": "گودام",
                     "reports": "رپورٹس",
                     "tag": "ٹگ",
-                    "order": "آرڈر",
+                    "onlineOrder": "آن لائن آرڈر",
                     "deliver": "ترسیل"
                 }
             },

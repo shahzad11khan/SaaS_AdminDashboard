@@ -59,7 +59,7 @@ const Order = () => {
                 <LeftSideBar />
                 <div className='flex flex-col  lg:ml-10 w-full lg:w-[1000px] gap-3 '>
                     <div className="para ">
-                        <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Order Details</p>
+                        <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Online Order Details</p>
                     </div>
                     <div className="info flex flex-col lg:flex-row justify-between  items-center gap-2">
                         <div className='flex flex-col lg:flex-row gap-2 items-center w-full lg:w-[auto]'>
@@ -100,7 +100,7 @@ const Order = () => {
                                 </button>
                             </Link>
 
-                            <Link to="/order-form">
+                            <Link to="/online-order-form">
                                 <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
                                     Add Order
                                 </button>

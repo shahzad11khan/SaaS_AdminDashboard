@@ -43,11 +43,11 @@
                     "product": "Product",
                     "stock": "Stock",
                     "category": "Category",
-                    "customer": "Customer",
+                    "byHandOrder": "ByHand Order",
                     "warehouse": "Warehouse",
                     "reports": "Reports",
                     "tag": "Tag",
-                    "order": "Order",
+                    "onlineOrder": "Online Order",
                     "deliver": "Deliver"
                 }
             },

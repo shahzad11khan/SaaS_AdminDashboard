@@ -43,11 +43,11 @@
                     "product": "Producto",
                     "stock": "Existencias",
                     "category": "Categoría",
-                    "customer": "Cliente",
+                    "byHandOrder": "Pedido a Mano",
                     "warehouse": "Almacén",
                     "reports": "Informes",
                     "tag": "Etiqueta",
-                    "order": "Orden",
+                    "onlineOrder": "Pedido en línea",
                     "deliver": "Entregar"
                 }
             },

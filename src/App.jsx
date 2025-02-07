@@ -10,22 +10,22 @@ import Product from './AdminPanel/Pages/Product/product';
 import ProductRegistrationForm from './AdminPanel/Pages/Product/ProductRegistrationForm';
 import Stock from './AdminPanel/Pages/Stock/Stock';
 import StockRegistrationForm from './AdminPanel/Pages/Stock/StockRegistrationForm';
-import Customer from './AdminPanel/Pages/Customer/Customer';
 import Warehouse from './AdminPanel/Pages/Warehouse/Warehouse';
 import WarehouseRegistrationForm from './AdminPanel/Pages/Warehouse/WarehouseRegistrationForm';
 import Reports from './AdminPanel/Pages/Reports/Reports';
 import ReportRegistrationForm from './AdminPanel/Pages/Reports/ReportRegistrationForm';
 import Tags from './AdminPanel/Pages/Tags/Tags';
 import CompanyRegistrationForm from './AdminPanel/Pages/RegisterCompanie/CompanyRegistrationForm';
-import Customerform from './AdminPanel/Pages/Customer/CustomerForm';
+import ByHandOrder from './AdminPanel/Pages/ByHandOrder/ByHandOrder'
+import ByHandOrderForm from './AdminPanel/Pages/ByHandOrder/ByHandOrderForm'
 import UserRoleRegistrationForm from './AdminPanel/Pages/UserRole/UserRoleRegistrationForm';
 import TagRegistrationForm from './AdminPanel/Pages/Tags/TagRegistrationForm';
 import Category from './AdminPanel/Pages/Category/Category';
 import CategoryRegistrationForm from './AdminPanel/Pages/Category/CategoryRegistrationForm';
 import SignIn from './AdminPanel/Pages/SignIn/Signin';
 import Profile from './AdminPanel/Pages/Profile/Profile';
-import Order from './AdminPanel/Pages/Order/Order';
-import OrderForm from './AdminPanel/Pages/Order/OrderForm';
+import OnlineOrder from './AdminPanel/Pages/OnlineOrder/OnlineOrder';
+import OnlineOrderForm from './AdminPanel/Pages/OnlineOrder/OnlineOrderForm';
 import Delever from './AdminPanel/Pages/Delever/Delever';
 import DeliveryForm from './AdminPanel/Pages/Delever/DeliveryForm';
 import { useSelector } from 'react-redux';
@@ -53,16 +53,16 @@ function App() {
         <Route path="/stock-registration-form" element={<StockRegistrationForm/>}/>
         <Route path="/category" element={<Category/>}/>
         <Route path="/category-registration-form" element={<CategoryRegistrationForm/>}/>       
-        <Route path="/customer" element={<Customer/>}/>
-        <Route path="/customer-form" element={<Customerform/>}/>
+        <Route path="/byHand-order" element={<ByHandOrder/>}/>
+        <Route path="/byHand-order-form" element={<ByHandOrderForm/>}/>
         <Route path="/warehouse" element={<Warehouse/>}/>
         <Route path="/warehouse-registration-form" element={<WarehouseRegistrationForm/>}/>
         <Route path="/reports" element={<Reports/>}/>
         <Route path="/report-registration-form" element={<ReportRegistrationForm/>}/>
         <Route path="/tags" element={<Tags/>}/>
         <Route path="/tag-registration-form" element={<TagRegistrationForm/>}/>
-        <Route path="/order" element={<Order/>}/>
-        <Route path="/order-form" element={<OrderForm/>}/>
+        <Route path="/online-order" element={<OnlineOrder/>}/>
+        <Route path="/online-order-form" element={<OnlineOrderForm/>}/>
         <Route path="/delever" element={<Delever/>}/>
         <Route path="/delivery-form" element={<DeliveryForm/>}/>
         <Route path="/profile" element={<Profile/>}/>
