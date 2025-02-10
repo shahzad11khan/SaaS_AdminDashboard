@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useSelector } from 'react-redux';
 
 
-const Customer = () => {
+const ByHandOrder = () => {
     const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
     const currentTheme = useSelector((state=>state.theme.theme))
 
@@ -124,4 +124,4 @@ const Customer = () => {
   )
 }
 
-export default Customer
+export default ByHandOrder

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 
 const CategoryRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme))
+  const location = useLocation();
 
   const [formData, setFormData] = useState({
     categoryName: "",
@@ -29,6 +31,16 @@ const CategoryRegistrationForm = () => {
       categoryDescription: "",
     });
   };
+
+  useEffect(()=>{
+    if(location?.state?.category){
+      console.log(location?.state?.category)
+      setFormData({
+        categoryName:location.state.category.categoryName,
+        categoryDescription:location.state.category.categoryDescription,
+      })
+    }
+  },[location.state])
 
   return (
     <>

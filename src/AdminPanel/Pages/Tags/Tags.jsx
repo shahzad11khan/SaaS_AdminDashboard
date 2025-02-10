@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import Navbar from "../../Navbar/Navbar";
 import DeleteModal from "../../Components/DeleteModal";
@@ -31,10 +31,16 @@ const Tags = () => {
       tag.tagNumber.toLowerCase().includes(searchQuery)
     })
 
-    const handleEdit =()=>{
-        console.log("Edit icon click")
-    }
+    const handleEdit = (item) => {
+        routerSystemSettingDetail("edit",item)
+    };
+  const navigate =useNavigate();
+const routerSystemSettingDetail = (state,tag)=>{
+    const path =`/tag-registration-form`;
+    const data ={state,tag}
+    navigate(path ,{state:data})
 
+}
     const handleDelete =()=>{
         setIsDeleteModalOpen(true);
     }
@@ -46,9 +52,8 @@ const Tags = () => {
     const displayData = filterData.slice(0,rowToShow)
    
     return (
+        
         <div>
-
-
             <Navbar />
             <div className='flex flex-col lg:flex-row '>
                 <LeftSideBar />

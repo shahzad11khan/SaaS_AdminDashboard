@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 
 const OrderForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
@@ -29,6 +30,17 @@ const OrderForm = () => {
       paymentMethod: "",
     });
   };
+
+  const location = useLocation();
+
+  useEffect(()=>{
+if(location?.state?.onlineOrder)
+  setFormData({
+    products:location.state.onlineOrder.products,
+    shippingAddress:location.state.onlineOrder.shippingAddress,
+    paymentMethod:location.state.onlineOrder.paymentMethod,
+  })
+  },[location.state])
 
   return (
     <>

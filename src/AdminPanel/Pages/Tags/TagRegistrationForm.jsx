@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const TagRegistrationForm = () => {
   const currentTheme = useSelector((state) => state.theme.theme);
@@ -31,6 +32,16 @@ const TagRegistrationForm = () => {
     });
   };
 
+  const location = useLocation()
+    useEffect(()=>{
+  if(location?.state?.tag){
+    console.log(location?.state?.tag)
+    setFormData({
+      tagNumber:location?.state?.tag.tagNumber,
+      description:location?.state?.tag.description, 
+    });
+  }
+    },[location.state])
   return (
     <>
       <Navbar />

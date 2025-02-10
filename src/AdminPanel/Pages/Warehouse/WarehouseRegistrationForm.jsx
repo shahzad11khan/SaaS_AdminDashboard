@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 
 const WarehouseRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
@@ -30,6 +31,18 @@ const WarehouseRegistrationForm = () => {
       warehouseCapacity: "",
     });
   };
+
+  const location = useLocation();
+
+  useEffect(()=>{
+      if(location?.state?.warehouse){
+        setFormData({
+          warehouse:location.state.warehouse.warehouse,
+          warehouseLocation:location.state.warehouse.location,
+          warehouseManager:location.state.warehouse.manager,
+        })
+      }
+  },[location.state])
 
   return (
     <>

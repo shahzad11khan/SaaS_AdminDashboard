@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import { useSelector, useDispatch } from 'react-redux';
 import GenericTable from "../../Components/Table/GenericTable";
-import {fetchOrder} from "../../Slice/OrderSlice"
+import { fetchOrder } from "../../Slice/OrderSlice"
 // import OrderData from "../../../../public/Order.json"
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -34,10 +34,17 @@ const Order = () => {
         setIsDeleteModalOpen(true);
         // Add your delete logic here
     };
-    const handleEdit = () => {
-        console.log("Edit Function Click")
-        // Add your delete logic here
+    const handleEdit = (item) => {
+        routerSystemSettingDetail("edit", item)
     };
+
+    const navigate = useNavigate();
+
+    const routerSystemSettingDetail = (state, onlineOrder) => {
+        const path = `/online-order-form`
+        const data = { state, onlineOrder }
+        navigate(path, { state:data })
+    }
     useEffect(() => {
         dispatch(fetchOrder());
 
@@ -45,8 +52,8 @@ const Order = () => {
 
     const filterData = orderData.filter((order) => {
         console.log(orderData)
-        return order.orderStatus.toLowerCase().includes(searchQuery) 
-         
+        return order.orderStatus.toLowerCase().includes(searchQuery)
+
     })
     const displayData = filterData.slice(0, rowToShow)
 
@@ -110,11 +117,11 @@ const Order = () => {
                     </div>
                     <div className="table-container overflow-x-auto">
 
-                      
+
                         {loading && <p>Loading...</p>}
                         {error && <p>Error: {error}</p>}
                         <GenericTable
-                            headers={['Sno', 'createdAt', 'orderStatus','paymentMethod','shippingAddress','totalAmount','updatedAt','Actions']}
+                            headers={['Sno', 'createdAt', 'orderStatus', 'paymentMethod', 'shippingAddress', 'totalAmount', 'updatedAt', 'Actions']}
                             data={displayData}
                             currentTheme={currentTheme}
                             onEdit={handleEdit}

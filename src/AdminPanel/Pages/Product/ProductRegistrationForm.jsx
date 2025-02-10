@@ -6,17 +6,18 @@ import { useLocation } from "react-router-dom";
 
 const ProductRegistrationForm = () => {
 
+  
   const location = useLocation();
 
   const [formData, setFormData] = useState({
     productName: "",
-    productDescription: "",
+    productDescription:"",
     productPrice: "",
-    productQuantity: "",
-    productCategory: "",
-    productSubCategory: "",
-    productImage: "",
-    productTag: "", 
+    productQuantity:"",
+    productCategory:"",
+    productSubCategory:"",
+    productImage:"",
+    productTag:"", 
     productRating:""
   });
 
@@ -31,14 +32,14 @@ const ProductRegistrationForm = () => {
     console.log("Product Submitted:", formData);
     alert("Product registered successfully!");
     setFormData({
-      productName: "",
-      productDescription: "",
-      productPrice: "",
-      productQuantity: "",
-      productCategory: "",
-      productSubCategory: "",
-      productImage: "",
-      productTag: "",
+      productName:"",
+      productDescription:"",
+      productPrice:"",
+      productQuantity:"",
+      productCategory:"",
+      productSubCategory:"",
+      productImage:"",
+      productTag:"",
     });
 
   };

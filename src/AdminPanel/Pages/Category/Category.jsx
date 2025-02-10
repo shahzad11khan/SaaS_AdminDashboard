@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import Navbar from "../../Navbar/Navbar";
 import { useSelector, useDispatch } from "react-redux";
@@ -35,9 +35,15 @@ const Category = () => {
     setIsDeleteModalOpen(true);
   };
 
-  const handleEdit = () => {
-    console.log("Edit Function Clicked");
+  const handleEdit = (item) => {
+    routerSystemSettingDetail("edit",item)
   };
+  const navigate = useNavigate();
+   const routerSystemSettingDetail = (state , category)=>{
+    const path = `/category-registration-form`;
+    const data = {state,category}
+    navigate(path ,{state:data})
+   }
 
   const filteredData = categoryData.filter((category) =>{
     console.log(categoryData)

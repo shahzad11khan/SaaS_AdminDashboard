@@ -125,7 +125,7 @@ const Hero = () => {
                 </div>
 
 
-                <div className={`  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black' }  border border-gray-300 rounded rounded-lg p-5  border-2 `}>
+                <div className={`  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black' }  border-gray-300 border-2 rounded-lg p-5   `}>
                     <div className="balance">
                         <h3 className="text-lg font-medium">Upcoming Payment</h3>
                     </div>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import DeleteModal from '../../Components/DeleteModal';
@@ -24,8 +24,18 @@ const Warehouse = () => {
 
     }
 
-    const handleEdit = () =>{
-        console.log("edit function executed")
+  
+    const handleEdit = (item) => {
+        routerSystemSettingDetail("edit",item)
+    };
+  
+    const navigate = useNavigate();
+
+    const routerSystemSettingDetail = (state,warehouse)=>{
+        const path =`/warehouse-registration-form`;
+        const data ={state,warehouse}
+        navigate(path ,{state:data})
+    
     }
 
     const handleDelete = () =>{
@@ -99,7 +109,7 @@ const Warehouse = () => {
                     {loading && <p>Loading...</p>}
                     {error && <p>Error: {error}</p>}
                         <GenericTable
-                        headers={['SNo' ,'warehouse' ,'location' , 'manager' , 'createdAt', 'updatedAt']}
+                        headers={['SNo' ,'warehouse' ,'location' , 'manager' , 'createdAt', 'updatedAt','Actions']}
                         data={displayData}
                         currentTheme={currentTheme}
                         onEdit={handleEdit}
