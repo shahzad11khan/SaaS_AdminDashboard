@@ -39,7 +39,7 @@ createRoot(document.getElementById('root')).render(
           }}
         />
       </Provider>
-    </GoogleOAuthProvider>;
+    </GoogleOAuthProvider>
   </StrictMode>
 )
 

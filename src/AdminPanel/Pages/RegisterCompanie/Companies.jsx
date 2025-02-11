@@ -6,10 +6,12 @@ import Navbar from "../../Navbar/Navbar";
 import GenericTable from "../../Components/Table/GenericTable";
 import { fetchCompanies } from "../../Slice/CompanySlice";
 import DeleteModal from "../../Components/DeleteModal";
+import CompanyGraph from "../../Components/CompanyGraph";
 
 const Companies = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
+    const [initialCount,setInitialCount]=useState(0);
     const [searchQuery, setSearchQuery] = useState("");
 
     const currentTheme = useSelector((state) => state.theme.theme);
@@ -24,6 +26,7 @@ const Companies = () => {
 
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10));
+        setInitialCount(0);
     };
 
     const handleSearchQuery = (e) => {
@@ -44,8 +47,17 @@ const Companies = () => {
       companies.address.toLowerCase().includes(searchQuery) ||
       companies.registrationNumber.toLowerCase().includes(searchQuery)
   );
-    
-    const displayData = filterData.slice(0, rowToShow);
+  const showNext = () =>{
+    if(initialCount + rowToShow <= filterData.length)
+        setInitialCount(initialCount + rowToShow)
+}
+
+ const showPrevious = () =>{
+if(initialCount - rowToShow >= 0)
+    setInitialCount(initialCount -rowToShow)
+ }
+
+    const displayData = filterData.slice(initialCount,initialCount+ rowToShow);
 
     return (
         <div>
@@ -56,7 +68,15 @@ const Companies = () => {
                     <div className="para">
                         <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Company Registration</p>
                     </div>
-                    <div className="info flex flex-col lg:flex-row justify-between items-center gap-2">
+
+                    <div className="mt-1">                    
+                    <CompanyGraph
+                     registeredCompanies={companiesData.length}
+                     totalCompanies={100} 
+                     currentTheme={currentTheme}
+                    />
+                    </div>
+                    <div className="mt-5 flex flex-col lg:flex-row justify-between items-center gap-2">
                         <div className='flex flex-col lg:flex-row gap-2 items-center w-full lg:w-[auto]'>
                             <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <span>Show:</span>
@@ -101,9 +121,11 @@ const Companies = () => {
                         />
                     </div>
                     <div className="pages flex justify-center gap-1 mt-4">
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Previous</button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>1 of 1</button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Next</button>
+                        <button onChange={showPrevious} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Previous</button>
+                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                        {Math.ceil((initialCount + rowToShow)/ (rowToShow))} of {Math.ceil((filterData.length)/rowToShow)}
+                            </button>
+                        <button onClick={showNext} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Next</button>
                     </div>
                 </div>
                 <DeleteModal
