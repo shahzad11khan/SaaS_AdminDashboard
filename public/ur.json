@@ -46,6 +46,10 @@
                     "byHandOrder": "ہاتھ سے دیا گیا آرڈر",
                     "warehouse": "گودام",
                     "reports": "رپورٹس",
+                    "registeredUser": "رجسٹرڈ صارف",
+                  "registeredCompanies": "رجسٹرڈ کمپنیاں",
+                    "registeredProduct": "رجسٹرڈ پروڈکٹ",
+                    "registeredStock": "رجسٹرڈ اسٹاک",
                     "tag": "ٹگ",
                     "onlineOrder": "آن لائن آرڈر",
                     "deliver": "ترسیل"

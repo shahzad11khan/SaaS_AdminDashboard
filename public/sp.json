@@ -46,6 +46,13 @@
                     "byHandOrder": "Pedido a Mano",
                     "warehouse": "Almacén",
                     "reports": "Informes",
+                    
+                        "registeredUser": "Usuario registrado",
+                         "registeredCompanies": "Empresas registradas",
+                        "registeredProduct": "Producto registrado",
+                        "registeredStock": "Stock registrado",
+                    
+                    
                     "tag": "Etiqueta",
                     "onlineOrder": "Pedido en línea",
                     "deliver": "Entregar"

@@ -28,6 +28,12 @@ import OnlineOrder from './AdminPanel/Pages/OnlineOrder/OnlineOrder';
 import OnlineOrderForm from './AdminPanel/Pages/OnlineOrder/OnlineOrderForm';
 import Delever from './AdminPanel/Pages/Delever/Delever';
 import DeliveryForm from './AdminPanel/Pages/Delever/DeliveryForm';
+import RegisteredCompanies from './AdminPanel/Pages/Reports/RegisteredCompanies';
+import RegisteredProduct from './AdminPanel/Pages/Reports/RegisteredProducts';
+import RegisteredStock from './AdminPanel/Pages/Reports/RegisterStock';
+import RegisteredUser from './AdminPanel/Pages/Reports/RegisteredUser';
+import RegisteredByHandOrder from './AdminPanel/Pages/Reports/RegisteredByHandOrders';
+import RegisteredOnlineOrder from './AdminPanel/Pages/Reports/RegisterOnlineOrders';
 import { useSelector } from 'react-redux';
 
 
@@ -66,6 +72,12 @@ function App() {
         <Route path="/delever" element={<Delever/>}/>
         <Route path="/delivery-form" element={<DeliveryForm/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/registered-companies" element={<RegisteredCompanies/>}/>
+        <Route path="/registered-product" element={<RegisteredProduct/>}/>
+        <Route path="/registered-stock" element={<RegisteredStock/>}/>
+        <Route path="/registered-user" element={<RegisteredUser/>}/>
+        <Route path="/registered-online-order" element={<RegisteredOnlineOrder/>}/>
+        <Route path="/registered-byHand-order" element={<RegisteredByHandOrder/>}/>  
         
       </Routes>
     </Router>

@@ -8,6 +8,7 @@ export const fetchOrder = createAsyncThunk("orders/fetchOrder",async()=>{
     const URL =baseUri + Order_Middle_Point +Order_End_Point;
     const method ="GET";
     const response = await fetchData(URL,method);
+    console.log(response)
     return response
 })
 

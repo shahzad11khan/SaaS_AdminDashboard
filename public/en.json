@@ -46,6 +46,10 @@
                     "byHandOrder": "ByHand Order",
                     "warehouse": "Warehouse",
                     "reports": "Reports",
+                    "registeredUser": "Registered User",
+                    "registeredCompanies": "Registered Companies",
+                    "registeredProduct": "Registered Product",
+                    "registeredStock": "Registered Stock",
                     "tag": "Tag",
                     "onlineOrder": "Online Order",
                     "deliver": "Deliver"

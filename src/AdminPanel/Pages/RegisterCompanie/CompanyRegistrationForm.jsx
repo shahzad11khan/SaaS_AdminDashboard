@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState ,useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
+
 
 
 const CompanyRegistrationForm = () => {
   const currentTheme = useSelector((state=>state.theme.theme))
-
+const location = useLocation();
   const [formData, setFormData] = useState({
     companyName: "",
     registrationNumber: "",
@@ -17,7 +19,7 @@ const CompanyRegistrationForm = () => {
     confirmPassword: "",
     companyAddress: "",
     phoneNumber: "",
-    VatNumber: "",
+    vatNumber: "",
     ownerName: "",
     owneremail: "",
     ownerphoneNumber: "",
@@ -46,13 +48,13 @@ const CompanyRegistrationForm = () => {
     setFormData({
       companyName: "",
       registrationNumber: "",
-      officalemail: "",
+      email: "",
       address: "",
       password: "",
       companyAddress: "",
       phoneNumber: "",
       confirmPassword: "",
-      VatNumber: "",
+      vatNumber: "",
       ownerName: "",
       owneremail: "",
       ownerphoneNumber: "",
@@ -62,6 +64,21 @@ const CompanyRegistrationForm = () => {
       businessAddress: "",
     });
   };
+  useEffect(() => {
+    if (location?.state?.companies) {
+        console.log("Companies Data:", location.state.companies); 
+        setFormData({
+            companyName: location.state.companies.companyName ,
+            companyAddress: location.state.companies.address ,
+            email: location.state.companies.email , 
+            confirmPassword: location.state.companies.confirmPassword ,
+            password: location.state.companies.confirmPassword ,
+            registrationNumber: location.state.companies.registrationNumber ,
+            phoneNumber: location.state.companies.ownerPhoneNumber,
+            vatNumber: location.state.companies.VatNumber ,
+        });
+    }
+}, [location.state]);
 
   return (
     <>

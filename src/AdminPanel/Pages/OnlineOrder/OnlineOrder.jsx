@@ -3,10 +3,7 @@ import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import { useSelector, useDispatch } from 'react-redux';
 import GenericTable from "../../Components/Table/GenericTable";
-import { fetchOrder } from "../../Slice/OrderSlice"
-// import OrderData from "../../../../public/Order.json"
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { fetchOrder } from "../../Slice/OrderSlice";
 import DeleteModal from '../../Components/DeleteModal';
 import { useState, useEffect } from "react";
 
@@ -32,7 +29,6 @@ const Order = () => {
 
     const handleDelete = () => {
         setIsDeleteModalOpen(true);
-        // Add your delete logic here
     };
     const handleEdit = (item) => {
         routerSystemSettingDetail("edit", item)

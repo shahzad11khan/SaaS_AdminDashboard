@@ -6,6 +6,8 @@ import categoryReducer from '../Slice/CategorySlice'
 import tagsReducer from '../Slice/TagSlice'
 import warehouseReducer from '../Slice/WarehouseSlice'
 import deliverReducer from '../Slice/DeliverSlice'
+import companyReducer from '../Slice/CompanySlice'
+
  const Store = configureStore({
   reducer: {
     theme : themeReducer,
@@ -15,6 +17,7 @@ import deliverReducer from '../Slice/DeliverSlice'
     tags:tagsReducer,
     warehouse:warehouseReducer,
     deliver :deliverReducer,
+    companies:companyReducer,
   },
 })
 

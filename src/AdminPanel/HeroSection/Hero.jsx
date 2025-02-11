@@ -1,14 +1,78 @@
 import Data from '../../../public/data.json';
 import Card from '../Components/Card';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from "react-redux";
+import { baseUri } from '../Components/api/baseUri'
+import { Product_Middle_Point, User_Middle_Point } from '../Components/api/middlePoints'
+import { Stock_Middle_Point } from '../Components/api/middlePoints';
+import { User_End_Point } from '../Components/api/endPoint'
+import fetchData from '../Components/api/axios'
 import SalesGraph from '../Components/Graph';
-
-
-
+import {useState, useEffect} from 'react';
+import { setLoading } from '../Slice/LoadingSlice';
+import { fetchOrder } from '../Slice/OrderSlice';
 
 const Hero = () => {
+    const dispatch = useDispatch();
+    const onlineOrders = useSelector((state) => state.orders.data.length);
     const currentTheme = useSelector((state) => state.theme.theme);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalStock, setTotalStock] = useState(0);
+    const [totalProduct, setTotalProduct] = useState(0);
+
+    const fetchUsers = async () => {
+        try {
+            const url = baseUri + User_Middle_Point + User_End_Point;
+            const method = "GET";
+            const response = await fetchData(url, method);
+            dispatch(setLoading());
+            if (response.users && Array.isArray(response.users)) {
+                setTotalUsers(response.users.length); 
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+   const fetchStock = async ()=>{
+        try {
+            const url = baseUri + Stock_Middle_Point ;
+            const method = "GET";
+            const response = await fetchData(url, method);
+            
+            dispatch(setLoading());
+            if (Array.isArray(response)) {
+                setTotalStock(response.length); 
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const fetchProduct = async ()=>{
+        try{
+            const url = baseUri + Product_Middle_Point ;
+            const method = "GET";
+            const response = await fetchData(url,method);
+            dispatch(setLoading());
+            if (Array.isArray(response)) {
+                setTotalProduct(response.length); 
+            }
+
+        }
+        catch(error){
+        console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchUsers();
+        fetchStock();
+        fetchProduct();
+        dispatch(fetchOrder());
+        
+    }, []);
+    
     const balanceDetails = [
         {
             "id": 1,
@@ -71,21 +135,29 @@ const Hero = () => {
            
             <div className='middle flex flex-col w-full lg:w-[800px] mt-2 mx-auto '>
 
-                {/* cards */}
                 <div className="cards flex justify-start mx-2 flex-wrap gap-1 md:gap-10 lg:gap-8 ">
                     {Data.map((element) => (
-                        <div className="w-[48%] md:w-[15%]" key={element.id}>
-                            <Card
-
-
-                                id={element.id}
-                                icon={element.icon}
-                                iconBgColor={element.iconBgColor}
-                                title={element.title}
-                                description={element.description}
-                                price={element.price}
-                            />
-                        </div>
+                         <div className="w-[48%] md:w-[15%]" key={element.id}>
+                         <Card
+                             id={element.id}
+                             icon={element.icon}
+                             iconBgColor={element.iconBgColor}
+                             title={element.title}
+                             price={
+                                 element.title.includes("Users") 
+                                ? totalUsers 
+                                : element.title.includes("Stock") 
+                                ? totalStock 
+                                : element.title.includes("Product")
+                                ?totalProduct
+                                : element.title.includes("O.Orders")
+                                ? onlineOrders
+                                :null
+                            }
+                            
+                                
+                             />
+                     </div>
 
                     ))}
 
@@ -98,7 +170,7 @@ const Hero = () => {
             </div>
                            
                 
-            <div className={`rightSidebar min-h-screen mt-2  ${currentTheme=== 'dark' ?'bg-[#404040]]':'bg-[#F0FFF8]'}  flex flex-col  w-full md:w-full lg:w-[240px] gap-4  p-4 rounded-md border border-gray-300`}>
+            <div className={`rightSidebar min-h-screen mt-2  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'}  flex flex-col  w-full md:w-full lg:w-[240px] gap-4  p-4 rounded-md border border-gray-300`}>
 
                 <div className={`top ${currentTheme ==='dark' ? 'bg-[#404040]' : 'bg-orange-400 '} border border-gray-300 rounded-lg w-full p-5 text-white `}>
                     <div className="balance">

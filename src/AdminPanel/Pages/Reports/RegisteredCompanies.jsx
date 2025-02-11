@@ -1,14 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import Navbar from "../../Navbar/Navbar";
 import GenericTable from "../../Components/Table/GenericTable";
 import { fetchCompanies } from "../../Slice/CompanySlice";
-import DeleteModal from "../../Components/DeleteModal";
 
-const Companies = () => {
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+const RegisteredCompanies = () => {
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -16,7 +14,7 @@ const Companies = () => {
     const dispatch = useDispatch();
     const { data: companiesData, loading, error } = useSelector((state) => state.companies);
     
-    const navigate = useNavigate();
+   
 
     useEffect(() => {
         dispatch(fetchCompanies());
@@ -30,13 +28,7 @@ const Companies = () => {
         setSearchQuery(e.target.value.toLowerCase());
     };
 
-    const handleDelete = () => {
-        setIsDeleteModalOpen(true);
-    };
 
-    const handleEdit = (item) => {
-        navigate("/register-form", { state: { mode: "edit", companies: item } });
-    };
 
     const filterData = companiesData.filter((companies) =>
       companies.companyName.toLowerCase().includes(searchQuery) ||
@@ -84,8 +76,8 @@ const Companies = () => {
                             <Link to="/admin">
                                 <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Back</button>
                             </Link>
-                            <Link to="/register-form">
-                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Add Company</button>
+                            <Link to="">
+                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Print</button>
                             </Link>
                         </div>
                     </div>
@@ -93,11 +85,10 @@ const Companies = () => {
                         {loading && <p>Loading...</p>}
                         {error && <p>Error: {error}</p>}
                         <GenericTable
-                            headers={['Sno', 'companyName', 'email', 'ownerName', 'registrationNumber','createdAt','updatedAt', 'Actions']}
+                            headers={['Sno', 'companyName', 'email', 'ownerName', 'registrationNumber','createdAt','updatedAt']}
                             data={displayData}
                             currentTheme={currentTheme}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
+                          
                         />
                     </div>
                     <div className="pages flex justify-center gap-1 mt-4">
@@ -106,13 +97,10 @@ const Companies = () => {
                         <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Next</button>
                     </div>
                 </div>
-                <DeleteModal
-                    isOpen={isDeleteModalOpen}
-                    onClose={() => setIsDeleteModalOpen(false)}
-                />
+              
             </div>
         </div>
     );
 };
 
-export default Companies;
+export default RegisteredCompanies;

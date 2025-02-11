@@ -5,7 +5,6 @@
     "icon": "fas fa-users",
     "iconBgColor": "bg-green-300",
     "title": "Users",
-    "description": "+25% New",
     "price": "56"
   },
   {
@@ -13,37 +12,33 @@
     "icon": "fas fa-shopping-cart",
     "iconBgColor": "bg-blue-700",
     "title": "Product",
-    "description": "+20% New",
     "price": "35"
   },
-      {
-        "id": 3,
-        "icon": "fas fa-chart-line",
-        "iconBgColor": "bg-orange-500",
-    
-        "title": "Stock",
-        "description": "+5% New",
-        "price": "25"
-      },
+  {
+    "id": 3,
+    "icon": "fas fa-wallet",
+    "iconBgColor": "bg-orange-300",
+    "title": "O.Orders",
+    "price": "10"
+   },
 
       {
         "id": 4,
         "icon": "fas fa-money-bill-wave",
         "iconBgColor": "bg-blue-300",
-        "title": "Category",
-        "description": "+15% New",
+        "title": "H.Orders",
         "price": "8"
       },
-     
-
+      
       {
         "id": 5,
-        "icon": "fas fa-wallet",
-        "iconBgColor": "bg-orange-300",
-        "title": "Reports",
-        "description": "+5% New",
-        "price": "10"
-       }
+        "icon": "fas fa-chart-line",
+        "iconBgColor": "bg-orange-500",    
+        "title": "Stock",
+        "price": "25"
+      }
+
+   
 
     ]
   

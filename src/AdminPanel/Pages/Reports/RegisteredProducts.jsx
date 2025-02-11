@@ -1,8 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
-import DeleteModal from '../../Components/DeleteModal';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import GenericTable from "../../Components/Table/GenericTable";
@@ -10,12 +9,11 @@ import { baseUri } from "../../Components/api/baseUri";
 import { Product_Middle_Point } from "../../Components/api/middlePoints";
 import fetchData from "../../Components/api/axios";
 
-const Product = () => {
+const RegisteredProduct = () => {
     const dispatch = useDispatch();
-    const navigate =useNavigate();
 
     const [productData, setProductData] = useState({
-        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'updatedAt', 'userName','Actions'],
+        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'updatedAt', 'userName'],
         data: []
     });
 
@@ -57,23 +55,11 @@ const Product = () => {
         FetchProducts();
     }, [])
 
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const currentTheme = useSelector((state => state.theme.theme))
     
-    const handleEdit = (item) => {
-        routerSystemSettingDetail("edit",item)
-    };
-    const routerSystemSettingDetail = (state ,product)=>{
-        const path =`/product-registration-form`;
-        const data ={state ,product}
-        navigate(path ,{state:data})
-     
-    }
 
-    const handleDelete = () => {
-        setIsDeleteModalOpen(true);
-    
-    };
+
+  
  
     const filterData = productData.data.filter((product) =>{
         return(
@@ -136,9 +122,9 @@ const Product = () => {
                                 </button>
                             </Link>
 
-                            <Link to="/product-registration-form">
+                            <Link to="">
                                 <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                                    Add Product
+                                    Print
                                 </button>
                             </Link>
                         </div>
@@ -150,8 +136,7 @@ const Product = () => {
                             headers={productData.headers}
                             data={displayData}
                             currentTheme={currentTheme}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
+                         
                         />
                     </div>
 
@@ -170,10 +155,7 @@ const Product = () => {
 
                     </div>
                 </div>
-                <DeleteModal
-                    isOpen={isDeleteModalOpen}
-                    onClose={() => setIsDeleteModalOpen(false)}
-                />
+              
 
             </div>
 
@@ -181,4 +163,4 @@ const Product = () => {
     )
 }
 
-export default Product
+export default RegisteredProduct

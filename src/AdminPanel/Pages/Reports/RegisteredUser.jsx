@@ -1,7 +1,6 @@
-import { Link ,useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Navbar from '../../Navbar/Navbar';
 import LeftSideBar from '../../LeftSideBar/LeftSideBar';
-import DeleteModal from '../../Components/DeleteModal';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { baseUri } from '../../Components/api/baseUri'
@@ -14,14 +13,12 @@ import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 
 
 
-const Registeruser = () => {
-    const navigate = useNavigate();
+const RegisteredUser = () => {
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showRows, setRowsToShow] = useState(5);
     const [userData, setUserData] = useState({
-        headers: ['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status', 'Actions'],
+        headers: ['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status',],
         data: []
     });
     const [searchQuery ,setSearchQuery] = useState('');
@@ -32,7 +29,6 @@ const Registeruser = () => {
             const method = "GET";
             const response = await fetchData(url, method);
             dispatch(setLoading());
-            console.log(response)
             setUserData((prevState) => ({
                 ...prevState,
                 data: response.users,
@@ -55,15 +51,6 @@ const Registeruser = () => {
         setRowsToShow(selectedValue);
     }
 
-    const handleEdit = (item) => {
-    routerSystemSettingDetail("edit", item);
-     // Add your edit logic here
-    };
-
-    const handleDelete = () => {
-        setIsDeleteModalOpen(true);
-        // Add your delete logic here
-    };
      
     const filterData =userData.data.filter((user) => {
         return(
@@ -76,11 +63,6 @@ const Registeruser = () => {
     const displayData = filterData.slice(0, showRows);
 
 
-    const routerSystemSettingDetail = (state, user) => {
-        const path = `/user-registration-form`;
-        const data = { state, user };
-        navigate(path, { state: data });
-      };
     return (
         <div>
 
@@ -134,9 +116,9 @@ const Registeruser = () => {
                                 </button>
                             </Link>
 
-                            <Link to="/user-registration-form">
+                            <Link to="">
                                 <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                                    Add User
+                                    Print
                                 </button>
                             </Link>
                         </div>
@@ -146,8 +128,7 @@ const Registeruser = () => {
                             headers={userData.headers}
                             data={displayData}
                             currentTheme={currentTheme}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
+                           
                         />
 
                        
@@ -167,10 +148,7 @@ const Registeruser = () => {
                         </div>
                     </div>
                 </div>
-                <DeleteModal
-                    isOpen={isDeleteModalOpen}
-                    onClose={() => setIsDeleteModalOpen(false)}
-                />
+               
 
             </div>
 
@@ -179,5 +157,5 @@ const Registeruser = () => {
     )
 }
 
-export default Registeruser
+export default RegisteredUser
 
