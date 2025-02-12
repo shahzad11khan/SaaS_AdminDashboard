@@ -8,7 +8,10 @@ import { User_Middle_Point } from '../../Components/api/middlePoints'
 import { User_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import GenericTable from '../../Components/Table/GenericTable';
-import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
+import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
 
 
 
@@ -17,6 +20,7 @@ const RegisteredUser = () => {
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
     const [showRows, setRowsToShow] = useState(5);
+    const [initialCount, setInitialCount] = useState(0);
     const [userData, setUserData] = useState({
         headers: ['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status',],
         data: []
@@ -50,7 +54,17 @@ const RegisteredUser = () => {
         const selectedValue = parseInt(e.target.value, 10)
         setRowsToShow(selectedValue);
     }
+    const showNext = () => {
+        if (initialCount + showRows < filterData.length) {
+            setInitialCount(initialCount + showRows);
+        }
+    };
 
+    const showPrevious = () => {
+        if (initialCount - showRows >= 0) {
+            setInitialCount(initialCount - showRows);
+        }
+    };
      
     const filterData =userData.data.filter((user) => {
         return(
@@ -59,9 +73,38 @@ const RegisteredUser = () => {
         );
     })
 
+    const displayData = filterData.slice(initialCount, initialCount + showRows);
 
-    const displayData = filterData.slice(0, showRows);
 
+const pdfHeaders = ["SNo", "Username", "Email", "Date of Birth", "Role", "Status"]
+
+    const handlePrint = () => {
+        const doc = new jsPDF();
+    
+        doc.text("Company Name",14 ,8);
+        doc.text("Registered Users", 14, 15);
+    
+        const tableHeaders = pdfHeaders.map(header => header.toUpperCase());
+    
+        const tableData = userData.data.map((user, index) => [
+            index + 1,
+            user.username,
+            user.email,            
+            user.dateOfBirth.split("T")[0],
+            user.role,
+            user.status
+        ]);
+    
+        doc.autoTable({
+            head: [tableHeaders],
+            body: tableData,
+            startY: 20
+        });
+    
+      
+        doc.save("RegisteredUsers.pdf");
+    };
+    
 
     return (
         <div>
@@ -116,11 +159,11 @@ const RegisteredUser = () => {
                                 </button>
                             </Link>
 
-                            <Link to="">
-                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                         
+                                <button  onClick={handlePrint} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
                                     Print
                                 </button>
-                            </Link>
+                          
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
@@ -135,14 +178,20 @@ const RegisteredUser = () => {
                     </div>
 
                     <div className="pages ">
-                        <div className="flex justify-center gap-1">
-                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                    <div className="flex justify-center gap-1">
+                            <button
+                                onClick={showPrevious}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
                                 Previous
                             </button>
-                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                                1 of 1
+                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                                {Math.ceil((initialCount + showRows) / showRows)} of {Math.ceil(filterData.length / showRows)}
                             </button>
-                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                            <button
+                                onClick={showNext}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
                                 Next
                             </button>
                         </div>

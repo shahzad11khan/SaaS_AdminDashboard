@@ -5,11 +5,14 @@ import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import Navbar from "../../Navbar/Navbar";
 import GenericTable from "../../Components/Table/GenericTable";
 import { fetchCompanies } from "../../Slice/CompanySlice";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
 
 const RegisteredCompanies = () => {
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
-
+    const [initialCount, setInitialCount] = useState(0);
     const currentTheme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
     const { data: companiesData, loading, error } = useSelector((state) => state.companies);
@@ -28,6 +31,17 @@ const RegisteredCompanies = () => {
         setSearchQuery(e.target.value.toLowerCase());
     };
 
+    const showNext = () => {
+        if (initialCount + rowToShow < filterData.length) {
+            setInitialCount(initialCount + rowToShow);
+        }
+    };
+
+    const showPrevious = () => {
+        if (initialCount - rowToShow >= 0) {
+            setInitialCount(initialCount - rowToShow);
+        }
+    };
 
 
     const filterData = companiesData.filter((companies) =>
@@ -36,8 +50,37 @@ const RegisteredCompanies = () => {
       companies.address.toLowerCase().includes(searchQuery) ||
       companies.registrationNumber.toLowerCase().includes(searchQuery)
   );
-    
-    const displayData = filterData.slice(0, rowToShow);
+  const displayData = filterData.slice(initialCount, initialCount + rowToShow);
+
+
+  const handlePrint = () => {
+
+    const doc = new jsPDF();
+
+    doc.text("Company Name", 14, 8);
+    doc.text("Registered Companies", 14, 15);
+
+    const tableHeaders = [["SNo", "C.Name", "Email", "Owner Name", "RegNo", "Created At", "Updated At"]];
+
+    const tableData = companiesData.map((company, index) => [
+        index + 1,
+        company.companyName,
+        company.email,
+        company.ownerName,
+        company.registrationNumber,
+        company.createdAt.split("T")[0],
+        company.updatedAt.split("T")[0],
+    ]);
+
+    doc.autoTable({
+        head: tableHeaders,
+        body: tableData,
+        startY: 20
+    });
+
+    doc.save("RegisteredCompanies.pdf");
+};
+
 
     return (
         <div>
@@ -76,9 +119,9 @@ const RegisteredCompanies = () => {
                             <Link to="/admin">
                                 <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Back</button>
                             </Link>
-                            <Link to="">
-                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Print</button>
-                            </Link>
+                          
+                                <button onClick={handlePrint} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Print</button>
+                        
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
@@ -91,11 +134,23 @@ const RegisteredCompanies = () => {
                           
                         />
                     </div>
-                    <div className="pages flex justify-center gap-1 mt-4">
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Previous</button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>1 of 1</button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Next</button>
-                    </div>
+                    <div className="flex justify-center gap-1">
+                            <button
+                                onClick={showPrevious}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Previous
+                            </button>
+                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                                {Math.ceil((initialCount + rowToShow) / rowToShow)} of {Math.ceil(filterData.length / rowToShow)}
+                            </button>
+                            <button
+                                onClick={showNext}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Next
+                            </button>
+                        </div>
                 </div>
               
             </div>
