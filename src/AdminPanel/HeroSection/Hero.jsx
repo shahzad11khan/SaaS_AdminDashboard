@@ -6,7 +6,7 @@ import { Product_Middle_Point, User_Middle_Point } from '../Components/api/middl
 import { Stock_Middle_Point } from '../Components/api/middlePoints';
 import { User_End_Point } from '../Components/api/endPoint'
 import fetchData from '../Components/api/axios'
-import SalesGraph from '../Components/Graph';
+// import SalesGraph from '../Components/Graph';
 import {useState, useEffect} from 'react';
 import { setLoading } from '../Slice/LoadingSlice';
 import { fetchOrder } from '../Slice/OrderSlice';
@@ -18,6 +18,8 @@ const Hero = () => {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalStock, setTotalStock] = useState(0);
     const [totalProduct, setTotalProduct] = useState(0);
+    const {companyId} = useSelector((state) => state.selectedCompany);
+    
 
     const fetchUsers = async () => {
         try {
@@ -25,7 +27,10 @@ const Hero = () => {
             const method = "GET";
             const response = await fetchData(url, method);
             dispatch(setLoading());
-            if (response.users && Array.isArray(response.users)) {
+            if(companyId){
+                let  filterdData =  response.users.filter(item => companyId  === item.companyId?._id);
+                setTotalUsers(filterdData.length)
+             }else if (response.users && Array.isArray(response.users)) {
                 setTotalUsers(response.users.length); 
             }
         } catch (error) {
@@ -38,9 +43,11 @@ const Hero = () => {
             const url = baseUri + Stock_Middle_Point ;
             const method = "GET";
             const response = await fetchData(url, method);
-            
             dispatch(setLoading());
-            if (Array.isArray(response)) {
+            if(companyId){
+                let  filterdData =  response.filter(item => companyId  ===  item.userId?.companyId?._id);
+                setTotalStock(filterdData.length)
+             }else if (Array.isArray(response)) {
                 setTotalStock(response.length); 
             }
         } catch (error) {
@@ -55,10 +62,12 @@ const Hero = () => {
             const method = "GET";
             const response = await fetchData(url,method);
             dispatch(setLoading());
-            if (Array.isArray(response)) {
+            if(companyId){
+                let  filterdData =  response.filter(item => companyId  ===  item.userId?.companyId?._id);
+                setTotalProduct(filterdData.length)
+             }else if (Array.isArray(response)) {
                 setTotalProduct(response.length); 
             }
-
         }
         catch(error){
         console.log(error)
@@ -125,14 +134,11 @@ const Hero = () => {
 
         }
     ]
-
+console.log
 
 
     return (
         <div className="main mx-2 lg:w-full flex justify-between flex-col lg:flex-row px-2 ">
-
-
-           
             <div className='middle flex flex-col w-full lg:w-[800px] mt-2 mx-auto '>
 
                 <div className="cards flex justify-start mx-2 flex-wrap gap-1 md:gap-10 lg:gap-8 ">
@@ -164,9 +170,9 @@ const Hero = () => {
 
                 </div>
 
-                <div className="graph mt-3 h-[200px] sm:h-[200px] md:h-[300px] lg:h-[400px] lg:w-[735px]">
+                {/* <div className="graph mt-3 h-[200px] sm:h-[200px] md:h-[300px] lg:h-[400px] lg:w-[735px]">
                     <SalesGraph />
-                </div>
+                </div> */}
             </div>
                            
                 

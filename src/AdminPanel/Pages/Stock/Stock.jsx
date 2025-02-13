@@ -15,6 +15,8 @@ const Stock = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const {companyId} = useSelector((state) => state.selectedCompany);
+
     const [showRows, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
     const [stockData, setStockData] = useState({
@@ -29,11 +31,20 @@ const Stock = () => {
             const method = 'GET';
             const response = await fetchData(Url, method);
              console.log(response);
-            setStockData((prevStock) => ({
-                ...prevStock,
-                data: response
-            }
-            ))
+             if(companyId){
+                let  filterdData =  response.filter(item => companyId  === item.userId?.companyId?._id);
+                setStockData((prevStock) => ({
+                 ...prevStock,
+                 data: filterdData,
+             }))
+             }else{
+                setStockData((prevStock) => ({
+                    ...prevStock,
+                    data: response
+                }
+                ))
+             }
+
             dispatch(setLoading());
         }
         catch (error) {

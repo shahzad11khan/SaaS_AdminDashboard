@@ -17,7 +17,7 @@ import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 const Registeruser = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const currentTheme = useSelector((state) => state.theme.theme);
+    // const currentTheme = useSelector((state) => state.theme.theme);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showRows, setRowsToShow] = useState(5);
     const [initialCount, setInitialCount] = useState(0);
@@ -26,6 +26,9 @@ const Registeruser = () => {
         data: [],
     });
     const [searchQuery, setSearchQuery] = useState('');
+    const currentTheme = useSelector((state) => state.theme.theme);
+        
+    const { companyId} = useSelector((state) => state.selectedCompany );
 
     const fetchUsers = async () => {
         try {
@@ -33,10 +36,18 @@ const Registeruser = () => {
             const method = "GET";
             const response = await fetchData(url, method);
             dispatch(setLoading());
-            setUserData((prevState) => ({
+            if(companyId){
+               let  filterdData =  response.users.filter(item => companyId  === item.companyId?._id);
+               setUserData((prevState) => ({
                 ...prevState,
-                data: response.users,
-            }));
+                data: filterdData,
+            }))
+            }else{
+                setUserData((prevState) => ({
+                    ...prevState,
+                    data: response.users,
+                }));
+            }
         } catch (error) {
             console.log(error);
         }

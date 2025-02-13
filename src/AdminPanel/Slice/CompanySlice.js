@@ -15,7 +15,7 @@ const companySlice = createSlice({
     name: 'companies',
     initialState: {
         data: [],
-        loading: false,
+        loading: true,
         error: false,
     },
 

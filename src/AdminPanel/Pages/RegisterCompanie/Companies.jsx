@@ -16,7 +16,7 @@ const Companies = () => {
 
     const currentTheme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
-    const { data: companiesData, loading, error } = useSelector((state) => state.companies);
+    const { data: companiesData, loading, error  } = useSelector((state) => state.companies);
     
     const navigate = useNavigate();
 

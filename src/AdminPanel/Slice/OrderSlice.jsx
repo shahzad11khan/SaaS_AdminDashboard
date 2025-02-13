@@ -28,6 +28,7 @@ const orderSlice = createSlice({
       
       builder.addCase(fetchOrder.fulfilled, (state, action) => {
         state.loading=false,
+        console.log(action.payload)
         state.data=action.payload
       })
 

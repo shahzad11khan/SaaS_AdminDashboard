@@ -4,19 +4,20 @@ import { useSelector ,useDispatch } from 'react-redux';
 import DeleteModal from '../../Components/DeleteModal';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchOrder } from "../../Slice/OrderSlice";
 import GenericTable from "../../Components/Table/GenericTable";
+import { fetchDelivery } from "../../Slice/DeliverSlice";
 
 
 
 const Delever = () => {
+    const {companyId} = useSelector((state) => state.selectedCompany);
     const dispatch =useDispatch();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const currentTheme = useSelector((state => state.theme.theme))
     const [rows, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("")
 
-    const { data: deliverData, loading, error } = useSelector(
+    const { data: deliveryData, loading, error } = useSelector(
         (state) => state.deliver
       );
 
@@ -38,16 +39,13 @@ const Delever = () => {
 
 
    useEffect(()=>{
-    dispatch(fetchOrder())
-    console.log(fetchOrder)
+    dispatch(fetchDelivery())
    },[dispatch])
+   let companyOrderDelivery = companyId ? deliveryData.filter(item => companyId  === item.userId?.companyId?._id ) :deliveryData ;
 
-    
-   const filterData =deliverData.filter((deliver)=>{
-    console.log(deliverData)
-    return deliver.deliverStatus.toLoweCase().includes(searchQuery)
-   })
-
+   const filterData = companyOrderDelivery?.filter((deliver) =>
+       deliver?.deliverStatus?.toLowerCase().includes(searchQuery)
+   )
    const displayData = filterData.slice(0,rows)
     return (
         <div>

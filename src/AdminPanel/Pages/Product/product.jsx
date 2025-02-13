@@ -13,6 +13,8 @@ import fetchData from "../../Components/api/axios";
 const Product = () => {
     const dispatch = useDispatch();
     const navigate =useNavigate();
+    const {companyId} = useSelector((state) => state.selectedCompany);
+
 
     const [productData, setProductData] = useState({
         headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'updatedAt', 'userName','Actions'],
@@ -39,11 +41,20 @@ const Product = () => {
             const response = await fetchData(Url, method);
             dispatch(setLoading());
             console.log(response)
-            setProductData((prevState) => ({
-                ...prevState,
-                data: response
+            if(companyId){
+                let  filterdData =  response.filter(item => companyId  === item.userId?.companyId?._id);
+                setProductData((prevState) => ({
+                 ...prevState,
+                 data: filterdData,
+             }))
+             }else{
+                setProductData((prevState) => ({
+                    ...prevState,
+                    data: response
+    
+                }))
+             }
 
-            }))
         }
         catch (error) {
             console.log(error)

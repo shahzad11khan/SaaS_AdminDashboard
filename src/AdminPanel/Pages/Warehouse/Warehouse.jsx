@@ -15,16 +15,14 @@ const Warehouse = () => {
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const {companyId} = useSelector((state) => state.selectedCompany);
 
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10))
     }
     const handleSearchQuery = (e) => {
         setSearchQuery(e.target.value.toLowerCase());
-
     }
-
-  
     const handleEdit = (item) => {
         routerSystemSettingDetail("edit",item)
     };
@@ -35,30 +33,27 @@ const Warehouse = () => {
         const path =`/warehouse-registration-form`;
         const data ={state,warehouse}
         navigate(path ,{state:data})
-    
     }
 
     const handleDelete = () =>{
         setIsDeleteModalOpen(true);
-
     }
 
     useEffect(() => {
         dispatch(fetchWarehouse());
     }, [dispatch])
+    let companyWarehoruse = companyId ? warehouseData.filter(item => companyId  === item.userId?.companyId?._id ) : warehouseData ;
 
-    const filterData = warehouseData.filter((warehouse) => {
+    const filterData = companyWarehoruse?.filter((warehouse) => {
         return warehouse.warehouse.toLowerCase().includes(searchQuery) ||
             warehouse.location.toLowerCase().includes(searchQuery)
     })
 
-    const displayData = filterData.slice(0, rowToShow)
+    const displayData = filterData?.slice(0, rowToShow)
 
 
     return (
         <div>
-
-
             <Navbar />
             <div className='flex flex-col lg:flex-row '>
                 <LeftSideBar />
@@ -115,12 +110,8 @@ const Warehouse = () => {
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                         />
-
                     </div>
-
                     <div className="pages flex justify-center gap-1 mt-4">
-
-
                         <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
                             Previous
                         </button>

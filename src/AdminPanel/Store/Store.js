@@ -7,6 +7,7 @@ import tagsReducer from '../Slice/TagSlice'
 import warehouseReducer from '../Slice/WarehouseSlice'
 import deliverReducer from '../Slice/DeliverSlice'
 import companyReducer from '../Slice/CompanySlice'
+import selectedCompanySlice from '../Slice/SelectedCompanySlice'
 
  const Store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ import companyReducer from '../Slice/CompanySlice'
     warehouse:warehouseReducer,
     deliver :deliverReducer,
     companies:companyReducer,
+    selectedCompany:selectedCompanySlice,
   },
 })
 

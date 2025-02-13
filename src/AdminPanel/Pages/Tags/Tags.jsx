@@ -17,7 +17,8 @@ const Tags = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow ,setRowsToShow] =useState(5);
     const [searchQuery ,setSearchQuery] = useState("");
-    
+    const {companyId} = useSelector((state) => state.selectedCompany);
+
     const handleRowChange = (e)=>{
         setRowsToShow(parseInt(e.target.value, 10));
     }
@@ -26,10 +27,8 @@ const Tags = () => {
         setSearchQuery(e.target.value.toLowerCase());
     }
 
-    const filterData = tagData.filter((tag)=>{
-      return tag.description.toLowerCase().includes(searchQuery)||
-      tag.tagNumber.toLowerCase().includes(searchQuery)
-    })
+
+
 
     const handleEdit = (item) => {
         routerSystemSettingDetail("edit",item)
@@ -47,9 +46,13 @@ const routerSystemSettingDetail = (state,tag)=>{
 
     useEffect(() => {
         dispatch(fetchTag());
-      }, [dispatch]);
-      
-    const displayData = filterData.slice(0,rowToShow)
+    }, [dispatch]);
+    let companyTags = companyId ? tagData.filter(item => companyId  === item.userId?.companyId?._id ) : tagData ;
+    const filterData = companyTags.filter((tag)=>{
+        return tag.description.toLowerCase().includes(searchQuery)||
+        tag.tagNumber.toLowerCase().includes(searchQuery)
+      })
+    const displayData = filterData?.slice(0,rowToShow)
    
     return (
         

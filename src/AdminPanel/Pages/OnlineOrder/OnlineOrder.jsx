@@ -17,6 +17,7 @@ const Order = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
     const { data: orderData, loading, error } = useSelector((state) => state.orders)
+    const {companyId} = useSelector((state) => state.selectedCompany);
 
 
     const handleRowChange = (e) => {
@@ -45,13 +46,14 @@ const Order = () => {
         dispatch(fetchOrder());
 
     }, [dispatch]);
+    let companyOnlineOrder = companyId ? orderData.filter(item => companyId  === item.userId?.companyId?._id ) : orderData ;
 
-    const filterData = orderData.filter((order) => {
+    const filterData = companyOnlineOrder.filter((order) => {
         console.log(orderData)
         return order.orderStatus.toLowerCase().includes(searchQuery)
 
     })
-    const displayData = filterData.slice(0, rowToShow)
+    const displayData = filterData?.slice(0, rowToShow)
 
     return (
         <div>

@@ -23,6 +23,7 @@ const LeftSideBar = () => {
     setisOpen(!isOpen)
   }
 
+  const {companyId} = useSelector((state) => state.selectedCompany );
 
 
   return (
@@ -52,13 +53,15 @@ const LeftSideBar = () => {
                 </div>
                 {compDropdownOpen && (
                   <ul className="pl-4">
-
+                    {companyId?
+                    null
+                    :
                     <Link to="/register-companies">
                       <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
                         {t('leftSidebar.sections.dashboard.companies.registerCompanies')}
                       </li>
                     </Link>
-
+                    }
 
                     <Link to="/register-user">
                       <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>

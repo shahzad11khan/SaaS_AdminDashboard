@@ -8,3 +8,4 @@ export const Tag_Middle_Point ="/api/tag";
 export const Warehouse_Middle_Point ="/api/warehouse";
 export const Deliver_Middle_Point ="/api/orders";
 export const Companies_Middle_Point ="/api/companies";
+export const Permission_Middle_Point = "/api/permission"

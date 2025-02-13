@@ -123,7 +123,7 @@ const RegisteredUser = () => {
                             </Link>
                         </div>
                     </div>
-                    <div className="table-container overflow-x-auto">
+                    <div className=" table-container overflow-x-auto">
                         <GenericTable
                             headers={userData.headers}
                             data={displayData}

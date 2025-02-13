@@ -1,28 +1,109 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+// import { useSelector } from 'react-redux';
 
-const GenericTable = ({ headers, data, currentTheme, onEdit, onDelete }) => {
+const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, onDelete }) => {
 
   return (
-    <table className="border-collapse border border-gray-300 w-full">
+    <table className="border-collapse border border-gray-300 w-full overflow-x-auto">
       <thead>
-        <tr>
+        {/* top Header */}
+      <tr>
           {headers.map((header, index) => (
-            <th
-              key={index}
-              className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
-                } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
-                } border-b px-4 py-2`}
-            >
-              {header}
-            </th>
+                <th
+                  key={index}
+                  className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                    } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                    } border-b px-4 py-2`}
+                >
+                  {header}
+                </th> 
           ))}
-        </tr>
+          </tr>
+            {/* middle Header */}
+          {headers[3]==='permissions' && headers2.length>0 && <tr >
+          {headers.map((header, index) => (
+                <th
+                  key={index}
+                  className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                    } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                    } border-b px-4 py-2 w-1000px` }
+                >
+
+               <tr>
+                {header === "permissions" && headers2.map((el , idx )=>
+                  <th
+                  key={idx}
+                  className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                    } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                    }  text-center  w-[300px]`}>
+                      {console.log(el)}
+                      {el}
+                </th>
+                )}
+              </tr> 
+              </th>
+          ))}
+        </tr> } 
+
+          {/* bottom Header */}
+          {headers[3]==='permissions' &&  headers2.length>0 &&
+        <tr >
+          {headers.map((header, index) => (
+                <th
+                  key={index}
+                  className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                    } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                    } border-b px-4 py-2`}
+                >
+               <tr>
+                {header === "permissions" && headers2.map((el , idx )=>
+                  <th
+                  key={idx}
+                  className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                    } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                    }   `}>
+                        <tr>
+                        {el === 'productManager' && headers3.map((el , idx )=>
+                          <th
+                          key={idx}
+                          className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                            } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                            } px-2 `}>
+                              {el}
+                        </th>
+                        )}
+                        {el === 'stockManager' && headers3.map((el , idx )=>
+                          <th
+                          key={idx}
+                          className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                            } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                            } px-2 `}>
+                              {el}
+                        </th>
+                        )}
+                        {el === 'customerManager' && headers3.map((el , idx )=>
+                          <th
+                          key={idx}
+                          className={`${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'
+                            } ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                            } px-2 `}>
+                              {el}
+                        </th>
+                        )}
+                      </tr> 
+                </th>
+                )}
+              </tr> 
+              </th>
+          ))}
+        </tr>}
       </thead>
 
+      {/* tabel data */}
       <tbody>
-        {data.length > 0 ? (
+        {data?.length > 0 ? (
           data?.map((item, idx) => (
             <tr
               key={item.sno}
@@ -113,6 +194,29 @@ const GenericTable = ({ headers, data, currentTheme, onEdit, onDelete }) => {
                     </td>
                   );
                 }
+                
+                if (header === "permissions") {
+                  return <td key={index}
+                  className={` ${currentTheme === 'dark' ? 'text-white' : 'text-black'} text-center`}
+>
+                    {headers2.flatMap((subHeader , index) => 
+                    <td key={index}
+                    className='w-[450px] text-center '
+                    >
+                      {headers3.map((option, index) => (
+                      <td 
+                        key={`${subHeader}-${option}-${index}`}
+                        className={`px-3 py-2 ${currentTheme === 'dark' ? 'text-white' : 'text-black'} text-center`}
+                      >
+                        <td>
+                        {item[header]?.[subHeader]?.[option] ?'true':'false'}
+                        </td>
+                      </td>
+                    ))}
+                    </td>
+                  )}
+                  </td>
+                }
 
                 return (
                   <td
@@ -120,12 +224,11 @@ const GenericTable = ({ headers, data, currentTheme, onEdit, onDelete }) => {
                     className={`px-4 py-2 ${currentTheme === 'dark' ? 'text-white' : 'text-black'
                       } text-center`}
                   >
-                    {item[header]}
+                    {header === "permissions" ? null :item[header]}
                   </td>
                 );
               })}
             </tr>
-
           )))
           : (
             <tr>
@@ -141,6 +244,8 @@ const GenericTable = ({ headers, data, currentTheme, onEdit, onDelete }) => {
 };
 GenericTable.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  headers2: PropTypes.arrayOf(PropTypes.string).isRequired,
+  headers3: PropTypes.arrayOf(PropTypes.string).isRequired,
   data: PropTypes.arrayOf(PropTypes.object),
   currentTheme: PropTypes.oneOf(['light', 'dark']).isRequired,
   onEdit: PropTypes.func.isRequired,

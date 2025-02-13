@@ -1,11 +1,14 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux"; 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CompanyGraph = ({ registeredCompanies, totalCompanies, currentTheme }) => {
+    const state = useSelector(state => state)
+    console.log(state)
     const navigate = useNavigate();
 
     const remainingCompanies = totalCompanies - registeredCompanies;

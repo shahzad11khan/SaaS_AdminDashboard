@@ -4,7 +4,7 @@ import { Deliver_Middle_Point } from '../Components/api/middlePoints'
 import { Deliver_End_Point } from '../Components/api/endPoint'
 import fetchData from '../Components/api/axios'
 
-export const fetchCategories = createAsyncThunk("categories/fetchCategories", async () => {
+export const fetchDelivery = createAsyncThunk("categories/fetchCategories", async () => {
     const URL = baseUri + Deliver_Middle_Point + Deliver_End_Point;
     const method = "GET";
     const response = await fetchData(URL, method);
@@ -18,18 +18,19 @@ const deliverSlice = createSlice({
         loading: false,
         error: false,
     },
+    reducers:{},
 
     extraReducers: (builder) => {
-        builder.addCase(fetchCategories.pending, (state) => {
+        builder.addCase(fetchDelivery.pending, (state) => {
             state.loading = true;
         });
 
-        builder.addCase(fetchCategories.fulfilled, (state, action) => {
+        builder.addCase(fetchDelivery.fulfilled, (state, action) => {
             state.loading = false;
-            state.data = action.payload;
+            state.data = action.payload.deliveredOrders;
         });
 
-        builder.addCase(fetchCategories.rejected, (state, action) => {
+        builder.addCase(fetchDelivery.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });

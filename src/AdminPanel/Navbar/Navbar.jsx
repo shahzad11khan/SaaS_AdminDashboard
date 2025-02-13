@@ -40,6 +40,8 @@ const Navbar = () => {
   Navigate('/');
 
  }
+       
+const { companyName ,companyId } = useSelector((state) => state.selectedCompany );
   
   return (
     <div className='flex justify-between items-center '>
@@ -48,10 +50,17 @@ const Navbar = () => {
 
           <div className="logo ms-10 lg:ms-0">
             <Link to='/admin'>
+              {companyId?
+              <div className='flex items-center gap-2'>
+                {/* <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " /> */}
+                <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{companyName}</span>
+              </div>
+              :
               <div className='flex items-center gap-2'>
                 <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " />
                 <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{t('navbar.left.cName')}</span>
               </div>
+              }
             </Link>
           </div>
 
