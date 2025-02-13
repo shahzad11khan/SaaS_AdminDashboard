@@ -175,11 +175,18 @@ const LeftSideBar = () => {
                 </li>
               </Link>
 
-                    <Link to="/registered-byHand-order">
+              <Link to="/delivered-data">
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
+                Delivered
+                  {/* {t('leftSidebar.sections.management.items.onlineOrder')} */}
+                </li>
+              </Link>
+
+                    {/* <Link to="/registered-byHand-order">
                 <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
                   {t('leftSidebar.sections.management.items.byHandOrder')}
                 </li>
-              </Link>
+              </Link> */}
 
                   </ul>
                 )}

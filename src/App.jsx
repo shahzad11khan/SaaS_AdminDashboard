@@ -35,6 +35,7 @@ import RegisteredUser from './AdminPanel/Pages/Reports/RegisteredUser';
 import RegisteredByHandOrder from './AdminPanel/Pages/Reports/RegisteredByHandOrders';
 import RegisteredOnlineOrder from './AdminPanel/Pages/Reports/RegisterOnlineOrders';
 import CompaniesData from './AdminPanel/Pages/RegisterCompanie/CompaniesData';
+import DeliveredData from './AdminPanel/Pages/Reports/DeliveredData';
 import { useSelector } from 'react-redux';
 
 
@@ -79,7 +80,12 @@ function App() {
         <Route path="/registered-user" element={<RegisteredUser/>}/>
         <Route path="/registered-online-order" element={<RegisteredOnlineOrder/>}/>
         <Route path="/registered-byHand-order" element={<RegisteredByHandOrder/>}/> 
-        <Route path="/companies-data" element={<CompaniesData/>}/>  
+        <Route path="/companies-data" element={<CompaniesData/>}/> 
+        <Route path="/delivered-data" element={<DeliveredData/>}/> 
+
+
+
+         
 
       </Routes>
     </Router>

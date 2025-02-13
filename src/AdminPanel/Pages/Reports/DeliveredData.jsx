@@ -1,38 +1,47 @@
+import LeftSideBar from "../../LeftSideBar/LeftSideBar"
+import Navbar from "../../Navbar/Navbar"
+import { useSelector ,useDispatch } from 'react-redux';
+import DeleteModal from '../../Components/DeleteModal';
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import LeftSideBar from "../../LeftSideBar/LeftSideBar";
-import Navbar from "../../Navbar/Navbar";
+import { fetchOrder } from "../../Slice/OrderSlice";
 import GenericTable from "../../Components/Table/GenericTable";
-import { fetchCompanies } from "../../Slice/CompanySlice";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 
-const RegisteredCompanies = () => {
+
+const Delever = () => {
+    const dispatch =useDispatch();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const currentTheme = useSelector((state => state.theme.theme))
     const [rowToShow, setRowsToShow] = useState(5);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [initialCount, setInitialCount] = useState(0);
+    const [searchQuery, setSearchQuery] = useState("")
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const currentTheme = useSelector((state) => state.theme.theme);
-    const dispatch = useDispatch();
-    const { data: companiesData, loading, error } = useSelector((state) => state.companies);
-    
-   
+    const [initialCount, setInitialCount] = useState(0);
 
-    useEffect(() => {
-        dispatch(fetchCompanies());
-    }, [dispatch]);
+
+    const { data: deliverData, loading, error } = useSelector(
+        (state) => state.deliver
+      );
 
     const handleRowChange = (e) => {
-        setRowsToShow(parseInt(e.target.value, 10));
-    };
+        setRowsToShow(parseInt(e.target.value, 10))
+    }
 
     const handleSearchQuery = (e) => {
-        setSearchQuery(e.target.value.toLowerCase());
-    };
+        setSearchQuery(e.target.value.toLoweCase())
+    }
 
+    const handleEdit = ()=>{
+        console.log("edit function executed")
+    }
+
+    const handleDelete = () =>{
+     setIsDeleteModalOpen(true)
+    }
+    
     const showNext = () => {
         if (initialCount + rowToShow < filterData.length) {
             setInitialCount(initialCount + rowToShow);
@@ -46,22 +55,24 @@ const RegisteredCompanies = () => {
     };
 
 
-    const filterData = companiesData.filter((companies) =>{
-        const companiesDate = new Date(companies.createdAt.split("T")[0]);
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        const dateRange = (!startDate || companiesDate >= start) && (!endDate || companiesDate <= end);
-      
-    const matchSearchQuery =  companies.companyName.toLowerCase().includes(searchQuery) ||
-      companies.ownerName.toLowerCase().includes(searchQuery) ||
-      companies.address.toLowerCase().includes(searchQuery) ||
-      companies.registrationNumber.toLowerCase().includes(searchQuery)
+   useEffect(()=>{
+    dispatch(fetchOrder())
+    console.log(fetchOrder)
+   },[dispatch])
 
-      return dateRange & matchSearchQuery;
+    
+   const filterData =deliverData.filter((deliver)=>{
+    const deliverDate = new Date(deliver.createdAt.split("T")[0]);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const dateRange = (!startDate || deliverDate >= start) && (!endDate || deliverDate <= end);
+   
+   const matchSearchQuery= deliver.deliverStatus.toLoweCase().includes(searchQuery)
+   return dateRange & matchSearchQuery;
 
-});
-  const displayData = filterData.slice(initialCount, initialCount + rowToShow);
+   })
 
+   const displayData = filterData.slice(0,rowToShow)
 
   const handlePrint = () => {
    
@@ -69,18 +80,13 @@ const RegisteredCompanies = () => {
     const doc = new jsPDF();
 
     doc.text("Company Name", 14, 8);
-    doc.text("Registered Companies", 14, 15);
+    doc.text("Delivered Order", 14, 15);
 
-    const tableHeaders = [["SNo", "C.Name", "Email", "Owner Name", "RegNo", "Created At", "Updated At"]];
+    const tableHeaders = [["SNo"]];
 
-    const tableData = companiesData.map((company, index) => [
+    const tableData = deliverData.map((company, index) => [
         index + 1,
-        company.companyName,
-        company.email,
-        company.ownerName,
-        company.registrationNumber,
-        company.createdAt.split("T")[0],
-        company.updatedAt.split("T")[0],
+      
     ]);
 
     doc.autoTable({
@@ -89,39 +95,40 @@ const RegisteredCompanies = () => {
         startY: 20
     });
 
-    doc.save("RegisteredCompanies.pdf");
+    doc.save("DeliveredOrders.pdf");
 };
-
-
     return (
         <div>
+
+
             <Navbar />
-            <div className='flex flex-col lg:flex-row'>
+            <div className='flex flex-col lg:flex-row '>
                 <LeftSideBar />
-                <div className='flex flex-col lg:ml-10 w-full lg:w-[1000px] gap-3'>
-                    <div className="para">
-                        <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Company Registration</p>
+                <div className='flex flex-col  lg:ml-10 w-full lg:w-[1000px] gap-3 '>
+                    <div className="para ">
+                        <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Deliver Orders Details</p>
                     </div>
-                    <div className="info flex flex-col lg:flex-row justify-between items-center gap-2 mt-5">
+                    <div className="info flex flex-col lg:flex-row justify-between  items-center gap-2 mt-5">
                         <div className='flex flex-col lg:flex-row gap-2 items-center w-full lg:w-[auto]'>
                             <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <span>Show:</span>
                                 <select
                                     className={`rounded-md px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                                    value={rowToShow}
                                     onChange={handleRowChange}
+                                    value={rowToShow}
                                 >
-                                    {[...Array(10)].map((_, i) => (
-                                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                    {[...Array(10).keys()].map(num => (
+                                        <option key={num + 1} value={num + 1}>{num + 1}</option>
                                     ))}
                                 </select>
                             </div>
                             <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
-                                <span>Entries:</span>
+
+                                <span >Entries :</span>
                                 <input
                                     type="text"
-                                    placeholder="Search by Company Name"
-                                    className={`w-44 rounded-md px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    placeholder="Search by Shipping Address"
+                                    className={`w-40 rounded-md px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
                                     onChange={handleSearchQuery}
                                 />
                             </div>
@@ -158,24 +165,28 @@ const RegisteredCompanies = () => {
                         </div>
                         <div className='flex gap-2'>
                             <Link to="/admin">
-                                <button className={`px-2 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Back</button>
+                                <button className={`px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                                    Back
+                                </button>
                             </Link>
-                          
-                                <button onClick={handlePrint} className={`px-2 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Print</button>
-                        
+                            <button onClick={handlePrint} className={`px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Print</button>
+
+                           
                         </div>
+
                     </div>
                     <div className="table-container overflow-x-auto">
-                        {loading && <p>Loading...</p>}
-                        {error && <p>Error: {error}</p>}
-                        <GenericTable
-                            headers={['Sno', 'companyName', 'email', 'ownerName', 'registrationNumber','createdAt','updatedAt']}
-                            data={displayData}
-                            currentTheme={currentTheme}
-                          
-                        />
-                    </div>
-                    <div className="flex justify-center gap-1">
+                               {loading && <p>Loading...</p>}
+                               {error && <p>Error: {error}</p>}
+                               <GenericTable
+                                 headers={['SNo',  'createdAt', 'updatedAt', 'Actions']}
+                                 data={displayData}
+                                 currentTheme={currentTheme}
+                                 onEdit={handleEdit}
+                                 onDelete={handleDelete}
+                               />
+                             </div>
+                             <div className="flex justify-center gap-1">
                             <button
                                 onClick={showPrevious}
                                 className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
@@ -193,10 +204,15 @@ const RegisteredCompanies = () => {
                             </button>
                         </div>
                 </div>
-              
-            </div>
-        </div>
-    );
-};
 
-export default RegisteredCompanies;
+                <DeleteModal
+                    isOpen={isDeleteModalOpen}
+                    onClose={() => setIsDeleteModalOpen(false)}
+                />
+            </div>
+
+        </div>
+    )
+}
+
+export default Delever
