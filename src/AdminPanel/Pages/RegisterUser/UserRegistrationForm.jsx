@@ -5,11 +5,17 @@ import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
-
+import defaultPic  from '../../../assets/default user/defaultUser.png';
+import { baseUri } from "../../Components/api/baseUri";
+import { User_Middle_Point } from "../../Components/api/middlePoints";
+import { Add_User_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
+import { toast } from "react-toastify";
 
 const UserRegistrationForm = () => {
-  const currentTheme = useSelector((state=>state.theme.theme))
+  const {permissions} = useSelector(state => state.permission)
+  const currentTheme = useSelector((state=>state.theme.theme)) 
+  const [permission , setPermission] = useState([])
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -20,11 +26,11 @@ const UserRegistrationForm = () => {
     permission: "",
     role: "user",
     status: "inactive",
-    userLogo :null
+    userLogo :''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordErrorMessage,setPasswordErrorMessage]=useState("");
+  // const [passwordErrorMessage,setPasswordErrorMessage]=useState("");
 
   const confirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword)
@@ -34,18 +40,31 @@ const UserRegistrationForm = () => {
     setShowPassword(!showPassword);
   }
   
+  useEffect(()=>{
+    let arr = permissions?.flatMap(el => Object.keys(el.permissions || {})) || [];
+    setPermission( [...new Set(arr)] )
+  },[permissions])
 
   const location = useLocation();
+  const [previewUrl , setPreviewUrl] = useState(defaultPic)
 
   const handleChange = (e) => {
     const { name, value, type, checked ,files } = e.target;
     if(type==='file'){
-      setFormData(
-        {
-          ...formData,
-          [name]:files[0]
-        }
-      )
+
+      const file = files[0];
+      if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result); 
+      };
+
+        reader.readAsDataURL(file); 
+        setFormData({ ...formData, [name]: file});
+
+      }
+      return
     }
     setFormData(
       {
@@ -54,45 +73,53 @@ const UserRegistrationForm = () => {
     
     });
 
-    if(name === "password"){
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-      if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
-        setPasswordErrorMessage("Passwords do not match!");
-        console.log("password not match ")
-      }
-    }
-
-
   }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
-    console.log("Form Submitted:", formData);
-    alert("User registered successfully!");
-    setFormData({
-      fullName: "",
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      dateOfBirth: "",
-      permission: "",
-      role: "user",
-      status: "inactive",
-      userLogo:null
+    const Data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null) {
+        Data.append(key, formData[key]);
+      }
     });
+
+    try{
+      const URL = baseUri + User_Middle_Point + Add_User_End_Point ;
+      const method = "POST" ;
+      const response = await fetchData(URL , method , Data );
+      console.log(formData)
+      if(response.status === 200){
+        console.log(response.data)
+      }else{
+        console.log(response.data)
+        toast.error(response?.data?.message )
+        toast.error(response?.data?.error)
+      }
+    }catch(error){
+      console.log(error)
+    }
+    // alert("User registered successfully!");
+    // setFormData({
+    //   fullName: "",
+    //   username: "",
+    //   email: "",
+    //   password: "",
+    //   confirmPassword: "",
+    //   dateOfBirth: "",
+    //   permission: "",
+    //   role: "user",
+    //   status: "inactive",
+    //   userLogo:null,
+    //   refreshToken:null
+    // });
   };
 
   useEffect(() => {
-    console.log(location?.state?.user)
     if (location?.state?.user) {
       setFormData({
         fullName:location.state.user.fullName,
@@ -255,15 +282,12 @@ const UserRegistrationForm = () => {
                         onClick={confirmPasswordVisibility}
                       />
                    
-                        <p className="text-red-700 text-sm">{passwordErrorMessage}</p>
+                        {/* <p className="text-red-700 text-sm">{passwordErrorMessage}</p> */}
                    
 
                     </div>
                   </div>
 
-
-
-           
                   <div className="flex flex-col lg:flex-row justify-between mt-3">
                   <div className="w-full lg:w-[350px]">
                       <label
@@ -283,7 +307,7 @@ const UserRegistrationForm = () => {
                         <option value="" disabled>
                           Select a role
                         </option>
-                        <option value="superAdmin">Super Admin</option>
+                        {/* <option value="superAdmin">Super Admin</option> */}
                         <option value="admin">Admin</option>
                         <option value="manager">Manager</option>
                         <option value="user">User</option>
@@ -297,7 +321,25 @@ const UserRegistrationForm = () => {
                       >
                         Permission 
                       </label>
-                      <input
+
+                      <select
+                        name="permission"
+                        id="permission"
+                        value={formData.permission}
+                        onChange={handleChange}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'} `}
+                        required
+                      >
+                        <option value="" disabled>
+                          Select permission
+                        </option>
+                        {/* <option value="superAdmin">Super Admin</option> */}
+                        {permission.map(el=>
+                          <option key={el} value={el}>{el}</option>
+                        )}
+
+                      </select>
+                      {/* <input
                         type="text"
                         name="permission"
                         id="permission"
@@ -306,7 +348,7 @@ const UserRegistrationForm = () => {
                         className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
                         placeholder="Enter permission"
                       
-                      />
+                      /> */}
                     </div>
                   </div>
 
@@ -318,7 +360,7 @@ const UserRegistrationForm = () => {
                       >
                         Image 
                       </label>
-                      <div className="mt-2">
+                      <div className="flex justify-around items-center  mt-2">
                       <label htmlFor="userLogo"
                       className={`cursor-pointer inline-block px-4 py-2 rounded-md border ${currentTheme === 'dark' ? 'bg-[#404040] text-white' : 'bg-[#F0FFF8] text-black'} focus:outline-none`}
 
@@ -329,11 +371,12 @@ const UserRegistrationForm = () => {
                         type="file"
                         name="userLogo"
                         id="userLogo"
-                        value={formData.userLogo}
+                        // value={formData.userLogo}
                         onChange={handleChange}
                        className="hidden"
                 
                       />
+                      <img className="h-[120px] w-[120px] rounded-full object-cover" src={previewUrl} alt="user" />
                        </div>
                 
                     </div>
@@ -373,22 +416,18 @@ const UserRegistrationForm = () => {
                   <Link to="/register-user">
                   <button
                       type="button"
-                      className={`px-4 py-2 rounded  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300`}
-                    
+                      className={`px-4 py-2 rounded  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300`}        
                     >
                       Back
                     </button>
-                   
+            
                    </Link>
-
                       <button
                         type="submit"
                         className={`px-4 py-2 rounded  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300`}>
                         Save
                       </button>
                   </div>
-
-          
             </div>
           </form>
         </div>

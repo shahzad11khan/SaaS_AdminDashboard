@@ -35,9 +35,9 @@ const Registeruser = () => {
             const url = baseUri + User_Middle_Point + User_End_Point;
             const method = "GET";
             const response = await fetchData(url, method);
-            dispatch(setLoading());
+            console.log(response)
             if(companyId){
-               let  filterdData =  response.users.filter(item => companyId  === item.companyId?._id);
+               let  filterdData =  response.data.users.filter(item => companyId  === item.companyId?._id);
                setUserData((prevState) => ({
                 ...prevState,
                 data: filterdData,
@@ -45,9 +45,10 @@ const Registeruser = () => {
             }else{
                 setUserData((prevState) => ({
                     ...prevState,
-                    data: response.users,
+                    data: response.data.users,
                 }));
             }
+            dispatch(setLoading());
         } catch (error) {
             console.log(error);
         }
@@ -154,13 +155,13 @@ const Registeruser = () => {
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
-                        <GenericTable
+                        {userData && <GenericTable
                             headers={userData.headers}
                             data={displayData}
                             currentTheme={currentTheme}
                             onEdit={handleEdit}
                             onDelete={handleDelete}
-                        />
+                        />}
                     </div>
                     <div className="pages ">
                         <div className="flex justify-center gap-1">

@@ -83,11 +83,6 @@ function App() {
         <Route path="/companies-data" element={<CompaniesData/>}/>  
         <Route path="/companies-data" element={<CompaniesData/>}/> 
         <Route path="/delivered-data" element={<DeliveredData/>}/> 
-
-
-
-         
-
       </Routes>
     </Router>
     

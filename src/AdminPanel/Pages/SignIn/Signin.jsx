@@ -55,21 +55,15 @@ const SignIn = () => {
     const url = baseUri + Login_Middle_Point + Login_End_Point;
     const method = "POST";
 
-    try {
-      const data = await fetchData(url, method, form);
-      dispatch(setLoading());
-      if (data.response?.status === 400) {
-        toast.error(data.response.data.message);
-        navigate("/");
-      } else {
-        console.log(data.response?.message);
-        navigate("/admin");
+      const response = await fetchData(url, method, form);
+      if(response.status === 200 ){
+        localStorage.setItem('token' , response.data.token)
+        navigate("/admin", {state: {message:response.data.message}});
+      }else{
+        toast.error(response.data.message)
       }
-    } catch (error) {
-      dispatch(setLoading());
-      console.error(error);
+      dispatch(setLoading())
 
-    }
   };
 
   return (
@@ -113,7 +107,7 @@ const SignIn = () => {
                     placeholder={t('signInPage.middle.emailPlaceholder')}
                     className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
                     onChange={handleOnChange}
-
+                    required
 
                   />
                 </div>
@@ -132,7 +126,7 @@ const SignIn = () => {
                     placeholder={t('signInPage.middle.passwordPlaceholder')}
                     onChange={handleOnChange}
                     className="relative w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-[#219b53]"
-
+                    required
                   />
                   <FontAwesomeIcon
                     icon={showPassword ? faEyeSlash : faEye}
@@ -143,7 +137,6 @@ const SignIn = () => {
 
                 <button
                   type="submit"
-
                   className="w-full bg-[#F0FFF8] py-2 rounded-md font-semibold transition border-2"
                 >
                   {t('signInPage.middle.signIn')}
