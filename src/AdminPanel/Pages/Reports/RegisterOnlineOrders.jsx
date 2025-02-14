@@ -1,15 +1,19 @@
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import { useSelector, useDispatch } from 'react-redux';
 import GenericTable from "../../Components/Table/GenericTable";
 import { fetchOrder } from "../../Slice/OrderSlice";
 import { useState, useEffect } from "react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 
 const RegisteredOnlineOrder = () => {
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
 
     const currentTheme = useSelector((state => state.theme.theme))
@@ -26,15 +30,51 @@ const RegisteredOnlineOrder = () => {
     }
 
 
-   
+
     useEffect(() => {
         dispatch(fetchOrder());
 
     }, [dispatch]);
 
+    const pdfHeaders = ["SNo", "Created At", "Order Status", "Payment Method", "Shipping Address", "Total Amount"]
+
+    const handlePrint = () => {
+        const doc = new jsPDF();
+
+        doc.text("Company Name", 14, 8);
+        doc.text("Online Orders", 14, 15);
+
+        const tableHeaders = pdfHeaders.map(header => header.toUpperCase());
+
+        const tableData = displayData.map((order, index) => [
+            index + 1,
+            order.createdAt.split("T")[0],
+            order.orderStatus,
+            order.paymentMethod,
+            order.shippingAddress,
+            order.totalAmount
+        ]);
+
+        doc.autoTable({
+            head: [tableHeaders],
+            body: tableData,
+            startY: 20
+        });
+
+
+        doc.save("OnlineOrders.pdf");
+    };
+
+
+
     const filterData = orderData.filter((order) => {
-        console.log(orderData)
-        return order.orderStatus.toLowerCase().includes(searchQuery)
+        const orderDate = new Date(order.createdAt.split("T")[0]);
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const dateRange = (!startDate || orderDate >= start) && (!endDate || orderDate <= end);
+
+        const matchSearchQuery = order.orderStatus.toLowerCase().includes(searchQuery)
+        return dateRange & matchSearchQuery;
 
     })
     const displayData = filterData.slice(0, rowToShow)
@@ -55,7 +95,7 @@ const RegisteredOnlineOrder = () => {
                             <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <span>Show:</span>
                                 <select
-                                    className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    className={`rounded-md px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
                                     value={rowToShow}
                                     onChange={handleRowChange}
                                 >
@@ -77,23 +117,55 @@ const RegisteredOnlineOrder = () => {
                                 <input
                                     type="text"
                                     placeholder="Search by Order Status"
-                                    className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    className={`w-44 rounded-md px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
                                     onChange={handleSearchQuery}
                                 />
+                            </div>
+                            <div className="flex flex-row items-center gap-2">
+                                <label htmlFor="startDate">S.Date:</label>
+                                <input
+                                    name='startDate'
+                                    type="date"
+                                    placeholder="Start Date"
+                                    className={`w-8 lg:w-32 rounded-md px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                />
+                                <label htmlFor="endDate">E.Date:</label>
+                                <input
+                                    name='endDate'
+                                    type="date"
+                                    placeholder="End Date"
+                                    className={`w-8 lg:w-32 rounded-md px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                />
+
+                                <button
+                                    onClick={() => {
+                                        setStartDate('');
+                                        setEndDate('');
+                                    }}
+                                    className={`px-1 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                                >
+                                    Reset
+                                </button>
                             </div>
                         </div>
                         <div className='flex gap-2'>
                             <Link to="/admin">
-                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                                <button className={`px-2 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
                                     Back
                                 </button>
                             </Link>
 
-                            <Link to="">
-                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                                    Print
-                                </button>
-                            </Link>
+
+                            <button
+                                onClick={handlePrint}
+                                className={`px-2 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                                Print
+                            </button>
+
                         </div>
 
                     </div>
@@ -106,7 +178,7 @@ const RegisteredOnlineOrder = () => {
                             headers={['Sno', 'createdAt', 'orderStatus', 'paymentMethod', 'shippingAddress', 'totalAmount', 'updatedAt']}
                             data={displayData}
                             currentTheme={currentTheme}
-                          
+
 
                         />
 
@@ -129,7 +201,7 @@ const RegisteredOnlineOrder = () => {
                     </div>
                 </div>
 
-               
+
             </div>
 
         </div>

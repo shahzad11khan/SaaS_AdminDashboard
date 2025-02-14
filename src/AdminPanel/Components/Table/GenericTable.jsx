@@ -188,7 +188,7 @@ const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, 
                   return (
                     <td
                       key={index}
-                      className={`px-4 py-2 ${currentTheme === 'dark' ? 'text-white' : 'text-black'} text-center`}
+                      className={`px-4 py-2 whitespace-nowrap ${currentTheme === 'dark' ? 'text-white' : 'text-black'} text-center`}
                     >
                       {new Date(item[header]).toISOString().split("T")[0]}
                     </td>
