@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { baseUri } from "../../Components/api/baseUri";
@@ -14,11 +14,10 @@ import defaultPic  from '../../../assets/default user/defaultUser.png';
 import { toast, ToastContainer } from "react-toastify";
 
 
-
 const CompanyRegistrationForm = () => {
   let navigatae = useNavigate()
   const currentTheme = useSelector((state=>state.theme.theme))
-  // const location = useLocation();
+  const location = useLocation();
   const [view , setView] = useState(false)
   const [formData, setFormData] = useState({
     companyName: "",
@@ -41,7 +40,6 @@ const CompanyRegistrationForm = () => {
   const [next, setnext] = useState(0)
   const businessTypeOptions = ["Retail", "Service", "Manufacturing", "Wholesale", "Other"];
   const [previewUrl , setPreviewUrl] = useState(defaultPic)
-
   const handleChange = (e) => {
     const { name, value , type , files} = e.target;
     console.log(name, value , type , files)
@@ -86,10 +84,10 @@ const CompanyRegistrationForm = () => {
     try {
       const url = baseUri + Companies_Middle_Point + Create_Companie_End_point;
       const method = "POST";
-      const response = await fetchData(url, method , Data);
+      const response = await fetchData(url, method , Data );
       console.log(response)
-      toast.error(response?.data?.error|| "something went worng with regester company")
-      toast.success(response?.data?.message )
+      // toast.error(response?.data?.error|| "something went worng with regester company")
+      // toast.success(response?.data?.message )
     } catch (error) {
       toast.error(error || "something went worng with regester company")
       console.log(error);
@@ -114,48 +112,53 @@ const CompanyRegistrationForm = () => {
     //   businessAddress: "",
     // });
   };
-//   useEffect(() => {
-//     if (location?.state?.companies) {
-//         console.log("Companies Data:", location.state.companies); 
-//         setFormData({
-//             companyName: location.state.companies.companyName ,
-//             companyAddress: location.state.companies.address ,
-//             email: location.state.companies.email , 
-//             confirmPassword: location.state.companies.confirmPassword ,
-//             password: location.state.companies.confirmPassword ,
-//             registrationNumber: location.state.companies.registrationNumber ,
-//             phoneNumber: location.state.companies.ownerPhoneNumber,
-//             vatNumber: location.state.companies.VatNumber ,
-//         });
-//     }
-// }, [location.state]);
-
+  useEffect(() => {
+    if (location?.state?.companies) {
+      let {companies} =location.state;         setFormData({
+            companyName: companies.companyName ,
+            companyAddress: companies.address ,
+            email: companies.email , 
+            confirmPassword: companies.confirmPassword ,
+            password: companies.confirmPassword ,
+            registrationNumber: companies.registrationNumber ,
+            phoneNumber: companies.ownerPhoneNumber,
+            VatNumber: companies.VatNumber ,
+            address:companies.address,
+            ownerPhoneNumber: companies.ownerPhoneNumber,
+            isActive:companies.isActive,
+            companyLogo:companies.companyLogo,
+        });
+    }
+    if(location?.state?.companies?.companyLogo){
+      setPreviewUrl(location.state.companies.companyLogo)
+    }
+}, [location.state]);
   return (
     <>
-            <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          closeButton={false}
-          limit={3}
-          toastStyle={{
-            fontSize: '11px',
-            fontFamily: 'Arial, sans-serif',
-            color: 'white',
-            width: '220px',
-            minHeight: '40px',
-            padding: '8px 12px',
-            borderRadius: '4px',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-            transition: 'all 0.8s ease',
-          }}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        closeButton={false}
+        limit={3}
+        toastStyle={{
+          fontSize: '11px',
+          fontFamily: 'Arial, sans-serif',
+          color: 'white',
+          width: '220px',
+          minHeight: '40px',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+          transition: 'all 0.8s ease',
+        }}
         />
       <Navbar />
       <div className="flex flex-col lg:flex-row ">
@@ -477,7 +480,6 @@ const CompanyRegistrationForm = () => {
                     </div>
                   </div>
                   <div className="flex flex-col lg:flex-row justify-between mt-5">
-                   
                         {/* active  */}
                         {/* company Logo */}
                     <div className="w-full lg:w-[350px] flex items-center mt-2 ">
@@ -486,9 +488,9 @@ const CompanyRegistrationForm = () => {
                           type="radio"
                           name="isActive"
                           value={true}
-                          checked={formData.isActive === "true"}
+                          checked={JSON.parse(formData.isActive) == true}
                           onChange={handleChange}
-                          className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                          className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
                         <span className="ml-2 text-sm font-medium  ">
                           Active
@@ -499,9 +501,9 @@ const CompanyRegistrationForm = () => {
                           type="radio"
                           name="isActive"
                           value={false}
-                          checked={formData.isActive === "false"}
+                          checked={JSON.parse(formData.isActive) == false}
                           onChange={handleChange}
-                          className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
+                          className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
                         <span className="ml-2 text-sm font-medium  ">
                           InActive
@@ -511,23 +513,22 @@ const CompanyRegistrationForm = () => {
 
                     <div className=" flex w-full gap-5 justify-between items-center lg:w-[350px]">
                       <div className="w-[50%]">
-                      <label
-                        htmlFor="companyLogo"
-                        className="block text-sm font-medium  "
-                      >
-                        Company Logo <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="file"
-                        name="companyLogo"
-                        id="companyLogo"
-                        onChange={handleChange}
-                        className={`w-full mt-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                        required
-                      />
+                        <label
+                          htmlFor="companyLogo"
+                          className="block text-sm font-medium  "
+                        >
+                          Company Logo <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="file"
+                          name="companyLogo"
+                          id="companyLogo"
+                          onChange={handleChange}
+                          className={`w-full mt-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                          required
+                        />
                       </div>
-                      <img className="h-[120px] w-[120px] rounded-full object-cover" src={ previewUrl} alt="user" />
-
+                      <img className="h-[120px] w-[120px] rounded-full object-cover" src={previewUrl} alt="user" />
                     </div>
                   </div>
            

@@ -3,12 +3,14 @@ import { baseUri } from  '../Components/api/baseUri'
 import { Companies_Middle_Point } from '../Components/api/middlePoints'
 import fetchData from '../Components/api/axios'
 
-export const fetchCompanies = createAsyncThunk("companies/fetchCompanies", async () => {
+export const fetchCompanies = createAsyncThunk("companies/fetchCompanies", async (_,thunkApi) => {
     const URL = baseUri + Companies_Middle_Point;
     const method = "GET";
     const response = await fetchData(URL, method);
-    console.log(response)
-    return response;
+    if(response.status !== 200){
+        return thunkApi.rejectWithValue('something went wrong')
+    }
+    return response.data;
 });
 
 const companySlice = createSlice({

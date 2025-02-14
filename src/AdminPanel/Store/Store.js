@@ -8,6 +8,7 @@ import warehouseReducer from '../Slice/WarehouseSlice'
 import deliverReducer from '../Slice/DeliverSlice'
 import companyReducer from '../Slice/CompanySlice'
 import selectedCompanySlice from '../Slice/SelectedCompanySlice'
+import permissionSlice from '../Slice/PermissionSlice'
 
  const Store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ import selectedCompanySlice from '../Slice/SelectedCompanySlice'
     deliver :deliverReducer,
     companies:companyReducer,
     selectedCompany:selectedCompanySlice,
+    permission:permissionSlice,
   },
 })
 
