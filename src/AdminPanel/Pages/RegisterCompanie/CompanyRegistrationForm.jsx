@@ -1,15 +1,25 @@
-import { useState ,useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { baseUri } from "../../Components/api/baseUri";
+import { Companies_Middle_Point } from "../../Components/api/middlePoints";
+import { Create_Companie_End_point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
+import defaultPic  from '../../../assets/default user/defaultUser.png';
+import { toast, ToastContainer } from "react-toastify";
 
 
 
 const CompanyRegistrationForm = () => {
+  let navigatae = useNavigate()
   const currentTheme = useSelector((state=>state.theme.theme))
-const location = useLocation();
+  // const location = useLocation();
+  const [view , setView] = useState(false)
   const [formData, setFormData] = useState({
     companyName: "",
     registrationNumber: "",
@@ -17,82 +27,148 @@ const location = useLocation();
     address: "",
     password: "",
     confirmPassword: "",
-    companyAddress: "",
     phoneNumber: "",
-    vatNumber: "",
+    VatNumber: "",
+    ownerEmail: "",
     ownerName: "",
-    owneremail: "",
-    ownerphoneNumber: "",
+    ownerPhoneNumber: "",
     businessLicense: "",
-    taxId: "",
     businessType: "",
     businessAddress: "",
+    isActive:"",
+    companyLogo:"",
   });
   const [next, setnext] = useState(0)
   const businessTypeOptions = ["Retail", "Service", "Manufacturing", "Wholesale", "Other"];
-
+  const [previewUrl , setPreviewUrl] = useState(defaultPic)
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value , type , files} = e.target;
+    console.log(name, value , type , files)
+    if(type === 'file'){
+      // console.log(files[0])
+       const file = files[0];
+       const reader = new FileReader();
+ 
+       reader.onloadend = () => {
+         setPreviewUrl(reader.result); 
+       };
+ 
+       if (file) {
+         reader.readAsDataURL(file); 
+       }
+       setFormData({ ...formData, [name]: file});
+    }else{
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleNext = (e)=>{
     e.preventDefault();
-
+    console.log(formData)
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      // console.log('password and confirm password does not matched')
+      toast.error("password and confirm password does not matched");
       return;
     }
+    setnext((prevNext) => prevNext + 1)
+  }
 
-    setFormData({
-      companyName: "",
-      registrationNumber: "",
-      email: "",
-      address: "",
-      password: "",
-      companyAddress: "",
-      phoneNumber: "",
-      confirmPassword: "",
-      vatNumber: "",
-      ownerName: "",
-      owneremail: "",
-      ownerphoneNumber: "",
-      businessLicense: "",
-      taxId: "",
-      businessType: "",
-      businessAddress: "",
+  const handleSubmit = async(e) => {
+    e.preventDefault(); 
+    const Data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null) {
+        Data.append(key, formData[key]);
+      }else{console.log(key)}
     });
+
+    try {
+      const url = baseUri + Companies_Middle_Point + Create_Companie_End_point;
+      const method = "POST";
+      const response = await fetchData(url, method , Data);
+      console.log(response)
+      toast.error(response?.data?.error|| "something went worng with regester company")
+      toast.success(response?.data?.message )
+    } catch (error) {
+      toast.error(error || "something went worng with regester company")
+      console.log(error);
+  }
+
+    // setFormData({
+    //   companyName: "",
+    //   registrationNumber: "",
+    //   email: "",
+    //   address: "",
+    //   password: "",
+    //   companyAddress: "",
+    //   phoneNumber: "",
+    //   confirmPassword: "",
+    //   vatNumber: "",
+    //   ownerName: "",
+    //   owneremail: "",
+    //   ownerphoneNumber: "",
+    //   businessLicense: "",
+    //   taxId: "",
+    //   businessType: "",
+    //   businessAddress: "",
+    // });
   };
-  useEffect(() => {
-    if (location?.state?.companies) {
-        console.log("Companies Data:", location.state.companies); 
-        setFormData({
-            companyName: location.state.companies.companyName ,
-            companyAddress: location.state.companies.address ,
-            email: location.state.companies.email , 
-            confirmPassword: location.state.companies.confirmPassword ,
-            password: location.state.companies.confirmPassword ,
-            registrationNumber: location.state.companies.registrationNumber ,
-            phoneNumber: location.state.companies.ownerPhoneNumber,
-            vatNumber: location.state.companies.VatNumber ,
-        });
-    }
-}, [location.state]);
+//   useEffect(() => {
+//     if (location?.state?.companies) {
+//         console.log("Companies Data:", location.state.companies); 
+//         setFormData({
+//             companyName: location.state.companies.companyName ,
+//             companyAddress: location.state.companies.address ,
+//             email: location.state.companies.email , 
+//             confirmPassword: location.state.companies.confirmPassword ,
+//             password: location.state.companies.confirmPassword ,
+//             registrationNumber: location.state.companies.registrationNumber ,
+//             phoneNumber: location.state.companies.ownerPhoneNumber,
+//             vatNumber: location.state.companies.VatNumber ,
+//         });
+//     }
+// }, [location.state]);
 
   return (
     <>
+            <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          closeButton={false}
+          limit={3}
+          toastStyle={{
+            fontSize: '11px',
+            fontFamily: 'Arial, sans-serif',
+            color: 'white',
+            width: '220px',
+            minHeight: '40px',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            transition: 'all 0.8s ease',
+          }}
+        />
       <Navbar />
       <div className="flex flex-col lg:flex-row ">
         <LeftSideBar />
         <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme=== 'dark' ?'text-white':'text-gray-600'} `}>
-          <form onSubmit={handleSubmit} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>
             <h2 className={`text-2xl font-bold mb-6 text-center ${currentTheme=== 'dark' ?'text-white':'text-gray-700'} `}>Company Registration</h2>
             <div>
               {next === 0 ? (
                 <>
+                <form onSubmit={handleNext} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>
+
+                {/* comppanyName & emailAddress inputs */}
                   <div className="flex flex-col lg:flex-row justify-between">
-                   
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="companyName"
@@ -111,14 +187,13 @@ const location = useLocation();
                         required
                       />
                     </div>
-
             
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="email"
                         className="block text-sm font-medium  "
                       >
-                        Email Address <span className="text-red-500">*</span>
+                        Company Email  <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="email"
@@ -132,50 +207,56 @@ const location = useLocation();
                       />
                     </div>
                   </div>
-
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
-                    <div className="flex gap-2 w-full lg:w-[350px]">
                   
-                      <div className="w-[45%] lg:w-[170px]">
-                        <label
-                          htmlFor="password"
-                          className="block text-sm font-medium  "
-                        >
-                          Password <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="password"
-                          name="password"
-                          id="password"
-                          value={formData.password}
-                          onChange={handleChange}
-                          className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                          placeholder="Enter password"
-                          required
-                        />
-                      </div>
-
-                      <div className="w-[45%] lg:w-[170px]">
-                        <label
-                          htmlFor="confirmPassword"
-                          className="block text-sm font-medium  "
-                        >
-                          Confirm Password <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="password"
-                          name="confirmPassword"
-                          id="confirmPassword"
-                          value={formData.confirmPassword}
-                          onChange={handleChange}
-                          className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                          placeholder="Confirm password"
-                          required
-                        />
-                      </div>
+                  {/* password , confirmPasword inputs */}
+                  <div className="flex flex-col lg:flex-row justify-between mt-5">     
+                    <div className="w-full lg:w-[350px]">
+                      <label
+                        htmlFor="password"
+                        className="block text-sm font-medium  "
+                      >
+                        Password <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type={view? 'text':'password'}
+                        name="password"
+                        id="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        placeholder="Enter password"
+                        required
+                      />
                     </div>
 
-                    <div className="w-full lg:w-[350px]">
+                    <div className="w-full lg:w-[350px] relative">
+                      <label
+                        htmlFor="confirmPassword"
+                        className="block text-sm font-medium  "
+                      >
+                        Confirm Password <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type={view? 'text':'password'}
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        placeholder="Confirm password"
+                        required
+                      />
+                      <FontAwesomeIcon
+                        icon={!view ? faEyeSlash : faEye}
+                        className="absolute right-3 top-10 text-gray-500 cursor-pointer"
+                        onClick={()=>setView(!view)}
+                      />                      
+                    </div>
+                  </div>
+
+                  {/* regestration & comppanyAddress  inputs */}
+                  <div className="flex flex-col lg:flex-row justify-between mt-5">
+                  <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="registrationNumber"
                         className="block text-sm font-medium  "
@@ -183,7 +264,7 @@ const location = useLocation();
                         Registration Number
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         name="registrationNumber"
                         id="registrationNumber"
                         value={formData.registrationNumber}
@@ -192,28 +273,28 @@ const location = useLocation();
                         placeholder="Enter registration number"
                       />
                     </div>
-                  </div>
-
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="companyAddress"
                         className="block text-sm font-medium  "
                       >
-                        Company Address
+                        Address
                       </label>
                       <input
                         type="text"
-                        name="companyAddress"
+                        name="address"
                         id="companyAddress"
-                        value={formData.companyAddress}
+                        value={formData.address}
                         onChange={handleChange}
                         className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter company address"
                       />
                     </div>
+                  </div>
 
-                    <div className="w-full lg:w-[350px]">
+                  {/* phoneNumber & VATNumber inputs */}
+                  <div className="flex flex-col lg:flex-row justify-between mt-5">
+                  <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="phoneNumber"
                         className="block text-sm font-medium  "
@@ -221,7 +302,7 @@ const location = useLocation();
                         Phone Number
                       </label>
                       <input
-                        type="tel"
+                        type="number"
                         name="phoneNumber"
                         id="phoneNumber"
                         value={formData.phoneNumber}
@@ -230,10 +311,6 @@ const location = useLocation();
                         placeholder="Enter phone number"
                       />
                     </div>
-                  </div>
-
-
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="vatNumber"
@@ -242,47 +319,40 @@ const location = useLocation();
                         VAT Number
                       </label>
                       <input
-                        type="text"
-                        name="vatNumber"
+                        type="number"
+                        name="VatNumber"
                         id="vatNumber"
-                        value={formData.vatNumber}
+                        value={formData.VatNumber}
                         onChange={handleChange}
                         className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter VAT number"
                       />
                     </div>
-
-                    <div className="w-full lg:w-[350px] flex justify-center items-center mt-7">
-                      <button
-                        type="button"
-                        className={`w-full px-4 py-2 rounded border ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} hover:bg-gray-300`}
-                      >
-                        Show
-                      </button>
-                    </div>
                   </div>
 
+                  {/* close and next Buttons  */}
                   <div className="w-full flex justify-end gap-5 mt-5">
-                    <Link to="/register-companies">
                       <button
+                      onClick={()=> navigatae(-1)}
                         type="button"
                         className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
                         Close
                       </button>
-                    </Link>
 
                     <button
-                      type="button"
+                      type="submit"
                       className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
-                      onClick={() => setnext((prevNext) => prevNext + 1)}
                     >
                       Next
                     </button>
 
                   </div>
+                </form>
                 </>
               ) : next === 1 ? (
                 <>
+                <form onSubmit={handleSubmit} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-white'}  mt-5 shadow-lg rounded-lg p-6 w-full lg:w-[800px]  border border-gray-300`}>
+                {/* ownerName & address */}
                   <div className="flex flex-col lg:flex-row justify-between">
                     <div className="w-full lg:w-[350px]">
                       <label
@@ -307,13 +377,13 @@ const location = useLocation();
                         htmlFor="companyAddress"
                         className="block text-sm font-medium  "
                       >
-                        Company Address
+                         Business Address
                       </label>
                       <input
                         type="text"
-                        name="companyAddress"
+                        name="businessAddress"
                         id="companyAddress"
-                        value={formData.companyAddress}
+                        value={formData.businessAddress}
                         onChange={handleChange}
                         className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Company Address"
@@ -321,20 +391,20 @@ const location = useLocation();
                       />
                     </div>
                   </div>
-
+                  {/* email & ownerPhoneNumber */}
                   <div className="flex flex-col lg:flex-row justify-between mt-5">
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="email"
                         className="block text-sm font-medium  "
                       >
-                        Email
+                        Owner Email
                       </label>
                       <input
                         type="email"
-                        name="email"
+                        name="ownerEmail"
                         id="email"
-                        value={formData.email}
+                        value={formData.ownerEmail}
                         onChange={handleChange}
                         className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Email"
@@ -346,13 +416,13 @@ const location = useLocation();
                         htmlFor="phoneNumber"
                         className="block text-sm font-medium  "
                       >
-                        Phone Number
+                        Owner Phone Number
                       </label>
                       <input
-                        type="tel"
-                        name="phoneNumber"
+                        type="number"
+                        name="ownerPhoneNumber"
                         id="phoneNumber"
-                        value={formData.phoneNumber}
+                        value={formData.ownerPhoneNumber}
                         onChange={handleChange}
                         className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         placeholder="Enter Phone Number"
@@ -360,7 +430,7 @@ const location = useLocation();
                       />
                     </div>
                   </div>
-
+                {/* businessLicense & businessType */}
                   <div className="flex flex-col lg:flex-row justify-between mt-5">
                     <div className="w-full lg:w-[350px]">
                       <label
@@ -380,26 +450,6 @@ const location = useLocation();
 
                       />
                     </div>
-                    <div className="w-full lg:w-[350px]">
-                      <label
-                        htmlFor="taxId"
-                        className="block text-sm font-medium  "
-                      >
-                        Tax ID
-                      </label>
-                      <input
-                        type="text"
-                        name="taxId"
-                        id="taxId"
-                        value={formData.taxId}
-                        onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
-                        placeholder="Enter Tax ID"
-
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
                     <div className="w-full lg:w-[350px]">
                       <label
                         htmlFor="businessType"
@@ -425,14 +475,18 @@ const location = useLocation();
                         ))}
                       </select>
                     </div>
-
-                    <div className="w-full lg:w-[350px] flex items-center mt-6 lg:mt-0">
+                  </div>
+                  <div className="flex flex-col lg:flex-row justify-between mt-5">
+                   
+                        {/* active  */}
+                        {/* company Logo */}
+                    <div className="w-full lg:w-[350px] flex items-center mt-2 ">
                       <label className="flex items-center mr-4">
                         <input
                           type="radio"
-                          name="status"
-                          value="active"
-                          checked={formData.status === "active"}
+                          name="isActive"
+                          value={true}
+                          checked={formData.isActive === "true"}
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
@@ -443,9 +497,9 @@ const location = useLocation();
                       <label className="flex items-center">
                         <input
                           type="radio"
-                          name="status"
-                          value="inactive"
-                          checked={formData.status === "inactive"}
+                          name="isActive"
+                          value={false}
+                          checked={formData.isActive === "false"}
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
@@ -454,12 +508,9 @@ const location = useLocation();
                         </span>
                       </label>
                     </div>
-                  </div>
 
-
-                  <div className="flex flex-col lg:flex-row justify-between mt-5">
-
-                    <div className="w-full lg:w-[350px]">
+                    <div className=" flex w-full gap-5 justify-between items-center lg:w-[350px]">
+                      <div className="w-[50%]">
                       <label
                         htmlFor="companyLogo"
                         className="block text-sm font-medium  "
@@ -471,12 +522,17 @@ const location = useLocation();
                         name="companyLogo"
                         id="companyLogo"
                         onChange={handleChange}
-                        className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
+                        className={`w-full mt-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme=== 'dark' ?'text-white':'text-black'} ${currentTheme=== 'dark' ?'bg-[#404040]':'white]'}`}
                         required
                       />
-                    </div>
+                      </div>
+                      <img className="h-[120px] w-[120px] rounded-full object-cover" src={ previewUrl} alt="user" />
 
+                    </div>
                   </div>
+           
+
+                {/* back , close & submit buttons */}
                   <div className="w-full flex justify-end gap-5 mt-5">
                     <button
                       type="button"
@@ -487,7 +543,7 @@ const location = useLocation();
                     </button>
                     <Link to="/register-companies">
                       <button
-                        type="button"
+                        type="buttton"
                         className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                       >
                         Close
@@ -497,17 +553,17 @@ const location = useLocation();
 
 
                     <button
-                      type="button"
+                      type="submit"
                       className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                     >
                       Submit
                     </button>
 
                   </div>
+                  </form>
                 </>
               ) : null}
             </div>
-          </form>
         </div>
       </div>
     </>

@@ -80,7 +80,6 @@ function App() {
         <Route path="/registered-online-order" element={<RegisteredOnlineOrder/>}/>
         <Route path="/registered-byHand-order" element={<RegisteredByHandOrder/>}/> 
         <Route path="/companies-data" element={<CompaniesData/>}/>  
-
       </Routes>
     </Router>
     

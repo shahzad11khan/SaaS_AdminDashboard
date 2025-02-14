@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
+import { removeSelectedCompany } from '../Slice/SelectedCompanySlice';
 const LeftSideBar = () => {
+  const dispatch =  useDispatch()
   const { t } = useTranslation();
   const [isOpen, setisOpen] = useState(false);
   const [compDropdownOpen, setcompDropdownOpen] = useState(false);
@@ -54,7 +55,7 @@ const LeftSideBar = () => {
                 {compDropdownOpen && (
                   <ul className="pl-4">
                     {companyId?
-                    null
+                    <p onClick={()=> dispatch(removeSelectedCompany()) } className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>Go Back </p>
                     :
                     <Link to="/register-companies">
                       <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>

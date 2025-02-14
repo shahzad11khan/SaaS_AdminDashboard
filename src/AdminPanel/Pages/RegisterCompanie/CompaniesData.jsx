@@ -37,9 +37,14 @@ const CompaniesData = () => {
             <div className='flex flex-col lg:flex-row'>
                 <LeftSideBar />
                 <div className="flex justify-between w-full lg:w-[1030px] lg:ml-2 ">
-                <div className="card flex-wrap mx-2 gap-1 md:gap-10 lg:gap-8">
-                    {loading? <Spinner/>:
-                        companiesData?.map((company, index) => (
+                    
+                {loading?
+                <div className="w-full h-full flex items-center justify-center">
+                    <Spinner/>
+                </div>
+                :
+                <div className="card flex flex-wrap mx-2 gap-1 md:gap-10 lg:gap-8">
+                        {companiesData?.map((company, index) => (
                             <div onClick={()=>setSelectedCompany(company)} key={index} className="cursor-pointer w-[160px] lg:w-[220px] ">
                                 <CompanyCard
                                 icon={company.companyLogo}
@@ -48,9 +53,9 @@ const CompaniesData = () => {
                                 currentTheme={currentTheme}
                                 />
                             </div>
-                        ))
-                    }
+                        ))}
                 </div>
+                }
                 </div>
             </div>
 

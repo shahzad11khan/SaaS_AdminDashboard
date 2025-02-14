@@ -13,9 +13,13 @@ const SelectedCompanySlice = createSlice({
             state.companyId =  action.payload.cId;
             state.companyName = action.payload.cName
         },
+        removeSelectedCompany:(state) =>{
+            state.companyId = null;
+            state.companyName = null;
+        }
     },
 }) ;
 
-export const {selectCompany} = SelectedCompanySlice.actions;
+export const {selectCompany , removeSelectedCompany} = SelectedCompanySlice.actions;
 export default SelectedCompanySlice.reducer;
 
