@@ -47,23 +47,24 @@ const StockRegistrationForm = () => {
     });
   };
 
-  useEffect(()=>{
-if(location?.state?.stock){
-  console.log(location?.state?.stock)
-  setFormData({
-    productName: location.state.stock.productName,
-    quantity:location.state.stock.quantity,
-    productCategory:location.state.stock.category,
-    productSubCategory:location.state.stock.subcategory,
-    productPrice:location.state.stock.price,
-    productTotalPrice:location.state.stock.totalPrice,
-    productAddedDate:location.state.stock.dateAdded,
-    warehouse:location.state.stock.warehouseName,
-    status:location.state.stock.isActive,
-
-  });
-}
-  },[location.state])
+  useEffect(() => {
+    if (location?.state?.stock) {  
+      setFormData({
+        productName: location.state.stock.productName,
+        quantity: location.state.stock.quantity,
+        productCategory: location.state.stock.category,
+        productSubCategory: location.state.stock.subcategory,
+        productPrice: location.state.stock.price,
+        productTotalPrice: location.state.stock.totalPrice,
+        productAddedDate: location.state.stock.dateAdded
+          ? new Date(location.state.stock.dateAdded).toISOString().split('T')[0]
+          : "",
+        warehouse: location.state.stock.warehouseName,
+        status: location.state.stock.isActive ? "active" : "inactive",
+      });
+    }
+  }, [location.state]);
+  
 
   return (
     <>
@@ -191,9 +192,9 @@ if(location?.state?.stock){
                   required
                 >
                   <option value="">Select category</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
-                  <option value="accessories">Accessories</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Accessories">Accessories</option>
                 </select>
               </div>
             
@@ -211,8 +212,8 @@ if(location?.state?.stock){
                   required
                 >
                   <option value="">Select Sub Category</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Mobile Phones">Mobile Phones</option>
                   <option value="accessories">Accessories</option>
                 </select>
               </div>
@@ -254,9 +255,9 @@ if(location?.state?.stock){
                   required
                 >
                   <option value="">Select Warehouse</option>
-                  <option value="electronics">Warehouse A</option>
-                  <option value="clothing">Warehouse B</option>
-                  <option value="accessories">Warehouse C</option>
+                  <option value="Warehouse A">Warehouse A</option>
+                  <option value="Warehouse B">Warehouse B</option>
+                  <option value="Warehouse C">Warehouse C</option>
                 </select>
               </div>
 

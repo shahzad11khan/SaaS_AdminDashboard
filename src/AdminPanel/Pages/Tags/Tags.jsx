@@ -15,15 +15,15 @@ const Tags = () => {
     const { data: tagData, error, loading } = useSelector((state) => state.tags)
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [rowToShow ,setRowsToShow] =useState(5);
-    const [searchQuery ,setSearchQuery] = useState("");
-    const {companyId} = useSelector((state) => state.selectedCompany);
+    const [rowToShow, setRowsToShow] = useState(5);
+    const [searchQuery, setSearchQuery] = useState("");
+    const { companyId } = useSelector((state) => state.selectedCompany);
 
-    const handleRowChange = (e)=>{
+    const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10));
     }
 
-    const handleSearchQuery =(e)=>{
+    const handleSearchQuery = (e) => {
         setSearchQuery(e.target.value.toLowerCase());
     }
 
@@ -31,31 +31,31 @@ const Tags = () => {
 
 
     const handleEdit = (item) => {
-        routerSystemSettingDetail("edit",item)
+        routerSystemSettingDetail("edit", item)
     };
-  const navigate =useNavigate();
-const routerSystemSettingDetail = (state,tag)=>{
-    const path =`/tag-registration-form`;
-    const data ={state,tag}
-    navigate(path ,{state:data})
+    const navigate = useNavigate();
+    const routerSystemSettingDetail = (state, tag) => {
+        const path = `/tag-registration-form`;
+        const data = { state, tag }
+        navigate(path, { state: data })
 
-}
-    const handleDelete =()=>{
+    }
+    const handleDelete = () => {
         setIsDeleteModalOpen(true);
     }
 
     useEffect(() => {
         dispatch(fetchTag());
     }, [dispatch]);
-    let companyTags = companyId ? tagData.filter(item => companyId  === item.userId?.companyId?._id ) : tagData ;
-    const filterData = companyTags.filter((tag)=>{
-        return tag.description.toLowerCase().includes(searchQuery)||
-        tag.tagNumber.toLowerCase().includes(searchQuery)
-      })
-    const displayData = filterData?.slice(0,rowToShow)
-   
+    let companyTags = companyId ? tagData.filter(item => companyId === item.userId?.companyId?._id) : tagData;
+    const filterData = companyTags.filter((tag) => {
+        return tag.description.toLowerCase().includes(searchQuery) ||
+            tag.tagNumber.toLowerCase().includes(searchQuery)
+    })
+    const displayData = filterData?.slice(0, rowToShow)
+
     return (
-        
+
         <div>
             <Navbar />
             <div className='flex flex-col lg:flex-row '>
@@ -70,8 +70,8 @@ const routerSystemSettingDetail = (state,tag)=>{
                                 <span>Show:</span>
                                 <select
                                     className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                                value={rowToShow}
-                                onChange={handleRowChange}
+                                    value={rowToShow}
+                                    onChange={handleRowChange}
                                 >
                                     {[...Array(10).keys()].map(num => (
                                         <option key={num + 1} value={num + 1}>{num + 1}</option>
@@ -85,7 +85,7 @@ const routerSystemSettingDetail = (state,tag)=>{
                                     type="text"
                                     placeholder="Search by Tag Name & Description"
                                     className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                                 onChange={handleSearchQuery}
+                                    onChange={handleSearchQuery}
                                 />
                             </div>
                         </div>
@@ -104,16 +104,16 @@ const routerSystemSettingDetail = (state,tag)=>{
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
-                    {loading && <p>Loading...</p>}
-                    {error && <p>Error: {error}</p>}
-                     <GenericTable
-                      headers={['Sno', 'tagNumber', 'description', 'createdAt', 'updatedAt', 'Actions']}
-                      data={displayData}
-                      currentTheme={currentTheme}
-                      onEdit={handleEdit}
-                      onDelete={handleDelete}
-                     
-                     />
+                        {loading && <p>Loading...</p>}
+                        {error && <p>Error: {error}</p>}
+                        <GenericTable
+                            headers={['Sno', 'tagNumber', 'description', 'createdAt', 'updatedAt', 'Actions']}
+                            data={displayData}
+                            currentTheme={currentTheme}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+
+                        />
                     </div>
 
                     <div className="pages flex justify-center gap-1 mt-4">

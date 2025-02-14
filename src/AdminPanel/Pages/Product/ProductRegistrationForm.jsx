@@ -40,6 +40,8 @@ const ProductRegistrationForm = () => {
       productSubCategory:"",
       productImage:"",
       productTag:"",
+      productRating:""
+
     });
 
   };
@@ -55,6 +57,7 @@ const ProductRegistrationForm = () => {
         productSubCategory:location.state.product.productSubCategory,
         productImage:location.state.product.productImage,
         productTag:location.state.product.productTag,
+        productRating:location.state.product.rating,
 
       })
     }
@@ -157,8 +160,8 @@ const ProductRegistrationForm = () => {
                   required
                 >
                   <option value="">Select category</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
+                  <option value="product">Product</option>
+                  <option value="maincategory">Main Category</option>
                   <option value="accessories">Accessories</option>
                 </select>
               </div>
@@ -177,9 +180,9 @@ const ProductRegistrationForm = () => {
                   required
                 >
                   <option value="">Select Sub Category</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
-                  <option value="accessories">Accessories</option>
+                  <option value="product2">Product2</option>
+                  <option value="HP">HP</option>
+                  <option value="DELL">DELL</option>
                 </select>
               </div>
             </div>

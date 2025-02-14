@@ -25,7 +25,8 @@ const CompaniesData = () => {
         console.log(cmpny)
         let data = {
             cId : cmpny._id,
-            cName : cmpny.companyName
+            cName : cmpny.companyName,
+            cImg :cmpny.companyLogo,
         }
         dispatch(selectCompany(data))
         navigate('/admin')

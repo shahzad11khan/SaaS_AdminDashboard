@@ -57,7 +57,6 @@ const SignIn = () => {
 
     try {
       const data = await fetchData(url, method, form);
-      console.log(data)
       dispatch(setLoading());
       if (data.response?.status === 400) {
         toast.error(data.response.data.message);

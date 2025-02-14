@@ -65,11 +65,11 @@ if(initialCount - rowToShow >= 0)
             <div className='flex flex-col lg:flex-row'>
                 <LeftSideBar />
                 <div className='flex flex-col lg:ml-10 w-full lg:w-[1000px] gap-3'>
-                    <div className="para">
+                    <div className="flex justify-center lg:justify-start para">
                         <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>Company Registration</p>
                     </div>
 
-                    <div className="mt-1">                    
+                    <div className="flex justify-center lg:justify-start mt-1">                    
                     <CompanyGraph
                      registeredCompanies={companiesData.length}
                      totalCompanies={100} 

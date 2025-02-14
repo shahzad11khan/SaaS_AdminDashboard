@@ -6,7 +6,7 @@ import { Product_Middle_Point, User_Middle_Point } from '../Components/api/middl
 import { Stock_Middle_Point } from '../Components/api/middlePoints';
 import { User_End_Point } from '../Components/api/endPoint'
 import fetchData from '../Components/api/axios'
-// import SalesGraph from '../Components/Graph';
+import SalesGraph from '../Components/Graph';
 import {useState, useEffect} from 'react';
 import { setLoading } from '../Slice/LoadingSlice';
 import { fetchOrder } from '../Slice/OrderSlice';
@@ -170,9 +170,9 @@ console.log
 
                 </div>
 
-                {/* <div className="graph mt-3 h-[200px] sm:h-[200px] md:h-[300px] lg:h-[400px] lg:w-[735px]">
+                <div className="graph mt-3 h-[200px] sm:h-[200px] md:h-[300px] lg:h-[400px] lg:w-[735px]">
                     <SalesGraph />
-                </div> */}
+                </div>
             </div>
                            
                 
