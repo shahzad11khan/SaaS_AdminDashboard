@@ -48,7 +48,7 @@ const Category = () => {
    }
 
    let companyCategory = companyId ? categoryData.filter(item => companyId  === item.userId?.companyId?._id ) : categoryData ;
-  const filteredData = companyCategory?.filter((category) =>
+  const filteredData = companyCategory?.data.filter((category) =>
      category.mainCategory.toLowerCase().includes(searchQuery) || category.subCategory.toLowerCase().includes(searchQuery)
   );
   const displayData = filteredData?.slice(0, rowToShow);

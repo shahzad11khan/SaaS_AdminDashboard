@@ -12,19 +12,19 @@ import fetchData from "../../Components/api/axios";
 
 const Product = () => {
     const dispatch = useDispatch();
-    const navigate =useNavigate();
-    const {companyId} = useSelector((state) => state.selectedCompany);
+    const navigate = useNavigate();
+    const { companyId } = useSelector((state) => state.selectedCompany);
 
 
     const [productData, setProductData] = useState({
-        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'updatedAt', 'userName','Actions'],
+        headers: ['SNo', 'createdAt', 'productCategory', 'productDescription', 'productImageUrl', 'productName', 'productPrice', 'productQuantity', 'updatedAt', 'userName', 'Actions'],
         data: []
     });
 
     const [showRows, setRowsToShow] = useState(5);
-    const [searchQuery , setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
-    const handleSearchQuery = (e) =>{
+    const handleSearchQuery = (e) => {
         setSearchQuery(e.target.value.toLowerCase());
     }
 
@@ -41,19 +41,19 @@ const Product = () => {
             const response = await fetchData(Url, method);
             dispatch(setLoading());
             console.log(response)
-            if(companyId){
-                let  filterdData =  response.filter(item => companyId  === item.userId?.companyId?._id);
+            if (companyId) {
+                let filterdData = response.filter(item => companyId === item.userId?.companyId?._id);
                 setProductData((prevState) => ({
-                 ...prevState,
-                 data: filterdData,
-             }))
-             }else{
+                    ...prevState,
+                    data: filterdData,
+                }))
+            } else {
                 setProductData((prevState) => ({
                     ...prevState,
                     data: response
-    
+
                 }))
-             }
+            }
 
         }
         catch (error) {
@@ -70,27 +70,27 @@ const Product = () => {
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const currentTheme = useSelector((state => state.theme.theme))
-    
+
     const handleEdit = (item) => {
-        routerSystemSettingDetail("edit",item)
+        routerSystemSettingDetail("edit", item)
     };
-    const routerSystemSettingDetail = (state ,product)=>{
-        const path =`/product-registration-form`;
-        const data ={state ,product}
-        navigate(path ,{state:data})
-     
+    const routerSystemSettingDetail = (state, product) => {
+        const path = `/product-registration-form`;
+        const data = { state, product }
+        navigate(path, { state: data })
+
     }
 
     const handleDelete = () => {
         setIsDeleteModalOpen(true);
-    
+
     };
- 
-    const filterData = productData.data.filter((product) =>{
-        return(
+
+    const filterData = productData.data.filter((product) => {
+        return (
             product.productName.toLowerCase().includes(searchQuery) ||
             product.productCategory.toLowerCase().includes(searchQuery) ||
-            product.role.toLowerCase().includes(searchQuery) 
+            product.role.toLowerCase().includes(searchQuery)
 
         )
     })
@@ -132,11 +132,11 @@ const Product = () => {
 
                                 <span >Entries :</span>
                                 <input
-                                type="text"
-                                placeholder="Search by ProductName,category and role"
-                                className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
-                                value={searchQuery}
-                                onChange={handleSearchQuery}
+                                    type="text"
+                                    placeholder="Search by ProductName,category and role"
+                                    className={`rounded-md px-4 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300 focus:outline-none focus:ring focus:ring-[#219b53]`}
+                                    value={searchQuery}
+                                    onChange={handleSearchQuery}
                                 />
                             </div>
                         </div>
@@ -154,7 +154,7 @@ const Product = () => {
                             </Link>
                         </div>
                     </div>
-                  
+
                     <div className="table-container overflow-x-auto">
 
                         <GenericTable

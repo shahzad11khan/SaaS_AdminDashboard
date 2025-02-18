@@ -48,7 +48,7 @@ const Order = () => {
     }, [dispatch]);
     let companyOnlineOrder = companyId ? orderData.filter(item => companyId  === item.userId?.companyId?._id ) : orderData ;
 
-    const filterData = companyOnlineOrder.filter((order) => {
+    const filterData = companyOnlineOrder.data.filter((order) => {
         console.log(orderData)
         return order.orderStatus.toLowerCase().includes(searchQuery)
 

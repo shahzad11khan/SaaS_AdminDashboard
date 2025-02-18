@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, onDelete }) => {
 
   return (
-    <table className="border-collapse border border-gray-300 w-full overflow-x-auto">
+    <table className="border-collapse border border-gray-300 w-full overflow-x-auto whitespace-nowrap">
       <thead>
         {/* top Header */}
       <tr>

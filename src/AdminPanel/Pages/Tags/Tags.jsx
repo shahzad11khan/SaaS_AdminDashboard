@@ -34,6 +34,7 @@ const Tags = () => {
         routerSystemSettingDetail("edit", item)
     };
     const navigate = useNavigate();
+
     const routerSystemSettingDetail = (state, tag) => {
         const path = `/tag-registration-form`;
         const data = { state, tag }
@@ -48,7 +49,7 @@ const Tags = () => {
         dispatch(fetchTag());
     }, [dispatch]);
     let companyTags = companyId ? tagData.filter(item => companyId === item.userId?.companyId?._id) : tagData;
-    const filterData = companyTags.filter((tag) => {
+    const filterData = companyTags.data.filter((tag) => {
         return tag.description.toLowerCase().includes(searchQuery) ||
             tag.tagNumber.toLowerCase().includes(searchQuery)
     })

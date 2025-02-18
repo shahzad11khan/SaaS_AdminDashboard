@@ -44,7 +44,7 @@ const Warehouse = () => {
     }, [dispatch])
     let companyWarehoruse = companyId ? warehouseData.filter(item => companyId  === item.userId?.companyId?._id ) : warehouseData ;
 
-    const filterData = companyWarehoruse?.filter((warehouse) => {
+    const filterData = companyWarehoruse?.data.filter((warehouse) => {
         return warehouse.warehouse.toLowerCase().includes(searchQuery) ||
             warehouse.location.toLowerCase().includes(searchQuery)
     })

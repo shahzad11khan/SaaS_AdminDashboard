@@ -2,23 +2,29 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import fetchData from "../../Components/api/axios";
+import { baseUri } from "../../Components/api/baseUri";
+import { Stock_Middle_Point } from "../../Components/api/middlePoints";
+import { toast} from "react-toastify";
+import { Add_Stock_End_Point } from "../../Components/api/endPoint";
 
 const StockRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme))
+  const navigate = useNavigate()
  const location= useLocation();
+ const [stockId ,setStockId]=useState(null);
   const [formData, setFormData] = useState({
-  
     productName: "",
     quantity: "",
-    productCategory: "",
-    productSubCategory: "",
-    productPrice: "",
-    productTotalPrice: "",
-    productAddedDate: "",
-    warehouse:"",
-    status: "active"
+    category: "",
+    subcategory: "",
+    price: "",
+    totalPrice: "",
+    warehouseName:"",
+    isActive: "true"
   });
+
 
   const handleChange = (e) => {
     const { name, value ,type, checked } = e.target;
@@ -28,47 +34,57 @@ const StockRegistrationForm = () => {
       [name]: type === "radio" ? (checked ? value : formData[name]) : value,
     
     });  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log("Stock Submitted:", formData);
-    alert("Stock registered successfully!");
-    setFormData({
-      productName: "",
-      quantity: "",
-      productCategory: "",
-      productSubCategory: "",
-      productPrice: "",
-      productTotalPrice: "",
-      productAddedDate: "",
-      warehouse:"",
-      status: "active"
-    });
-  };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    let response;
+      try {
+        
+        const isEdit = !!stockId;
+        const data = { ...formData, isActive: formData.isActive };
+        const url= baseUri + Stock_Middle_Point + (isEdit ? "/" + stockId : Add_Stock_End_Point)
+        const method =(isEdit ? "PUT" : "POST");
+        response = await fetchData(url,method,data)
+    
+        if (response?.status === 200 || response?.status === 201) {
+          console.log(response.data);
+          toast.success(response.data?.message);
+        navigate(-1)
+        } else {
+          toast.error(response.data?.message || "Failed to register stock.");
+        }
+      } catch (error) {
+        toast.error("Failed to register stock.");
+        console.error("Error:", error);
+      }
+    };
+  
 
   useEffect(() => {
-    if (location?.state?.stock) {  
+    console.log(location.state)
+    if (location?.state?.stock) 
+      { 
       setFormData({
         productName: location.state.stock.productName,
         quantity: location.state.stock.quantity,
-        productCategory: location.state.stock.category,
-        productSubCategory: location.state.stock.subcategory,
-        productPrice: location.state.stock.price,
-        productTotalPrice: location.state.stock.totalPrice,
-        productAddedDate: location.state.stock.dateAdded
-          ? new Date(location.state.stock.dateAdded).toISOString().split('T')[0]
-          : "",
-        warehouse: location.state.stock.warehouseName,
-        status: location.state.stock.isActive ? "active" : "inactive",
+        category: location.state.stock.category,
+        subcategory: location.state.stock.subcategory,
+        price: location.state.stock.price,
+        totalPrice: location.state.stock.totalPrice,
+        warehouseName: location.state.stock.warehouseName,
+        isActive: location.state.stock.isActive,
       });
+    }
+    if(location.state?.stock._id){
+      console.log("Stock ID:", location.state.stock._id);
+      setStockId(location.state.stock._id)
     }
   }, [location.state]);
   
-
+console.log(formData)
   return (
     <>
       <Navbar />
+
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />
         <div className={`flex flex-col  items-center lg:ml-10 w-full lg:w-[1000px] h-screen  ${currentTheme === 'dark' ? 'text-white' : 'text-gray-600'} `}>
@@ -130,18 +146,18 @@ const StockRegistrationForm = () => {
             <div className="flex flex-col lg:flex-row justify-between mt-2">
             <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="productPrice"
+                  htmlFor="price"
                   className="block text-sm font-medium"
                 >
                   Price <span className="text-red-500">*</span>
                 </label>
                 <input
                 type="number"
-                  name="productPrice"
-                  id="productPrice"
+                  name="price"
+                  id="price"
                   placeholder="Enter Product Price"
                   min="0"
-                  value={formData.productPrice}
+                  value={formData.price}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
                     } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
@@ -152,18 +168,18 @@ const StockRegistrationForm = () => {
               </div>
               <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="productTotalPrice"
+                  htmlFor="totalPrice"
                   className="block text-sm font-medium"
                 >
                    Product Total Price <span className="text-red-500">*</span>
                 </label>
                 <input
                 type="number"
-                  name="productTotalPrice"
-                  id="productTotalPrice"
+                  name="totalPrice"
+                  id="totalPrice"
                   placeholder="Enter Product Total Price"
                   min="0"
-                  value={formData.productTotalPrice}
+                  value={formData.totalPrice}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-white'
                     }`}
@@ -178,15 +194,15 @@ const StockRegistrationForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between mt-2">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="productCategory" className="block text-sm font-medium">
+                <label htmlFor="category" className="block text-sm font-medium">
                   Category <span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="productCategory"
-                  id="productCategory"
+                  name="category"
+                  id="category"
                   placeholder="Enter product Category"
 
-                  value={formData.productCategory}
+                  value={formData.category}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   required
@@ -199,13 +215,13 @@ const StockRegistrationForm = () => {
               </div>
             
                <div className="w-full lg:w-[350px]">
-                <label htmlFor="productSubCategory" className="block text-sm font-medium">
+                <label htmlFor="subcategory" className="block text-sm font-medium">
                 Sub Category <span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="productSubCategory"
-                  id="productSubCategory"
-                  value={formData.productSubCategory}
+                  name="subcategory"
+                  id="subcategory"
+                  value={formData.subcategory}
                   placeholder="Enter product Sub Category"
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
@@ -220,7 +236,7 @@ const StockRegistrationForm = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row justify-between mt-3">
-            <div className="w-full lg:w-[350px]">
+            {/* <div className="w-full lg:w-[350px]">
                 <label
                   htmlFor="productAddedDate"
                   className="block text-sm font-medium"
@@ -239,17 +255,16 @@ const StockRegistrationForm = () => {
                 >
 
                 </input>
-              </div>
-         
+              </div> */}
                       <div className="w-full lg:w-[350px]">
-                <label htmlFor="warehouse" className="block text-sm font-medium">
+                <label htmlFor="warehouseName" className="block text-sm font-medium">
                 Warehouse<span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="warehouse"
-                  id="warehouse"
+                  name="warehouseName"
+                  id="warehouseName"
                   placeholder="Enter Warehouse"
-                  value={formData.warehouse}
+                  value={formData.warehouseName}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   required
@@ -261,16 +276,13 @@ const StockRegistrationForm = () => {
                 </select>
               </div>
 
-            </div>
-
-            <div className="flex flex-col lg:flex-row justify-between mt-3">
-            <div className="w-full lg:w-[350px] flex items-center mt-6 lg:mt-5">
+              <div className="w-full lg:w-[350px] flex items-center mt-6 lg:mt-5">
                       <label className="flex items-center mr-4">
                         <input
                           type="radio"
-                          name="status"
-                          value="active"
-                          checked={formData.status === "active"}
+                          name="isActive"
+                          value="true"
+                          checked={formData.isActive === "true"}
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
@@ -281,9 +293,9 @@ const StockRegistrationForm = () => {
                       <label className="flex items-center">
                         <input
                           type="radio"
-                          name="status"
-                          value="inactive"
-                          checked={formData.status === "inactive"}
+                          name="isActive"
+                          value="false"
+                          checked={formData.isActive === "false"}
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
@@ -292,8 +304,10 @@ const StockRegistrationForm = () => {
                         </span>
                       </label>
                     </div>
+
+            </div>
+
            
-           </div>
 
             <div className="flex justify-end mt-6">
               <button
