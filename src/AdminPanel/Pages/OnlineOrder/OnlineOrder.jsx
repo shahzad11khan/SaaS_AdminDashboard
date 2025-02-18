@@ -46,7 +46,7 @@ const Order = () => {
         dispatch(fetchOrder());
 
     }, [dispatch]);
-    let companyOnlineOrder = companyId ? orderData.filter(item => companyId  === item.userId?.companyId?._id ) : orderData ;
+    let companyOnlineOrder = companyId ? orderData.data.filter(item => companyId  === item.userId?.companyId?._id ) : orderData.data ;
 
     const filterData = companyOnlineOrder.filter((order) => {
         console.log(orderData)

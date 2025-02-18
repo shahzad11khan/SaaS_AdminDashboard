@@ -8,7 +8,7 @@ const OrderForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
-    products: "",
+    orderStatus: "",
     shippingAddress: "",
     paymentMethod: "",
 
@@ -25,7 +25,7 @@ const OrderForm = () => {
     console.log("Order Submitted:", formData);
     alert("Order submitted successfully!");
     setFormData({
-      products: "",
+      orderStatus: "",
       shippingAddress: "",
       paymentMethod: "",
     });
@@ -35,8 +35,9 @@ const OrderForm = () => {
 
   useEffect(()=>{
 if(location?.state?.onlineOrder)
+  console.log(location?.state?.onlineOrder)
   setFormData({
-    products:location.state.onlineOrder.products,
+    orderStatus:location.state.onlineOrder.orderStatus,
     shippingAddress:location.state.onlineOrder.shippingAddress,
     paymentMethod:location.state.onlineOrder.paymentMethod,
   })
@@ -58,17 +59,17 @@ if(location?.state?.onlineOrder)
 
             <div className="flex flex-col lg:flex-row justify-between">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="product" className="block text-sm font-medium">
-                Product <span className="text-red-500">*</span>
+                <label htmlFor="orderStatus" className="block text-sm font-medium">
+                Order Status <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="product"
-                  id="product"
-                  value={formData.product}
+                  name="orderStatus"
+                  id="orderStatus"
+                  value={formData.orderStatus}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter Product"
+                  placeholder="Order Status"
                   required
                 />
               </div>

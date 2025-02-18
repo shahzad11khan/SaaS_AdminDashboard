@@ -11,12 +11,12 @@ const StockRegistrationForm = () => {
   
     productName: "",
     quantity: "",
-    productCategory: "",
-    productSubCategory: "",
-    productPrice: "",
-    productTotalPrice: "",
+    category: "",
+    subcategory: "",
+    price: "",
+    totalPrice: "",
     productAddedDate: "",
-    warehouse:"",
+    warehouseName:"",
     status: "active"
   });
 
@@ -37,33 +37,34 @@ const StockRegistrationForm = () => {
     setFormData({
       productName: "",
       quantity: "",
-      productCategory: "",
-      productSubCategory: "",
-      productPrice: "",
-      productTotalPrice: "",
+      category: "",
+      subcategory: "",
+      price: "",
+      totalPrice: "",
       productAddedDate: "",
-      warehouse:"",
+      warehouseName:"",
       status: "active"
     });
   };
 
-  useEffect(()=>{
-if(location?.state?.stock){
-  console.log(location?.state?.stock)
-  setFormData({
-    productName: location.state.stock.productName,
-    quantity:location.state.stock.quantity,
-    productCategory:location.state.stock.category,
-    productSubCategory:location.state.stock.subcategory,
-    productPrice:location.state.stock.price,
-    productTotalPrice:location.state.stock.totalPrice,
-    productAddedDate:location.state.stock.dateAdded,
-    warehouse:location.state.stock.warehouseName,
-    status:location.state.stock.isActive,
-
-  });
-}
-  },[location.state])
+  useEffect(() => {
+    if (location?.state?.stock) {  
+      setFormData({
+        productName: location.state.stock.productName,
+        quantity: location.state.stock.quantity,
+        category: location.state.stock.category,
+        subcategory: location.state.stock.subcategory,
+        price: location.state.stock.price,
+        totalPrice: location.state.stock.totalPrice,
+        productAddedDate: location.state.stock.dateAdded
+          ? new Date(location.state.stock.dateAdded).toISOString().split('T')[0]
+          : "",
+        warehouseName: location.state.stock.warehouseNameName,
+        status: location.state.stock.isActive ? "active" : "inactive",
+      });
+    }
+  }, [location.state]);
+  
 
   return (
     <>
@@ -129,18 +130,18 @@ if(location?.state?.stock){
             <div className="flex flex-col lg:flex-row justify-between mt-2">
             <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="productPrice"
+                  htmlFor="price"
                   className="block text-sm font-medium"
                 >
                   Price <span className="text-red-500">*</span>
                 </label>
                 <input
                 type="number"
-                  name="productPrice"
-                  id="productPrice"
+                  name="price"
+                  id="price"
                   placeholder="Enter Product Price"
                   min="0"
-                  value={formData.productPrice}
+                  value={formData.price}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
                     } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
@@ -151,18 +152,18 @@ if(location?.state?.stock){
               </div>
               <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="productTotalPrice"
+                  htmlFor="totalPrice"
                   className="block text-sm font-medium"
                 >
                    Product Total Price <span className="text-red-500">*</span>
                 </label>
                 <input
                 type="number"
-                  name="productTotalPrice"
-                  id="productTotalPrice"
+                  name="totalPrice"
+                  id="totalPrice"
                   placeholder="Enter Product Total Price"
                   min="0"
-                  value={formData.productTotalPrice}
+                  value={formData.totalPrice}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-white'
                     }`}
@@ -177,42 +178,42 @@ if(location?.state?.stock){
 
             <div className="flex flex-col lg:flex-row justify-between mt-2">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="productCategory" className="block text-sm font-medium">
+                <label htmlFor="category" className="block text-sm font-medium">
                   Category <span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="productCategory"
-                  id="productCategory"
+                  name="category"
+                  id="category"
                   placeholder="Enter product Category"
 
-                  value={formData.productCategory}
+                  value={formData.category}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   required
                 >
                   <option value="">Select category</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
-                  <option value="accessories">Accessories</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Accessories">Accessories</option>
                 </select>
               </div>
             
                <div className="w-full lg:w-[350px]">
-                <label htmlFor="productSubCategory" className="block text-sm font-medium">
+                <label htmlFor="subcategory" className="block text-sm font-medium">
                 Sub Category <span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="productSubCategory"
-                  id="productSubCategory"
-                  value={formData.productSubCategory}
+                  name="subcategory"
+                  id="subcategory"
+                  value={formData.subcategory}
                   placeholder="Enter product Sub Category"
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   required
                 >
                   <option value="">Select Sub Category</option>
-                  <option value="electronics">Electronics</option>
-                  <option value="clothing">Clothing</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Mobile Phones">Mobile Phones</option>
                   <option value="accessories">Accessories</option>
                 </select>
               </div>
@@ -241,22 +242,22 @@ if(location?.state?.stock){
               </div>
          
                       <div className="w-full lg:w-[350px]">
-                <label htmlFor="warehouse" className="block text-sm font-medium">
-                Warehouse<span className="text-red-500">*</span>
+                <label htmlFor="warehouseName" className="block text-sm font-medium">
+                warehouseName<span className="text-red-500">*</span>
                 </label>
                 <select
-                  name="warehouse"
-                  id="warehouse"
-                  placeholder="Enter Warehouse"
-                  value={formData.warehouse}
+                  name="warehouseName"
+                  id="warehouseName"
+                  placeholder="Enter warehouseName"
+                  value={formData.warehouseName}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   required
                 >
-                  <option value="">Select Warehouse</option>
-                  <option value="electronics">Warehouse A</option>
-                  <option value="clothing">Warehouse B</option>
-                  <option value="accessories">Warehouse C</option>
+                  <option value="">Select warehouseName</option>
+                  <option value="warehouseName A">warehouseName A</option>
+                  <option value="warehouseName B">warehouseName B</option>
+                  <option value="warehouseName C">warehouseName C</option>
                 </select>
               </div>
 

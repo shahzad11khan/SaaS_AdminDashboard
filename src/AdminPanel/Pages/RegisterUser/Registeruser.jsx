@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { baseUri } from '../../Components/api/baseUri'
 import { User_Middle_Point } from '../../Components/api/middlePoints'
-import { User_End_Point } from '../../Components/api/endPoint'
+import { User_Delete_End_Point, User_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import GenericTable from '../../Components/Table/GenericTable';
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
+import { toast } from 'react-toastify';
 
 
 
@@ -27,7 +28,7 @@ const Registeruser = () => {
     });
     const [searchQuery, setSearchQuery] = useState('');
     const currentTheme = useSelector((state) => state.theme.theme);
-        
+    const [id , setId] = useState(null);
     const { companyId} = useSelector((state) => state.selectedCompany );
 
     const fetchUsers = async () => {
@@ -72,7 +73,8 @@ const Registeruser = () => {
         routerSystemSettingDetail("edit", item);
     };
 
-    const handleDelete = () => {
+    const handleDelete = (item) => {
+        setId(item._id)
         setIsDeleteModalOpen(true);
     };
 
@@ -89,6 +91,24 @@ const Registeruser = () => {
             setInitialCount(initialCount + showRows);
         }
     };
+
+    const handleConfirmDelete = async()=>{
+        const URL = baseUri + User_Middle_Point + User_Delete_End_Point + id;
+        const method = 'DELETE';
+        const response = await fetchData(URL , method );
+        console.log(response)
+        setIsDeleteModalOpen(false)
+        if(response.status=== 200){
+            toast.success(response.data.message)
+            setUserData((prevState) => ({
+                ...prevState,
+                data: userData.data.filter(el => el._id !== id),
+            }))
+        }     
+        else{    
+            toast.error(response.data.message)
+        }
+     }
 
     const showPrevious = () => {
         if (initialCount - showRows >= 0) {
@@ -184,6 +204,7 @@ const Registeruser = () => {
                     </div>
                 </div>
                 <DeleteModal
+                    confirmDelete={handleConfirmDelete}
                     isOpen={isDeleteModalOpen}
                     onClose={() => setIsDeleteModalOpen(false)}
                 />

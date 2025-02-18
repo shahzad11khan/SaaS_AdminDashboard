@@ -41,12 +41,13 @@ const Delever = () => {
    useEffect(()=>{
     dispatch(fetchDelivery())
    },[dispatch])
-   let companyOrderDelivery = companyId ? deliveryData.filter(item => companyId  === item.userId?.companyId?._id ) :deliveryData ;
+   console.log(deliveryData)
+   let companyOrderDelivery = companyId ? deliveryData?.data?.filter(item => companyId  === item.userId?.companyId?._id ) :deliveryData?.data;
 
    const filterData = companyOrderDelivery?.filter((deliver) =>
        deliver?.deliverStatus?.toLowerCase().includes(searchQuery)
    )
-   const displayData = filterData.slice(0,rows)
+   const displayData = filterData?.slice(0,rows)
     return (
         <div>
 

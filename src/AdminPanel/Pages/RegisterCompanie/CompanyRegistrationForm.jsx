@@ -8,17 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { baseUri } from "../../Components/api/baseUri";
 import { Companies_Middle_Point } from "../../Components/api/middlePoints";
-import { Create_Companie_End_point } from "../../Components/api/endPoint";
+import { Company_Update_End_Point, Create_Companie_End_point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
 import defaultPic  from '../../../assets/default user/defaultUser.png';
 import { toast, ToastContainer } from "react-toastify";
 
-
 const CompanyRegistrationForm = () => {
-  let navigatae = useNavigate()
+  let navigate = useNavigate()
   const currentTheme = useSelector((state=>state.theme.theme))
   const location = useLocation();
-  const [view , setView] = useState(false)
+  const [viewConfirmPassword , setViewConfirmPassword] = useState(false)
+  const [viewPassword , setViewPassword] = useState(false)
   const [formData, setFormData] = useState({
     companyName: "",
     registrationNumber: "",
@@ -37,7 +37,7 @@ const CompanyRegistrationForm = () => {
     isActive:"",
     companyLogo:"",
   });
-  const [next, setnext] = useState(0)
+  const [next, setNext] = useState(0)
   const businessTypeOptions = ["Retail", "Service", "Manufacturing", "Wholesale", "Other"];
   const [previewUrl , setPreviewUrl] = useState(defaultPic)
   const handleChange = (e) => {
@@ -69,7 +69,7 @@ const CompanyRegistrationForm = () => {
       toast.error("password and confirm password does not matched");
       return;
     }
-    setnext((prevNext) => prevNext + 1)
+    setNext((prevNext) => prevNext + 1)
   }
 
   const handleSubmit = async(e) => {
@@ -82,12 +82,23 @@ const CompanyRegistrationForm = () => {
     });
 
     try {
-      const url = baseUri + Companies_Middle_Point + Create_Companie_End_point;
-      const method = "POST";
-      const response = await fetchData(url, method , Data );
-      console.log(response)
-      // toast.error(response?.data?.error|| "something went worng with regester company")
-      // toast.success(response?.data?.message )
+      let response;
+      if(location?.state?.mode === 'edit'){
+        const url = baseUri + Companies_Middle_Point + Company_Update_End_Point+id;
+        const method = "PUT";
+        response = await fetchData(url, method , Data );
+      }else{
+        const url = baseUri + Companies_Middle_Point + Create_Companie_End_point;
+        const method = "POST";
+        response = await fetchData(url, method , Data );
+      }
+      console.log(response)      
+      if(response.status === 200){
+        toast.success(response.data.success)
+        navigate(-1)
+      }else{
+        toast.error(response.data?.message || response.data?.error)
+      }
     } catch (error) {
       toast.error(error || "something went worng with regester company")
       console.log(error);
@@ -112,9 +123,12 @@ const CompanyRegistrationForm = () => {
     //   businessAddress: "",
     // });
   };
+  const [id , setId] = useState(null)
   useEffect(() => {
+    console.log(location.state.companies)
     if (location?.state?.companies) {
-      let {companies} =location.state;         setFormData({
+      let {companies} =location.state;         
+      setFormData({
             companyName: companies.companyName ,
             companyAddress: companies.address ,
             email: companies.email , 
@@ -131,6 +145,9 @@ const CompanyRegistrationForm = () => {
     }
     if(location?.state?.companies?.companyLogo){
       setPreviewUrl(location.state.companies.companyLogo)
+    }
+    if(location?.state?.companies?._id){
+      setId(location?.state?.companies?._id)
     }
 }, [location.state]);
   return (
@@ -213,7 +230,7 @@ const CompanyRegistrationForm = () => {
                   
                   {/* password , confirmPasword inputs */}
                   <div className="flex flex-col lg:flex-row justify-between mt-5">     
-                    <div className="w-full lg:w-[350px]">
+                    <div className="w-full lg:w-[350px] relative">
                       <label
                         htmlFor="password"
                         className="block text-sm font-medium  "
@@ -221,7 +238,7 @@ const CompanyRegistrationForm = () => {
                         Password <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type={view? 'text':'password'}
+                        type={viewPassword? 'text':'password'}
                         name="password"
                         id="password"
                         value={formData.password}
@@ -230,6 +247,11 @@ const CompanyRegistrationForm = () => {
                         placeholder="Enter password"
                         required
                       />
+                        <FontAwesomeIcon
+                        icon={!viewPassword ? faEyeSlash : faEye}
+                        className="absolute right-3 top-10 text-gray-500 cursor-pointer"
+                        onClick={()=>setViewPassword(!viewPassword)}
+                      />  
                     </div>
 
                     <div className="w-full lg:w-[350px] relative">
@@ -240,7 +262,7 @@ const CompanyRegistrationForm = () => {
                         Confirm Password <span className="text-red-500">*</span>
                       </label>
                       <input
-                        type={view? 'text':'password'}
+                        type={viewConfirmPassword? 'text':'password'}
                         name="confirmPassword"
                         id="confirmPassword"
                         value={formData.confirmPassword}
@@ -250,9 +272,9 @@ const CompanyRegistrationForm = () => {
                         required
                       />
                       <FontAwesomeIcon
-                        icon={!view ? faEyeSlash : faEye}
+                        icon={!viewConfirmPassword ? faEyeSlash : faEye}
                         className="absolute right-3 top-10 text-gray-500 cursor-pointer"
-                        onClick={()=>setView(!view)}
+                        onClick={()=>setViewConfirmPassword(!viewConfirmPassword)}
                       />                      
                     </div>
                   </div>
@@ -336,7 +358,7 @@ const CompanyRegistrationForm = () => {
                   {/* close and next Buttons  */}
                   <div className="w-full flex justify-end gap-5 mt-5">
                       <button
-                      onClick={()=> navigatae(-1)}
+                      onClick={()=> navigate(-1)}
                         type="button"
                         className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
                         Close
@@ -538,13 +560,13 @@ const CompanyRegistrationForm = () => {
                     <button
                       type="button"
                       className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
-                      onClick={() => setnext((prevNext) => prevNext - 1)}
+                      onClick={() => setNext((prevNext) => prevNext - 1)}
                     >
                       Back
                     </button>
                     <Link to="/register-companies">
                       <button
-                        type="buttton"
+                        type="button"
                         className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}
                       >
                         Close
@@ -559,7 +581,6 @@ const CompanyRegistrationForm = () => {
                     >
                       Submit
                     </button>
-
                   </div>
                   </form>
                 </>

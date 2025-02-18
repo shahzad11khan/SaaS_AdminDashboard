@@ -42,7 +42,8 @@ const Warehouse = () => {
     useEffect(() => {
         dispatch(fetchWarehouse());
     }, [dispatch])
-    let companyWarehoruse = companyId ? warehouseData.filter(item => companyId  === item.userId?.companyId?._id ) : warehouseData ;
+    console.log(warehouseData)
+    let companyWarehoruse = companyId ? warehouseData.data?.filter(item => companyId  === item.userId?.companyId?._id ) : warehouseData?.data;
 
     const filterData = companyWarehoruse?.filter((warehouse) => {
         return warehouse.warehouse.toLowerCase().includes(searchQuery) ||

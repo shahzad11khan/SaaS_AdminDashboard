@@ -20,6 +20,7 @@ const RegisteredProduct = () => {
     });
 
     const [showRows, setRowsToShow] = useState(5);
+    const [initialCount, setInitialCount] = useState(0);
     const [searchQuery , setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -34,6 +35,19 @@ const RegisteredProduct = () => {
 
     }
 
+    const showNext = () => {
+        if (initialCount + showRows < filterData.length) {
+            setInitialCount(initialCount + showRows);
+        }
+    };
+
+    const showPrevious = () => {
+        if (initialCount - showRows >= 0) {
+            setInitialCount(initialCount - showRows);
+        }
+    };
+
+
     const FetchProducts = async () => {
         try {
             const Url = baseUri + Product_Middle_Point;
@@ -43,7 +57,7 @@ const RegisteredProduct = () => {
             console.log(response)
             setProductData((prevState) => ({
                 ...prevState,
-                data: response
+                data: response.data
 
             }))
         }
@@ -146,7 +160,7 @@ const RegisteredProduct = () => {
                                 onChange={handleSearchQuery}
                                 />
                             </div>
-                            <div className="flex flex-row items-center gap-2">
+                            <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <label htmlFor="startDate">S.Date:</label>
                                 <input
                                     name='startDate'
@@ -202,21 +216,23 @@ const RegisteredProduct = () => {
                          
                         />
                     </div>
-
-                    <div className="pages flex justify-center gap-1 mt-4">
-
-
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Previous
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            1 of 1
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Next
-                        </button>
-
-                    </div>
+                    <div className="flex justify-center gap-1">
+                            <button
+                                onClick={showPrevious}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Previous
+                            </button>
+                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                                {Math.ceil((initialCount + showRows) / showRows)} of {Math.ceil(filterData.length / showRows)}
+                            </button>
+                            <button
+                                onClick={showNext}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Next
+                            </button>
+                        </div>
                 </div>
               
 

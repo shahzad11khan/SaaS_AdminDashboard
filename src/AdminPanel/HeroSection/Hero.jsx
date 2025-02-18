@@ -6,7 +6,7 @@ import { Product_Middle_Point, User_Middle_Point } from '../Components/api/middl
 import { Stock_Middle_Point } from '../Components/api/middlePoints';
 import { User_End_Point } from '../Components/api/endPoint'
 import fetchData from '../Components/api/axios'
-// import SalesGraph from '../Components/Graph';
+import SalesGraph from '../Components/Graph';
 import {useState, useEffect} from 'react';
 import { setLoading } from '../Slice/LoadingSlice';
 import { fetchOrder } from '../Slice/OrderSlice';
@@ -60,18 +60,25 @@ const Hero = () => {
         try{
             const url = baseUri + Product_Middle_Point ;
             const method = "GET";
-            const response = await fetchData(url,method);
-            dispatch(setLoading());
-            if(companyId){
-                let  filterdData =  response.filter(item => companyId  ===  item.userId?.companyId?._id);
-                setTotalProduct(filterdData.length)
-             }else if (Array.isArray(response)) {
-                setTotalProduct(response.length); 
+            const {data} = await fetchData(url,method);
+            console.log(data)
+            if (data) {
+                let filteredData = [];
+    
+                if (companyId) {
+                    filteredData = data.filter(item => companyId === item.userId?.companyId?._id);
+                } else if (Array.isArray(data)) {
+                    filteredData = data;
+                }
+    
+                setTotalProduct(filteredData.length);
             }
         }
         catch(error){
         console.log(error)
         }
+        dispatch(setLoading());
+
     }
 
     useEffect(() => {
@@ -170,9 +177,9 @@ console.log
 
                 </div>
 
-                {/* <div className="graph mt-3 h-[200px] sm:h-[200px] md:h-[300px] lg:h-[400px] lg:w-[735px]">
+                <div className="graph mt-3 h-[200px] sm:h-[200px] md:h-[300px] lg:h-[400px] lg:w-[735px]">
                     <SalesGraph />
-                </div> */}
+                </div>
             </div>
                            
                 

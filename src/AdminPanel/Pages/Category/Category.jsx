@@ -46,8 +46,8 @@ const Category = () => {
     const data = {state,category}
     navigate(path ,{state:data})
    }
-
-   let companyCategory = companyId ? categoryData.filter(item => companyId  === item.userId?.companyId?._id ) : categoryData ;
+   console.log(categoryData)
+   let companyCategory = companyId ? categoryData.data.filter(item => companyId  === item.userId?.companyId?._id ) : categoryData.data ;
   const filteredData = companyCategory?.filter((category) =>
      category.mainCategory.toLowerCase().includes(searchQuery) || category.subCategory.toLowerCase().includes(searchQuery)
   );

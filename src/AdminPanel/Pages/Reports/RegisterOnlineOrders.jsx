@@ -67,7 +67,7 @@ const RegisteredOnlineOrder = () => {
 
 
 
-    const filterData = orderData.filter((order) => {
+    const filterData = orderData?.data?.filter((order) => {
         const orderDate = new Date(order.createdAt.split("T")[0]);
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -77,7 +77,7 @@ const RegisteredOnlineOrder = () => {
         return dateRange & matchSearchQuery;
 
     })
-    const displayData = filterData.slice(0, rowToShow)
+    const displayData = filterData?.slice(0, rowToShow)
 
     return (
         <div>
@@ -121,7 +121,7 @@ const RegisteredOnlineOrder = () => {
                                     onChange={handleSearchQuery}
                                 />
                             </div>
-                            <div className="flex flex-row items-center gap-2">
+                            <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <label htmlFor="startDate">S.Date:</label>
                                 <input
                                     name='startDate'

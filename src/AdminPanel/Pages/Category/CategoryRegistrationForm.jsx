@@ -36,8 +36,8 @@ const CategoryRegistrationForm = () => {
     if(location?.state?.category){
       console.log(location?.state?.category)
       setFormData({
-        categoryName:location.state.category.categoryName,
-        categoryDescription:location.state.category.categoryDescription,
+        categoryName:location.state.category.mainCategory,
+        categoryDescription:location.state.category.subCategory,
       })
     }
   },[location.state])

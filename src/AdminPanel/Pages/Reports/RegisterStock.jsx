@@ -33,7 +33,7 @@ const RegisteredStock = () => {
              console.log(response);
             setStockData((prevStock) => ({
                 ...prevStock,
-                data: response
+                data: response.data
             }
             ))
             dispatch(setLoading());
@@ -151,7 +151,7 @@ const RegisteredStock = () => {
                                   
                                 />
                             </div>
-                            <div className="flex flex-row items-center gap-2">
+                            <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>
                                 <label htmlFor="startDate">S.Date:</label>
                                 <input
                                     name='startDate'

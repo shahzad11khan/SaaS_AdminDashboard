@@ -1,12 +1,17 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-
+import { baseUri } from "../../Components/api/baseUri";
+import { Permission_Middle_Point } from "../../Components/api/middlePoints";
+import fetchData from "../../Components/api/axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const UserRoleRegistrationForm = () => {
+  const location = useLocation()
   const currentTheme = useSelector((state=>state.theme.theme))
+  const navigate = useNavigate()
 
   const [permissions, setPermissions] = useState({
     productManager: { all: false, add: false, read: false, edit: false, delete: false },
@@ -17,7 +22,7 @@ const UserRoleRegistrationForm = () => {
     tagManager: { all: false, add: false, read: false, edit: false, delete: false },
   });
   const [role ,setRole]= useState("");
-   
+  const [id , setId] = useState(null)
   const handleRoleChange = (e) => {
     const selectedRole = e.target.value;
     setRole(selectedRole);
@@ -61,14 +66,23 @@ const UserRoleRegistrationForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    if (!role) return toast.error('please enter role')
+    const URL = baseUri + Permission_Middle_Point+ (location?.state?.state === 'edit' ? `/${id}` : '');
+  console.log(URL)
+    const method =  location?.state?.state === 'edit'  ? 'PUT' : 'POST';
     const output = {
       parentPermission: role,
       permissions: permissions,
     };
-    console.log("Submitted Permissions:", output);
-    alert("Permissions updated successfully!");
+    const response = await fetchData(URL , method , output)
+    if(response.status === 200){
+      toast.success(response.data.message)
+      navigate(-1)
+    }else{
+      toast.error(response.data.message || response.data.error)
+    }
   };
 
   const roles = [
@@ -89,8 +103,41 @@ const UserRoleRegistrationForm = () => {
     tagManager: "Tag Manager",
   };
 
+  useEffect(()=>{
+    if(location?.state?.role){
+      setPermissions(location?.state?.role?.permissions)
+      setRole(location.state.role.role)
+      setId(location.state.role._id)
+    }
+  } ,[])
+
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        closeButton={false}
+        limit={3}
+        toastStyle={{
+          fontSize: '11px',
+          fontFamily: 'Arial, sans-serif',
+          color: 'white',
+          width: '220px',
+          minHeight: '40px',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+          transition: 'all 0.8s ease',
+        }}
+      />
       <Navbar />
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />

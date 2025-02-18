@@ -14,6 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 import GenericTable from '../../Components/Table/GenericTable';
 import { getPermissions } from '../../Slice/PermissionSlice';
+import { baseUri } from '../../Components/api/baseUri';
+import { Permission_Middle_Point } from '../../Components/api/middlePoints';
+import fetchData from '../../Components/api/axios';
+import { toast } from 'react-toastify';
 
 const Userrole = () => {
     let navigate = useNavigate()
@@ -22,14 +26,13 @@ const Userrole = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [initialCount, setInitialCount] = useState(0);
     const {permissions} = useSelector(state => state.permission) ;
-    console.log(permissions)
-
+    const [id , setId] = useState(null)
     // const isopendeletemodal = () => {
     //     setIsDeleteModalOpen(true);
     // }
 
     const [userPermission, setUserPermission] = useState({
-        headers: ["sno", "userName", "parentPermission",'permissions'],
+        headers: ["sno", "userName", "parentPermission",'permissions','Actions'],
         headers2:[],
         headers3:['read' , 'edit' , 'update' , 'delete'],
         data: [],
@@ -90,14 +93,27 @@ const Userrole = () => {
         routerSystemSettingDetail("edit", item);
     };
 
-    const handleDelete = () => {
+    const handleDelete = (item) => {
+        setIsDeleteModalOpen(true);
+        setId(item._id)
         setIsDeleteModalOpen(true);
     };
-    const routerSystemSettingDetail = (state, user) => {
-        const path = `/user-registration-form`;
-        const data = { state, user };
+    const routerSystemSettingDetail = (state, role) => {
+        const path = `/user-role-registration-form`;
+        const data = { state, role };
         navigate(path, { state: data });
     };
+    const handleConfirmDelete = async()=>{
+        const URL = baseUri + Permission_Middle_Point +"/"+ id;
+        const method = 'Delete';
+        const response = fetchData(URL , method );
+        setIsDeleteModalOpen(false)
+        toast.success(response.data.message)
+        setUserPermission((prevState) => ({
+            ...prevState, 
+            data: prevState.data .filter(el => el._id !== id)
+        }));
+     }
 
 
     return (
@@ -185,6 +201,7 @@ const Userrole = () => {
                 </div>
                 <DeleteModal
                     isOpen={isDeleteModalOpen}
+                    confirmDelete = {handleConfirmDelete}
                     onClose={() => setIsDeleteModalOpen(false)}
                 />
 
