@@ -9,9 +9,17 @@ import fetchData from "../../Components/api/axios";
 import { toast, ToastContainer } from "react-toastify";
 
 const UserRoleRegistrationForm = () => {
+  const navigate = useNavigate()
+
+  let {token} = useSelector(state => state.authenticate);
+  useEffect(()=>{
+    if(!token) {
+      toast.error("Login first")
+      setTimeout(navigate('/'),1000) 
+    }
+  } , [token , navigate])
   const location = useLocation()
   const currentTheme = useSelector((state=>state.theme.theme))
-  const navigate = useNavigate()
 
   const [permissions, setPermissions] = useState({
     productManager: { all: false, add: false, read: false, edit: false, delete: false },
@@ -65,7 +73,6 @@ const UserRoleRegistrationForm = () => {
       },
     }));
   };
-
   const handleSubmit = async(e) => {
     e.preventDefault();
     if (!role) return toast.error('please enter role')
@@ -110,7 +117,7 @@ const UserRoleRegistrationForm = () => {
       setId(location.state.role._id)
     }
   } ,[])
-
+  if(!token) return null;
   return (
     <>
       <ToastContainer

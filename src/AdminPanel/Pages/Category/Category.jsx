@@ -13,6 +13,16 @@ import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
 
 const Category = () => {
+  const navigate = useNavigate();
+
+    let {token} = useSelector(state => state.authenticate);
+      useEffect(()=>{
+        if(!token) {
+          toast.error("Login first")
+          setTimeout(navigate('/'),1000) 
+        }
+      } , [token , navigate])
+      
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [rowToShow, setRowsToShow] = useState(5);
   const [searchQuery, setSearchQuery] = useState("");
@@ -71,7 +81,6 @@ const showPrevious = () => {
   const handleEdit = (item) => {
     routerSystemSettingDetail("edit",item)
   };
-  const navigate = useNavigate();
    const routerSystemSettingDetail = (state , category)=>{
     const path = `/category-registration-form`;
     const data = {state,category}
@@ -83,6 +92,7 @@ const showPrevious = () => {
      category.mainCategory.toLowerCase().includes(searchQuery) || category.subCategory.toLowerCase().includes(searchQuery)
   );
   const displayData = filteredData?.slice(initialCount,initialCount+ rowToShow);
+  if(!token) return null;
   return (
     <div>
       {/* navbar */}

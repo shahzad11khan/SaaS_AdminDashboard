@@ -11,9 +11,11 @@ import { Order_Update_End_Point } from "../../Components/api/endPoint";
 import { Order_Middle_Point } from "../../Components/api/middlePoints";
 import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Order = () => {
+    Auth()
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
@@ -76,15 +78,17 @@ console.log(orderData)
         dispatch(fetchOrder());
 
     }, [dispatch]);
-    let companyOnlineOrder = companyId ? orderData.filter(item => companyId  === item.userId?.companyId?._id ) : orderData ;
+    console.log(orderData)
+    let companyOnlineOrder = companyId ? orderData.data.filter(item => companyId  === item.userId?.companyId?._id ) : orderData.data ;
 
-    const filterData = companyOnlineOrder?.filter((order) => {
+    const filterData = companyOnlineOrder?.data.filter((order) => {
         console.log(orderData)
         return order.orderStatus.toLowerCase().includes(searchQuery)
 
     })
     const displayData = filterData?.slice(0, rowToShow)
 
+    if(!Auth()) return null;
     return (
         <div>
 

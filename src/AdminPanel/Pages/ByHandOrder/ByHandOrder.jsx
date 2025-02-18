@@ -1,15 +1,18 @@
 import LeftSideBar from "../../LeftSideBar/LeftSideBar"
 import Navbar from "../../Navbar/Navbar"
 import customerdata from "../../../../public/customer.json";
-import { Link } from "react-router-dom";
+import { Link,  } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
 import DeleteModal from '../../Components/DeleteModal';
-import { useState } from "react";
+import {  useState } from "react";
 import { useSelector } from 'react-redux';
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const ByHandOrder = () => {
+    
+        
     const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
     const currentTheme = useSelector((state=>state.theme.theme))
 
@@ -17,10 +20,9 @@ const ByHandOrder = () => {
     const isopendeletemodal = ()=>{
         setIsDeleteModalOpen(true);
     }
+    if(!Auth()) return null;
   return (
     <div>
-      
-
     <Navbar/>
     <div className='flex flex-col lg:flex-row '>
         <LeftSideBar/>
@@ -72,15 +74,15 @@ const ByHandOrder = () => {
 
                     <thead>
                         <tr>
-                            {customerdata.headers.map((item, index) => (
+                            {customerdata?.headers.map((item, index) => (
                                  <th key={index} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'}  ${currentTheme=== 'dark' ?'text-white':'text-black'} border-b px-4 py-2`}>{item}</th>
                             ))}
                         </tr>
                     </thead>
 
                     <tbody>
-                        {customerdata.data.map((item) => (
-                            <tr key={item.sNo} className={`hover:bg-gray-100 ${currentTheme === 'dark' ? 'hover:bg-[#404052]' : ''  }`}>
+                        {customerdata.data.map((item , index) => (
+                            <tr key={index} className={`hover:bg-gray-100 ${currentTheme === 'dark' ? 'hover:bg-[#404052]' : ''  }`}>
                                 <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.serial_no}</td>
                                 <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.customer_name}</td>
                                 <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.email}</td>

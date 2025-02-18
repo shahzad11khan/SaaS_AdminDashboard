@@ -7,6 +7,7 @@ import GenericTable from "../../Components/Table/GenericTable";
 import { fetchCompanies } from "../../Slice/CompanySlice";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const RegisteredCompanies = () => {
@@ -93,6 +94,7 @@ const RegisteredCompanies = () => {
 };
 
 
+if(!Auth()) return null;
     return (
         <div>
             <Navbar />

@@ -14,6 +14,16 @@ import { toast , ToastContainer } from "react-toastify";
 
 
 const UserRegistrationForm = () => {
+  const navigate = useNavigate()
+
+  let {token} = useSelector(state => state.authenticate);
+  useEffect(()=>{
+    if(!token) {
+      toast.error("Login first")
+      setTimeout(navigate('/'),1000) 
+    }
+  } , [token , navigate])
+  
   const {permissions} = useSelector(state => state.permission)
   const currentTheme = useSelector((state=>state.theme.theme)) 
   const [permission , setPermission] = useState([])
@@ -33,7 +43,6 @@ const UserRegistrationForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);  
   
   const [id , setId] = useState(null)
-  const navigate = useNavigate()
   // const [passwordErrorMessage,setPasswordErrorMessage]=useState("");
 
   const confirmPasswordVisibility = () => {
@@ -163,7 +172,7 @@ const UserRegistrationForm = () => {
     }
   }, [location.state]);
   console.log(formData)
-
+  if (!token) return null;
   return (
     <>
       <ToastContainer

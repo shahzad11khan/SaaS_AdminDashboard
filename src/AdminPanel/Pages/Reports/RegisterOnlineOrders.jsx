@@ -7,6 +7,7 @@ import { fetchOrder } from "../../Slice/OrderSlice";
 import { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const RegisteredOnlineOrder = () => {
@@ -79,6 +80,7 @@ const RegisteredOnlineOrder = () => {
     })
     const displayData = filterData?.slice(0, rowToShow)
 
+    if(!Auth()) return null;    
     return (
         <div>
 

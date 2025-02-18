@@ -16,8 +16,11 @@ import { toast } from 'react-toastify';
 
 
 const Registeruser = () => {
+    
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    
     // const currentTheme = useSelector((state) => state.theme.theme);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showRows, setRowsToShow] = useState(5);
@@ -124,6 +127,15 @@ const Registeruser = () => {
         navigate(path, { state: data });
     };
 
+    let {token} = useSelector(state => state.authenticate);
+    useEffect(()=>{
+      if(!token) {
+        toast.error("Login first")
+        setTimeout(navigate('/'),1000) 
+      }
+    } , [token , navigate])
+    
+    if (!token) return null;
     return (
         <div>
             <Navbar />

@@ -6,15 +6,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 import defaultPic  from '../../../assets/default user/defaultUser.png';
 import { baseUri } from "../../Components/api/baseUri";
 import { Product_Middle_Point } from "../../Components/api/middlePoints";
-import { Add_Product_End_Point } from "../../Components/api/endPoint";
+import { Add_Product_End_Point, Product_Update_End_Point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
 
 const ProductRegistrationForm = () => {
-
   let navigate = useNavigate()
+
+  let {token} = useSelector(state => state.authenticate);
+    useEffect(()=>{
+      if(!token) {
+        toast.error("Login first")
+        setTimeout(navigate('/'),1000) 
+      }
+    } , [token , navigate])
   const [previewUrl , setPreviewUrl] = useState(defaultPic)  
   const location = useLocation();
+  const [id , setId] = useState(null)
 
   const [formData, setFormData] = useState({
     productName: "",
@@ -58,11 +66,20 @@ const ProductRegistrationForm = () => {
       }else{console.log(key)}
     });
     try {
-      const url = baseUri + Product_Middle_Point + Add_Product_End_Point;
-      const method = "POST";
-      const response = await fetchData(url, method , Data );
+      console.log(id)
+      let response;
+      if(location?.state?.state === 'edit' && id){
+        console.log("hello")
+        const url = baseUri + Product_Middle_Point + Product_Update_End_Point + id;
+        const method = "PUT";
+        response = await fetchData(url, method , Data );
+      }else{
+        const url = baseUri + Product_Middle_Point + Add_Product_End_Point;
+        const method = "POST";
+         response = await fetchData(url, method , Data );
+      }
       console.log(response)
-      if(response.status === 201){
+      if(response.status === 201 || response.status === 200){
         toast.success(response.data.success || response.statusText)
         navigate('/product')
       }else{
@@ -72,7 +89,6 @@ const ProductRegistrationForm = () => {
       toast.error(error || "something went worng with regester company")
       console.log(error);
   } 
-    console.log("Product Submitted:", formData);
     // alert("Product registered successfully!");
     // setFormData({
     //   productName:"",
@@ -89,6 +105,7 @@ const ProductRegistrationForm = () => {
 
   };
   useEffect(()=>{
+    // console.log(location.state.product)
     if(location?.state?.product){
       setFormData({
         productName:location.state.product.productName,
@@ -96,18 +113,21 @@ const ProductRegistrationForm = () => {
         productPrice:location.state.product.productPrice,
         productQuantity:location.state.product.productQuantity,
         productCategory:location.state.product.productCategory,
-        productSubCategory:location.state.product.productSubCategory,
-        productImage:location.state.product.productImage,
+        productSubCategory:location.state.product.productSubCategory,        
         productTag:location.state.product.productTag,
         rating:location.state.product.rating,
-
       })
+      setPreviewUrl(location.state.product.productImageUrl)
+      if(location.state.product._id){
+        setId(location.state.product._id)
+      }
     }
+
 
   },[location.state])
 
   const currentTheme = useSelector((state) => state.theme.theme);
-
+  if(!token) return null;
   return (
     <>
       <Navbar />

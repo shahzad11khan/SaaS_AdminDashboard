@@ -14,6 +14,15 @@ import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
 
 const Companies = () => {
+    const navigate = useNavigate();
+      let {token} = useSelector(state => state.authenticate);
+    useEffect(()=>{
+      if(!token) {
+        toast.error("Login first")
+        setTimeout(navigate('/'),1000) 
+      }
+    } , [token , navigate])
+    
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
     const [initialCount,setInitialCount]=useState(0);
@@ -24,7 +33,6 @@ const Companies = () => {
     const dispatch = useDispatch();
     const { data: companiesData, loading, error  } = useSelector((state) => state.companies);
     
-    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(fetchCompanies());
@@ -63,7 +71,7 @@ const Companies = () => {
 const handleConfirmDelete = async()=>{
     const URL = baseUri + Companies_Middle_Point + Company_Delete_End_Point + id;
     const method = 'Delete';
-    const response = fetchData(URL , method );
+    const response = await fetchData(URL , method );
     setIsDeleteModalOpen(false)
     toast.success(response.data.message)
     filterData = companiesData.filter(el => el._id !== id)
@@ -74,6 +82,8 @@ const handleConfirmDelete = async()=>{
     setInitialCount(initialCount -rowToShow)
  }
 const displayData = filterData.slice(initialCount,initialCount+ rowToShow);
+if (!token) return null;
+
     return (
         <div>
             <Navbar />

@@ -8,8 +8,10 @@ import { baseUri } from "../../Components/api/baseUri";
 import { Tag_Middle_Point } from "../../Components/api/middlePoints";
 import { Tag_End_Point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const TagRegistrationForm = () => {
+
   const currentTheme = useSelector((state) => state.theme.theme);
 const [tagId ,setTagId] = useState(null);
 const navigate = useNavigate()
@@ -62,6 +64,8 @@ const navigate = useNavigate()
     setTagId(location.state?.tag._id)
   }
     },[location.state])
+    
+    if(!Auth()) return null;
   return (
     <>
       <Navbar />

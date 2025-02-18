@@ -11,9 +11,11 @@ import { Tag_Middle_Point } from "../../Components/api/middlePoints";
 import { Tag_End_Point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Tags = () => {
+    
 
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
@@ -76,13 +78,16 @@ const Tags = () => {
     useEffect(() => {
         dispatch(fetchTag());
     }, [dispatch]);
+    console.log(tagData)
     let companyTags = companyId ? tagData?.data.filter(item => companyId === item.userId?.companyId?._id) : tagData.data;
+    console.log(companyTags)
     const filterData = companyTags?.filter((tag) => {
         return tag.description.toLowerCase().includes(searchQuery) ||
             tag.tagNumber.toLowerCase().includes(searchQuery)
     })
     const displayData = filterData?.slice(0, rowToShow)
 
+    if(!Auth()) return null;
     return (
 
         <div>

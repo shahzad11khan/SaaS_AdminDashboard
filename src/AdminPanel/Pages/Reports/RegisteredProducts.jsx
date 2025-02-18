@@ -10,8 +10,10 @@ import { Product_Middle_Point } from "../../Components/api/middlePoints";
 import fetchData from "../../Components/api/axios";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const RegisteredProduct = () => {
+    
     const dispatch = useDispatch();
 
     const [productData, setProductData] = useState({
@@ -117,7 +119,9 @@ const RegisteredProduct = () => {
         doc.save("RegisteredProduct.pdf")
         
     }
-    return (
+
+    if(!Auth()) return null;
+        return (
         <div>
 
 

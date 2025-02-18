@@ -7,10 +7,12 @@ import CompanyCard from "../../Components/CompanyCard"
 import Spinner from "../../Components/Spinner";
 import { selectCompany } from "../../Slice/SelectedCompanySlice"
 import { useNavigate } from "react-router-dom"
+import { Auth } from "../../../utils/globleAtuhenticate"
 
 
 
 const CompaniesData = () => {
+    
     const navigate = useNavigate()
     const dispatch = useDispatch();
     const {  companies , theme } = useSelector((state) => state);
@@ -31,6 +33,8 @@ const CompaniesData = () => {
         dispatch(selectCompany(data))
         navigate('/admin')
     }
+    
+    if(!Auth()) return null;
 
     return (
         <div>

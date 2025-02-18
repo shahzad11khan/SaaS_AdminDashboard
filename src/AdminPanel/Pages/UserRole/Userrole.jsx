@@ -21,6 +21,14 @@ import { toast } from 'react-toastify';
 
 const Userrole = () => {
     let navigate = useNavigate()
+
+    let {token} = useSelector(state => state.authenticate);
+    useEffect(()=>{
+      if(!token) {
+        toast.error("Login first")
+        setTimeout(navigate('/'),1000) 
+      }
+    } , [token , navigate])
     let dispatch = useDispatch()
     const currentTheme = useSelector((state=>state.theme.theme))
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -114,7 +122,7 @@ const Userrole = () => {
             data: prevState.data .filter(el => el._id !== id)
         }));
      }
-
+     if(!token) return null;
 
     return (
         <div>

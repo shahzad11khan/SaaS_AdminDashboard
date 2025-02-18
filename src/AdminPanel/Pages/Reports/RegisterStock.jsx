@@ -10,9 +10,11 @@ import { setLoading } from "../../Slice/LoadingSlice";
 import GenericTable from "../../Components/Table/GenericTable";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const RegisteredStock = () => {
+    
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
     const [showRows, setRowsToShow] = useState(5);
@@ -106,7 +108,8 @@ const RegisteredStock = () => {
    
            doc.save("RegisteredStock.pdf");
        };
-   
+
+       if(!Auth()) return null;
     return (
         <div>
 
