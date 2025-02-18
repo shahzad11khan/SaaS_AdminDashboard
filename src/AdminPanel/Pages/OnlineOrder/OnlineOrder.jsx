@@ -17,7 +17,7 @@ const Order = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
     const { data: orderData, loading, error } = useSelector((state) => state.orders)
-    const {companyId} = useSelector((state) => state.selectedCompany);
+    const { companyId } = useSelector((state) => state.selectedCompany);
 
 
     const handleRowChange = (e) => {
@@ -40,13 +40,14 @@ const Order = () => {
     const routerSystemSettingDetail = (state, onlineOrder) => {
         const path = `/online-order-form`
         const data = { state, onlineOrder }
-        navigate(path, { state:data })
+        navigate(path, { state: data })
     }
     useEffect(() => {
         dispatch(fetchOrder());
 
     }, [dispatch]);
-    let companyOnlineOrder = companyId ? orderData.filter(item => companyId  === item.userId?.companyId?._id ) : orderData ;
+    
+    let companyOnlineOrder = companyId ? orderData.filter(item => companyId === item.userId?.companyId?._id) : orderData;
 
     const filterData = companyOnlineOrder.data.filter((order) => {
         console.log(orderData)
