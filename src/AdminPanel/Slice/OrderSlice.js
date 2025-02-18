@@ -9,7 +9,7 @@ export const fetchOrder = createAsyncThunk("orders/fetchOrder",async()=>{
     const method ="GET";
     const response = await fetchData(URL,method);
     console.log(response)
-    return response
+    return response.data
 })
 
 const orderSlice = createSlice({
@@ -17,7 +17,7 @@ const orderSlice = createSlice({
     initialState:{
         data:[],
         loading:false,
-        error:false,
+        // error:false,
     },
 
     extraReducers: (builder) => {
@@ -28,14 +28,13 @@ const orderSlice = createSlice({
       
       builder.addCase(fetchOrder.fulfilled, (state, action) => {
         state.loading=false,
-        console.log(action.payload)
         state.data=action.payload
       })
 
-      builder.addCase(fetchOrder.rejected, (state, action) => {
-        state.loading=false,
-        state.error=action.error.message
-      })
+      // builder.addCase(fetchOrder.rejected, (state, action) => {
+      //   state.loading=false,
+      //   state.error=action.error.message
+      // })
     },
   })
 

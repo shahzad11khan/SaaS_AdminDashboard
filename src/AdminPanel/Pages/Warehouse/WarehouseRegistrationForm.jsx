@@ -2,11 +2,17 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { baseUri } from "../../Components/api/baseUri";
+import { Warehouse_Middle_Point } from "../../Components/api/middlePoints";
+import { Warehouse_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
+import { toast } from "react-toastify";
 
 const WarehouseRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
-
+  const [warehouseId ,setWarehouseId] = useState(null);
+const navigate = useNavigate();
   const [formData, setFormData] = useState({
     warehouse: "",
     warehouseLocation: "",
@@ -19,17 +25,29 @@ const WarehouseRegistrationForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
 
-    console.log("Warehouse Registered:", formData);
-    alert("Warehouse registered successfully!");
-    setFormData({
-      warehouse: "",
-      warehouseLocation: "",
-      warehouseManager: "",
-      warehouseCapacity: "",
-    });
+      const isEdit = !!warehouseId;
+      const data = { ...formData };
+      const URL = baseUri + Warehouse_Middle_Point  + (isEdit ? "/" +warehouseId :Warehouse_End_Point) 
+      console.log(URL);
+      const method = isEdit ? "PUT" : "POST";
+      const response =await fetchData(URL,method,data)
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data?.message)
+        navigate(-1);
+      }
+      else {
+        console.log(response.data?.message)
+        toast.error(response.data?.message )
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
+
   };
 
   const location = useLocation();
@@ -38,9 +56,13 @@ const WarehouseRegistrationForm = () => {
       if(location?.state?.warehouse){
         setFormData({
           warehouse:location.state.warehouse.warehouse,
-          warehouseLocation:location.state.warehouse.location,
-          warehouseManager:location.state.warehouse.manager,
+          location:location.state.warehouse.location,
+          manager:location.state.warehouse.manager,
         })
+      }
+      if(location?.state?.warehouse._id){
+        console.log(location?.state?.warehouse._id);
+        setWarehouseId(location?.state?.warehouse._id)
       }
   },[location.state])
 
@@ -76,13 +98,13 @@ const WarehouseRegistrationForm = () => {
               </div>
 
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="warehouseLocation" className="block text-sm font-medium">
+                <label htmlFor="location" className="block text-sm font-medium">
                   Location <span className="text-red-500">*</span>
                 </label>
                 <input
-                  name="warehouseLocation"
-                  id="warehouseLocation"
-                  value={formData.warehouseLocation}
+                  name="location"
+                  id="location"
+                  value={formData.location}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
                   placeholder="Enter location"
@@ -93,14 +115,14 @@ const WarehouseRegistrationForm = () => {
 
             <div className="flex flex-col lg:flex-row justify-between mt-5">
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="warehouseManager" className="block text-sm font-medium">
+                <label htmlFor="manager" className="block text-sm font-medium">
                   Manager <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="warehouseManager"
-                  id="warehouseManager"
-                  value={formData.warehouseManager}
+                  name="manager"
+                  id="manager"
+                  value={formData.manager}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white'}`}
                   placeholder="Enter manager's name"

@@ -25,7 +25,7 @@ const Delever = () => {
     const { data: deliverData, loading, error } = useSelector(
         (state) => state.deliver
       );
-
+      console.log(deliverData)
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10))
     }
@@ -57,11 +57,12 @@ const Delever = () => {
 
    useEffect(()=>{
     dispatch(fetchOrder())
-    console.log(fetchOrder)
+    // console.log(fetchOrder)
    },[dispatch])
 
+   console.log(deliverData)
     
-   const filterData =deliverData.filter((deliver)=>{
+   const filterData =deliverData?.filter((deliver)=>{
     const deliverDate = new Date(deliver.createdAt.split("T")[0]);
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -72,7 +73,7 @@ const Delever = () => {
 
    })
 
-   const displayData = filterData.slice(0,rowToShow)
+   const displayData = filterData?.slice(0,rowToShow)
 
   const handlePrint = () => {
    
@@ -194,7 +195,7 @@ const Delever = () => {
                                 Previous
                             </button>
                             <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
-                                {Math.ceil((initialCount + rowToShow) / rowToShow)} of {Math.ceil(filterData.length / rowToShow)}
+                                {Math.ceil((initialCount + rowToShow) / rowToShow)} of {Math.ceil(filterData?.length / rowToShow)}
                             </button>
                             <button
                                 onClick={showNext}

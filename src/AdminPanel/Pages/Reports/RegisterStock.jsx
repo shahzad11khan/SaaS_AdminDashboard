@@ -33,7 +33,7 @@ const RegisteredStock = () => {
              console.log(response);
             setStockData((prevStock) => ({
                 ...prevStock,
-                data: response
+                data: response.data
             }
             ))
             dispatch(setLoading());

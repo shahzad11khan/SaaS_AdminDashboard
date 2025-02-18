@@ -7,12 +7,18 @@ import GenericTable from "../../Components/Table/GenericTable";
 import { fetchCompanies } from "../../Slice/CompanySlice";
 import DeleteModal from "../../Components/DeleteModal";
 import CompanyGraph from "../../Components/CompanyGraph";
+import { baseUri } from "../../Components/api/baseUri";
+import { Companies_Middle_Point } from "../../Components/api/middlePoints";
+import { Company_Delete_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
+import { toast } from "react-toastify";
 
 const Companies = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
     const [initialCount,setInitialCount]=useState(0);
     const [searchQuery, setSearchQuery] = useState("");
+    const [id , setId] = useState(null)
 
     const currentTheme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
@@ -33,7 +39,8 @@ const Companies = () => {
         setSearchQuery(e.target.value.toLowerCase());
     };
 
-    const handleDelete = () => {
+    const handleDelete = (item) => {
+        setId(item._id)
         setIsDeleteModalOpen(true);
     };
 
@@ -41,24 +48,32 @@ const Companies = () => {
         navigate("/register-form", { state: { mode: "edit", companies: item } });
     };
 
-    const filterData = companiesData.filter((companies) =>
+    let filterData = companiesData.filter((companies) =>
       companies.companyName.toLowerCase().includes(searchQuery) ||
       companies.ownerName.toLowerCase().includes(searchQuery) ||
       companies.address.toLowerCase().includes(searchQuery) ||
       companies.registrationNumber.toLowerCase().includes(searchQuery)
   );
+
   const showNext = () =>{
     if(initialCount + rowToShow <= filterData.length)
         setInitialCount(initialCount + rowToShow)
 }
 
- const showPrevious = () =>{
-if(initialCount - rowToShow >= 0)
-    setInitialCount(initialCount -rowToShow)
+const handleConfirmDelete = async()=>{
+    const URL = baseUri + Companies_Middle_Point + Company_Delete_End_Point + id;
+    const method = 'Delete';
+    const response = fetchData(URL , method );
+    setIsDeleteModalOpen(false)
+    toast.success(response.data.message)
+    filterData = companiesData.filter(el => el._id !== id)
  }
 
-    const displayData = filterData.slice(initialCount,initialCount+ rowToShow);
-
+ const showPrevious = () =>{
+    if(initialCount - rowToShow >= 0)
+    setInitialCount(initialCount -rowToShow)
+ }
+const displayData = filterData.slice(initialCount,initialCount+ rowToShow);
     return (
         <div>
             <Navbar />
@@ -121,7 +136,7 @@ if(initialCount - rowToShow >= 0)
                         />
                     </div>
                     <div className="pages flex justify-center gap-1 mt-4">
-                        <button onChange={showPrevious} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Previous</button>
+                        <button onClick={showPrevious} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Previous</button>
                         <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
                         {Math.ceil((initialCount + rowToShow)/ (rowToShow))} of {Math.ceil((filterData.length)/rowToShow)}
                             </button>
@@ -130,6 +145,7 @@ if(initialCount - rowToShow >= 0)
                 </div>
                 <DeleteModal
                     isOpen={isDeleteModalOpen}
+                    confirmDelete = {handleConfirmDelete}
                     onClose={() => setIsDeleteModalOpen(false)}
                 />
             </div>

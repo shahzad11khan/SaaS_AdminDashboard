@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
 
-const DeleteModal = ({ isOpen, onClose ,confirmDelete}) => {
+const DeleteModal = ({ isOpen, onClose , confirmDelete }) => {
   if (!isOpen) return null;
 
   // Pass the Id to handleDelete when Confirm Delete is clicked
   const handleConfirmDelete = () => {
-    //   onDelete(Id); // Pass the Id from DeleteModal to handleDelete function
     confirmDelete()
-    onClose(); // Close the modal after deletion
-  
+    //   onDelete(Id); // Pass the Id from DeleteModal to handleDelete function
+    ; // Close the modal after deletion
   };
 
   return (
@@ -55,7 +54,8 @@ const DeleteModal = ({ isOpen, onClose ,confirmDelete}) => {
 DeleteModal.propTypes = {
   isOpen: PropTypes.bool.isRequired, // Ensure `isOpen` is a required boolean
   onClose: PropTypes.func.isRequired, // Ensure `onClose` is a required function
-  confirmDelete:PropTypes.func,
+  confirmDelete: PropTypes.func.isRequired, 
+
 };
 
 export default DeleteModal;

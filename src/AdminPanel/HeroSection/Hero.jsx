@@ -26,12 +26,14 @@ const Hero = () => {
             const url = baseUri + User_Middle_Point + User_End_Point;
             const method = "GET";
             const response = await fetchData(url, method);
+            console.log(response.data)
             dispatch(setLoading());
             if(companyId){
-                let  filterdData =  response.users.filter(item => companyId  === item.companyId?._id);
+                let  filterdData =  response.data.users.filter(item => companyId  === item.companyId?._id);
                 setTotalUsers(filterdData.length)
-             }else if (response.users && Array.isArray(response.users)) {
-                setTotalUsers(response.users.length); 
+             }else if (response.data.users && Array.isArray(response.data.users)) {
+                console.log(response)
+                setTotalUsers(response.data.users.length); 
             }
         } catch (error) {
             console.log(error)
@@ -60,18 +62,25 @@ const Hero = () => {
         try{
             const url = baseUri + Product_Middle_Point ;
             const method = "GET";
-            const response = await fetchData(url,method);
-            dispatch(setLoading());
-            if(companyId){
-                let  filterdData =  response.filter(item => companyId  ===  item.userId?.companyId?._id);
-                setTotalProduct(filterdData.length)
-             }else if (Array.isArray(response)) {
-                setTotalProduct(response.length); 
+            const {data} = await fetchData(url,method);
+            console.log(data)
+            if (data) {
+                let filteredData = [];
+    
+                if (companyId) {
+                    filteredData = data.filter(item => companyId === item.userId?.companyId?._id);
+                } else if (Array.isArray(data)) {
+                    filteredData = data;
+                }
+    
+                setTotalProduct(filteredData.length);
             }
         }
         catch(error){
         console.log(error)
         }
+        dispatch(setLoading());
+
     }
 
     useEffect(() => {
@@ -149,7 +158,7 @@ console.log
                              icon={element.icon}
                              iconBgColor={element.iconBgColor}
                              title={element.title}
-                             price={
+                             total={
                                  element.title.includes("Users") 
                                 ? totalUsers 
                                 : element.title.includes("Stock") 

@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import defaultPic  from '../../../assets/default user/defaultUser.png';
+import { baseUri } from "../../Components/api/baseUri";
+import { Product_Middle_Point } from "../../Components/api/middlePoints";
+import { Add_Product_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
+import { toast } from "react-toastify";
 
 const ProductRegistrationForm = () => {
 
-  
+  let navigate = useNavigate()
+  const [previewUrl , setPreviewUrl] = useState(defaultPic)  
   const location = useLocation();
 
   const [formData, setFormData] = useState({
@@ -18,35 +25,70 @@ const ProductRegistrationForm = () => {
     productSubCategory:"",
     productImage:"",
     productTag:"", 
-    productRating:""
+    rating:""
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value ,type , files } = e.target;    
+    if(type === 'file'){
+      // console.log(files[0])
+       const file = files[0];
+       const reader = new FileReader();
+ 
+       reader.onloadend = () => {
+         setPreviewUrl(reader.result); 
+       };
+ 
+       if (file) {
+         reader.readAsDataURL(file); 
+       }
+       setFormData({ ...formData, [name]: file});
+    }else{
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("Product Submitted:", formData);
-    alert("Product registered successfully!");
-    setFormData({
-      productName:"",
-      productDescription:"",
-      productPrice:"",
-      productQuantity:"",
-      productCategory:"",
-      productSubCategory:"",
-      productImage:"",
-      productTag:"",
-      productRating:""
-
+    console.log(formData)
+    const Data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null) {
+        Data.append(key, formData[key]);
+      }else{console.log(key)}
     });
+    try {
+      const url = baseUri + Product_Middle_Point + Add_Product_End_Point;
+      const method = "POST";
+      const response = await fetchData(url, method , Data );
+      console.log(response)
+      if(response.status === 201){
+        toast.success(response.data.success || response.statusText)
+        navigate('/product')
+      }else{
+        toast.error(response.data?.message || response.data?.error)
+      }
+    } catch (error) {
+      toast.error(error || "something went worng with regester company")
+      console.log(error);
+  } 
+    console.log("Product Submitted:", formData);
+    // alert("Product registered successfully!");
+    // setFormData({
+    //   productName:"",
+    //   productDescription:"",
+    //   productPrice:"",
+    //   productQuantity:"",
+    //   productCategory:"",
+    //   productSubCategory:"",
+    //   productImage:"",
+    //   productTag:"",
+    //   rating:""
+
+    // });
 
   };
   useEffect(()=>{
-    console.log(location?.state?.product)
     if(location?.state?.product){
       setFormData({
         productName:location.state.product.productName,
@@ -57,7 +99,7 @@ const ProductRegistrationForm = () => {
         productSubCategory:location.state.product.productSubCategory,
         productImage:location.state.product.productImage,
         productTag:location.state.product.productTag,
-        productRating:location.state.product.rating,
+        rating:location.state.product.rating,
 
       })
     }
@@ -204,14 +246,14 @@ const ProductRegistrationForm = () => {
                 />
               </div>
               <div className="w-full lg:w-[350px]">
-                <label htmlFor="productRating" className="block text-sm font-medium">
+                <label htmlFor="rating" className="block text-sm font-medium">
                   Rating <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
-                  name="productRating"
-                  id="productRating"
-                  value={formData.productRating}
+                  name="rating"
+                  id="rating"
+                  value={formData.rating}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}`}
                   placeholder="Enter product rating"
@@ -225,7 +267,7 @@ const ProductRegistrationForm = () => {
                 <label htmlFor="productImage" className="block text-sm font-medium">
                   Image <span className="text-red-500">*</span>
                 </label>
-                <div className="mt-2">
+                <div className="mt-2 flex justify-between items-center">
                   <label
                     htmlFor="productImage"
                     className={`cursor-pointer inline-block px-4 py-2 rounded-md border ${currentTheme === 'dark' ? 'bg-[#404040] text-white' : 'bg-[#F0FFF8] text-black'} focus:outline-none`}
@@ -236,10 +278,12 @@ const ProductRegistrationForm = () => {
                     type="file"
                     name="productImage"
                     id="productImage"
-                    onChange={(e) => setFormData({ ...formData, productImage: e.target.files[0] })}
+                    onChange={handleChange}
                     className="hidden"
                     required
                   />
+                  <img className="h-[120px] w-[120px] rounded-full object-cover" src={previewUrl} alt="user" />
+
                 </div>
               </div>
             </div>

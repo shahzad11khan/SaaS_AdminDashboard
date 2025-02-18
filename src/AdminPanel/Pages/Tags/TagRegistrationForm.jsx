@@ -2,11 +2,17 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { baseUri } from "../../Components/api/baseUri";
+import { Tag_Middle_Point } from "../../Components/api/middlePoints";
+import { Tag_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
 
 const TagRegistrationForm = () => {
   const currentTheme = useSelector((state) => state.theme.theme);
-
+const [tagId ,setTagId] = useState(null);
+const navigate = useNavigate()
   const [formData, setFormData] = useState({
     tagNumber: "",
     description: "",
@@ -19,17 +25,28 @@ const TagRegistrationForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
 
-    console.log("Tag Registered:", formData);
-    alert("Tag registered successfully!");
-    setFormData({
-      tagNumber: "",
-      description: "",
-      textColor: "",
-      backgroundColor: "",
-    });
+      const isEdit = !!tagId;
+      const data = { ...formData };
+      const URL = baseUri + Tag_Middle_Point + Tag_End_Point + (isEdit ? "/" +tagId :"") 
+      const method = isEdit ? "PUT" : "POST";
+      const response =await fetchData(URL,method,data)
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data?.message )
+        navigate(-1);
+      }
+      else {
+        console.log(response.data?.message)
+        toast.error(response.data?.message )
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
+
   };
 
   const location = useLocation()
@@ -40,6 +57,9 @@ const TagRegistrationForm = () => {
       tagNumber:location?.state?.tag.tagNumber,
       description:location?.state?.tag.description, 
     });
+  }
+  if(location.state?.tag._id){
+    setTagId(location.state?.tag._id)
   }
     },[location.state])
   return (

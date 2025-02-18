@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link,useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
@@ -8,9 +8,10 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import defaultPic  from '../../../assets/default user/defaultUser.png';
 import { baseUri } from "../../Components/api/baseUri";
 import { User_Middle_Point } from "../../Components/api/middlePoints";
-import { Add_User_End_Point } from "../../Components/api/endPoint";
+import { Add_User_End_Point, User_Update_End_Point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
-import { toast } from "react-toastify";
+import { toast , ToastContainer } from "react-toastify";
+
 
 const UserRegistrationForm = () => {
   const {permissions} = useSelector(state => state.permission)
@@ -29,7 +30,10 @@ const UserRegistrationForm = () => {
     userLogo :''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);  
+  
+  const [id , setId] = useState(null)
+  const navigate = useNavigate()
   // const [passwordErrorMessage,setPasswordErrorMessage]=useState("");
 
   const confirmPasswordVisibility = () => {
@@ -76,10 +80,16 @@ const UserRegistrationForm = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault(); 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+
+    if (formData.dateOfBirth) {
+      const isFormatted = /^\d{2}-\d{2}-\d{4}$/.test(formData.dateOfBirth);
+    
+      if (!isFormatted) {
+        let date = new Date(formData.dateOfBirth);
+        formData.dateOfBirth = date.toLocaleDateString("en-GB").replace(/\//g, "-");
+      }
     }
+    
 
     const Data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -89,15 +99,24 @@ const UserRegistrationForm = () => {
     });
 
     try{
-      const URL = baseUri + User_Middle_Point + Add_User_End_Point ;
-      const method = "POST" ;
-      const response = await fetchData(URL , method , Data );
-      console.log(formData)
-      if(response.status === 200){
-        console.log(response.data)
+      let response;
+      console.log(location?.state.state)
+      if(location?.state?.state === 'edit'){
+        console.log("hello")
+        const url = baseUri + User_Middle_Point + User_Update_End_Point+id;
+        console.log(url)
+        const method = "PUT";
+        response = await fetchData(url, method , Data );
       }else{
-        console.log(response.data)
-        toast.error(response?.data?.message )
+        const URL = baseUri + User_Middle_Point + Add_User_End_Point ;
+        const method = "POST" ;
+         response = await fetchData(URL , method , Data );
+      }
+      console.log(response)
+      if(response.status === 200){
+        toast.success(response.data.message)
+        navigate('/register-user')
+      }else{
         toast.error(response?.data?.error)
       }
     }catch(error){
@@ -120,25 +139,58 @@ const UserRegistrationForm = () => {
   };
 
   useEffect(() => {
+    console.log(location?.state)
     if (location?.state?.user) {
       setFormData({
         fullName:location.state.user.fullName,
         username: location.state.user.username,
         email: location.state.user.email,
-        // password: location.state.user.password,
-        // confirmPassword: location.state.user.confirmPassword,
+        password: location.state.user.confirmPassword,
+        confirmPassword: location.state.user.confirmPassword,
         dateOfBirth: location.state.user.dateOfBirth,
         permission: location.state.user.permission,
         role: location.state.user.role,
-        // status: location.state.user.state,
-        userLogo:location.state.user.userLogo
+        status: location.state.user.status,
+        userLogo:location.state.user.userLogoUrl
       })
     }
-  }, [location.state]);
+    if(location?.state?.user?.userLogoUrl){
 
+      setPreviewUrl(location.state.user.userLogoUrl)
+    }
+    if(location?.state?.user?._id){
+      setId(location?.state?.user?._id)
+    }
+  }, [location.state]);
+  console.log(formData)
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        closeButton={false}
+        limit={3}
+        toastStyle={{
+          fontSize: '11px',
+          fontFamily: 'Arial, sans-serif',
+          color: 'white',
+          width: '220px',
+          minHeight: '40px',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+          transition: 'all 0.8s ease',
+        }}
+      />
       <Navbar />
       <div className="flex flex-col lg:flex-row">
         <LeftSideBar />
@@ -390,6 +442,7 @@ const UserRegistrationForm = () => {
                           onChange={handleChange}
                           className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
+                        {console.log(formData.status)}
                         <span className="ml-2 text-sm font-medium ">
                           Active
                         </span>

@@ -57,7 +57,7 @@ const RegisteredProduct = () => {
             console.log(response)
             setProductData((prevState) => ({
                 ...prevState,
-                data: response
+                data: response.data
 
             }))
         }

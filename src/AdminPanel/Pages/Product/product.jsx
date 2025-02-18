@@ -22,7 +22,8 @@ const Product = () => {
     });
 
     const [showRows, setRowsToShow] = useState(5);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [initialCount , setInitialCount]  = useState(0)
+    const [searchQuery , setSearchQuery] = useState('');
 
     const handleSearchQuery = (e) => {
         setSearchQuery(e.target.value.toLowerCase());
@@ -38,11 +39,11 @@ const Product = () => {
         try {
             const Url = baseUri + Product_Middle_Point;
             const method = "GET";
-            const response = await fetchData(Url, method);
+            const {data} = await fetchData(Url, method);
             dispatch(setLoading());
-            console.log(response)
-            if (companyId) {
-                let filterdData = response.filter(item => companyId === item.userId?.companyId?._id);
+            console.log(data)
+            if(companyId){
+                let  filterdData =  data.filter(item => companyId  === item.userId?.companyId?._id);
                 setProductData((prevState) => ({
                     ...prevState,
                     data: filterdData,
@@ -50,8 +51,8 @@ const Product = () => {
             } else {
                 setProductData((prevState) => ({
                     ...prevState,
-                    data: response
-
+                    data: data
+    
                 }))
             }
 
@@ -95,7 +96,18 @@ const Product = () => {
         )
     })
 
-    const displayData = filterData.slice(0, showRows)
+    const showNext = () =>{
+        if(initialCount + showRows <= filterData.length)
+            setInitialCount(initialCount + showRows)
+    }
+    
+     const showPrevious = () =>{
+    if(initialCount - showRows >= 0)
+        setInitialCount(initialCount -showRows)
+     }
+
+    const displayData = filterData.slice(initialCount, initialCount+showRows)
+    console.log(displayData)
     return (
         <div>
 
@@ -169,13 +181,13 @@ const Product = () => {
                     <div className="pages flex justify-center gap-1 mt-4">
 
 
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                        <button onClick={showPrevious} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
                             Previous
                         </button>
                         <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            1 of 1
+                        {Math.ceil((initialCount + showRows)/ (showRows))} of {Math.ceil((filterData.length)/showRows)}
                         </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
+                        <button onClick={showNext} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
                             Next
                         </button>
 

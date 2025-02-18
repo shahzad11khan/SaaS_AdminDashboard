@@ -8,19 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { baseUri } from "../../Components/api/baseUri";
 import { Companies_Middle_Point } from "../../Components/api/middlePoints";
-import { Create_Companie_End_point } from "../../Components/api/endPoint";
+import { Company_Update_End_Point, Create_Companie_End_point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
 import defaultPic from '../../../assets/default user/defaultUser.png';
 import { toast, ToastContainer } from "react-toastify";
 
-
 const CompanyRegistrationForm = () => {
-  let navigatae = useNavigate()
-  const currentTheme = useSelector((state => state.theme.theme))
-  // const location = useLocation();
-  const [viewConfirmPassword, setViewConfirmPassword] = useState(false)
-  const [viewPassword, setViewPassword] = useState(false)
+  let navigate = useNavigate()
+  const currentTheme = useSelector((state=>state.theme.theme))
   const location = useLocation();
+  const [viewConfirmPassword , setViewConfirmPassword] = useState(false)
+  const [viewPassword , setViewPassword] = useState(false)
   const [formData, setFormData] = useState({
     companyName: "",
     registrationNumber: "",
@@ -86,12 +84,23 @@ const CompanyRegistrationForm = () => {
     });
 
     try {
-      const url = baseUri + Companies_Middle_Point + Create_Companie_End_point;
-      const method = "POST";
-      const response = await fetchData(url, method, Data);
-      console.log(response)
-      // toast.error(response?.data?.error|| "something went worng with regester company")
-      // toast.success(response?.data?.message )
+      let response;
+      if(location?.state?.mode === 'edit'){
+        const url = baseUri + Companies_Middle_Point + Company_Update_End_Point+id;
+        const method = "PUT";
+        response = await fetchData(url, method , Data );
+      }else{
+        const url = baseUri + Companies_Middle_Point + Create_Companie_End_point;
+        const method = "POST";
+        response = await fetchData(url, method , Data );
+      }
+      console.log(response)      
+      if(response.status === 200){
+        toast.success(response.data.success)
+        navigate(-1)
+      }else{
+        toast.error(response.data?.message || response.data?.error)
+      }
     } catch (error) {
       toast.error(error || "something went worng with regester company")
       console.log(error);
@@ -99,28 +108,33 @@ const CompanyRegistrationForm = () => {
 
 
   };
+  const [id , setId] = useState(null)
   useEffect(() => {
+    console.log(location.state.companies)
     if (location?.state?.companies) {
-      let { companies } = location.state; 
+      let {companies} =location.state;         
       setFormData({
-        companyName: companies.companyName,
-        companyAddress: companies.address,
-        email: companies.email,
-        confirmPassword: companies.confirmPassword,
-        password: companies.confirmPassword,
-        registrationNumber: companies.registrationNumber,
-        phoneNumber: companies.ownerPhoneNumber,
-        VatNumber: companies.VatNumber,
-        address: companies.address,
-        ownerPhoneNumber: companies.ownerPhoneNumber,
-        isActive: companies.isActive,
-        companyLogo: companies.companyLogo,
-      });
+            companyName: companies.companyName ,
+            companyAddress: companies.address ,
+            email: companies.email , 
+            confirmPassword: companies.confirmPassword ,
+            password: companies.confirmPassword ,
+            registrationNumber: companies.registrationNumber ,
+            phoneNumber: companies.ownerPhoneNumber,
+            VatNumber: companies.VatNumber ,
+            address:companies.address,
+            ownerPhoneNumber: companies.ownerPhoneNumber,
+            isActive:companies.isActive,
+            companyLogo:companies.companyLogo,
+        });
     }
     if (location?.state?.companies?.companyLogo) {
       setPreviewUrl(location.state.companies.companyLogo)
     }
-  }, [location.state]);
+    if(location?.state?.companies?._id){
+      setId(location?.state?.companies?._id)
+    }
+}, [location.state]);
   return (
     <>
       <ToastContainer
@@ -328,12 +342,12 @@ const CompanyRegistrationForm = () => {
 
                   {/* close and next Buttons  */}
                   <div className="w-full flex justify-end gap-5 mt-5">
-                    <button
-                      onClick={() => navigatae(-1)}
-                      type="button"
-                      className={`px-4 py-2 rounded  ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} border border-gray-300`}>
-                      Close
-                    </button>
+                      <button
+                      onClick={()=> navigate(-1)}
+                        type="button"
+                        className={`px-4 py-2 rounded  ${currentTheme=== 'dark' ?'text-white':'text-black'}  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} border border-gray-300`}>
+                        Close
+                      </button>
 
                     <button
                       type="submit"
@@ -552,7 +566,6 @@ const CompanyRegistrationForm = () => {
                     >
                       Submit
                     </button>
-
                   </div>
                 </form>
               </>

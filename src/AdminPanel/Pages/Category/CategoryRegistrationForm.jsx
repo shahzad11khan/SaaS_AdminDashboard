@@ -2,15 +2,21 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { baseUri } from "../../Components/api/baseUri";
+import { Category_Middle_Point } from "../../Components/api/middlePoints";
+import { Category_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
+import { toast } from "react-toastify/unstyled";
 
 const CategoryRegistrationForm = () => {
   const currentTheme = useSelector((state => state.theme.theme))
   const location = useLocation();
-
+  const navigate = useNavigate()
+  const [categoryId, setCategoryId] = useState(null)
   const [formData, setFormData] = useState({
-    categoryName: "",
-    categoryDescription: "",
+    mainCategory: "",
+    subCategory: "",
   });
 
   const handleChange = (e) => {
@@ -21,26 +27,43 @@ const CategoryRegistrationForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
 
-    console.log("Category Submitted:", formData);
-    alert("Category registered successfully!");
-    setFormData({
-      categoryName: "",
-      categoryDescription: "",
-    });
+      const isEdit = !!categoryId;
+      const data = { ...formData };
+      const URL = baseUri + Category_Middle_Point + Category_End_Point + (isEdit ? "/" +categoryId :"") 
+      const method = isEdit ? "PUT" : "POST";
+      const response =await fetchData(URL,method,data)
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data?.message || "Categoty ")
+        navigate(-1);
+      }
+      else {
+        console.log(response.data?.message)
+        toast.error(response.data?.message || "Failed to Register Stock")
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
+
   };
 
-  useEffect(()=>{
-    if(location?.state?.category){
+  useEffect(() => {
+    if (location?.state?.category) {
       console.log(location?.state?.category)
       setFormData({
-        categoryName:location.state.category.mainCategory,
-        categoryDescription:location.state.category.subCategory,
+        mainCategory: location.state.category.mainCategory,
+        subCategory: location.state.category.subCategory,
       })
     }
-  },[location.state])
+    if (location.state?.category._id) {
+      console.log("Categoty id", location.state?.category._id);
+      setCategoryId(location.state.category._id)
+    }
+  }, [location.state])
 
   return (
     <>
@@ -59,36 +82,36 @@ const CategoryRegistrationForm = () => {
             <div className="flex flex-col lg:flex-row justify-between">
               <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="categoryName"
+                  htmlFor="mainCategory"
                   className="block text-sm font-medium "
                 >
-                  Category Name <span className="text-red-500">*</span>
+                  Main Category <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  name="categoryName"
-                  id="categoryName"
-                  value={formData.categoryName}
+                  name="mainCategory"
+                  id="mainCategory"
+                  value={formData.mainCategory}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter category name"
+                  placeholder="Enter main category"
                   required
                 />
               </div>
               <div className="w-full lg:w-[350px]">
                 <label
-                  htmlFor="categoryDescription"
+                  htmlFor="subCategory"
                   className="block text-sm font-medium "
                 >
-                  Description <span className="text-red-500">*</span>
+                  Sub Category <span className="text-red-500">*</span>
                 </label>
                 <input
-                  name="categoryDescription"
-                  id="categoryDescription"
-                  value={formData.categoryDescription}
+                  name="subCategory"
+                  id="subCategory"
+                  value={formData.subCategory}
                   onChange={handleChange}
                   className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === 'dark' ? 'text-white' : 'text-black'} ${currentTheme === 'dark' ? 'bg-[#404040]' : 'white]'}`}
-                  placeholder="Enter description"
+                  placeholder="Enter sub category"
                   required
                 />
               </div>

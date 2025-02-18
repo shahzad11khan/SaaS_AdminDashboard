@@ -36,10 +36,11 @@ const RegisteredUser = () => {
             const method = "GET";
             const response = await fetchData(url, method);
             console.log(response)
+        
             dispatch(setLoading());
             setUserData((prevState) => ({
                 ...prevState,
-                data: response.users,
+                data: response.data,
             }));
         } catch (error) {
             console.log(error)
@@ -69,8 +70,7 @@ const RegisteredUser = () => {
             setInitialCount(initialCount - showRows);
         }
     };
-
-    const filterData = userData.data.filter((user) => {
+    const filterData = userData?.data?.users?.filter((user) => {
         const userDate = new Date(user.createdAt.split("T")[0]);
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -82,7 +82,7 @@ const RegisteredUser = () => {
         return dateRange & matchSearchQuery;
     })
 
-    const displayData = filterData.slice(initialCount, initialCount + showRows);
+    const displayData = filterData?.slice(initialCount, initialCount + showRows);
 
 
     const pdfHeaders = ["SNo", "Username", "Email", "Date of Birth", "Role", "Status"]
@@ -228,7 +228,7 @@ const RegisteredUser = () => {
                                 Previous
                             </button>
                             <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
-                                {Math.ceil((initialCount + showRows) / showRows)} of {Math.ceil(filterData.length / showRows)}
+                                {Math.ceil((initialCount + showRows) / showRows)} of {Math.ceil(filterData?.length / showRows)}
                             </button>
                             <button
                                 onClick={showNext}
