@@ -6,9 +6,11 @@ import GenericTable from "../../Components/Table/GenericTable";
 import { fetchOrder } from "../../Slice/OrderSlice";
 import DeleteModal from '../../Components/DeleteModal';
 import { useState, useEffect } from "react";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Order = () => {
+    Auth()
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
@@ -46,15 +48,17 @@ const Order = () => {
         dispatch(fetchOrder());
 
     }, [dispatch]);
+    console.log(orderData)
     let companyOnlineOrder = companyId ? orderData.data.filter(item => companyId  === item.userId?.companyId?._id ) : orderData.data ;
 
-    const filterData = companyOnlineOrder.filter((order) => {
+    const filterData = companyOnlineOrder?.data.filter((order) => {
         console.log(orderData)
         return order.orderStatus.toLowerCase().includes(searchQuery)
 
     })
     const displayData = filterData?.slice(0, rowToShow)
 
+    if(!Auth()) return null;
     return (
         <div>
 

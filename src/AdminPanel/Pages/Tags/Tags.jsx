@@ -6,9 +6,11 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTag } from "../../Slice/TagSlice";
 import GenericTable from "../../Components/Table/GenericTable";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Tags = () => {
+    
 
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
@@ -34,6 +36,7 @@ const Tags = () => {
         routerSystemSettingDetail("edit", item)
     };
     const navigate = useNavigate();
+
     const routerSystemSettingDetail = (state, tag) => {
         const path = `/tag-registration-form`;
         const data = { state, tag }
@@ -47,13 +50,16 @@ const Tags = () => {
     useEffect(() => {
         dispatch(fetchTag());
     }, [dispatch]);
+    console.log(tagData)
     let companyTags = companyId ? tagData?.data.filter(item => companyId === item.userId?.companyId?._id) : tagData.data;
-    const filterData = companyTags.filter((tag) => {
+    console.log(companyTags)
+    const filterData = companyTags?.filter((tag) => {
         return tag.description.toLowerCase().includes(searchQuery) ||
             tag.tagNumber.toLowerCase().includes(searchQuery)
     })
     const displayData = filterData?.slice(0, rowToShow)
 
+    if(!Auth()) return null;
     return (
 
         <div>

@@ -2,8 +2,10 @@ import { useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const DeliveryForm = () => {
+  
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
@@ -31,6 +33,7 @@ const DeliveryForm = () => {
     });
   };
 
+  if(!Auth()) return null;
   return (
     <>
       <Navbar />

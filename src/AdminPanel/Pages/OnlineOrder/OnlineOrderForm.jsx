@@ -3,6 +3,7 @@ import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
 import { useLocation } from "react-router-dom";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const OrderForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
@@ -34,15 +35,16 @@ const OrderForm = () => {
   const location = useLocation();
 
   useEffect(()=>{
+    console.log(location?.state?.onlineOrder)
 if(location?.state?.onlineOrder)
-  console.log(location?.state?.onlineOrder)
   setFormData({
     orderStatus:location.state.onlineOrder.orderStatus,
     shippingAddress:location.state.onlineOrder.shippingAddress,
     paymentMethod:location.state.onlineOrder.paymentMethod,
   })
   },[location.state])
-
+  
+  if(!Auth()) return null;
   return (
     <>
       <Navbar />

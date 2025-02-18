@@ -3,8 +3,10 @@ import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
 import { useLocation } from "react-router-dom";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const WarehouseRegistrationForm = () => {
+  
   const currentTheme = useSelector((state => state.theme.theme));
 
   const [formData, setFormData] = useState({
@@ -44,6 +46,7 @@ const WarehouseRegistrationForm = () => {
       }
   },[location.state])
 
+  if(!Auth()) return null;
   return (
     <>
       <Navbar />

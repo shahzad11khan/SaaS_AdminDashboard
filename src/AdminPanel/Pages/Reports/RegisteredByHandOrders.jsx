@@ -3,11 +3,13 @@ import Navbar from "../../Navbar/Navbar"
 import customerdata from "../../../../public/registeredCustomer.json";
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const RegisteredByHandOrder = () => {
     const currentTheme = useSelector((state=>state.theme.theme))
 
+    if(!Auth()) return null;
 
   return (
     <div>

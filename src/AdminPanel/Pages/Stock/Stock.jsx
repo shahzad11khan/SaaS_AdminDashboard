@@ -9,18 +9,40 @@ import { Stock_Middle_Point } from "../../Components/api/middlePoints";
 import fetchData from "../../Components/api/axios";
 import { setLoading } from "../../Slice/LoadingSlice";
 import GenericTable from "../../Components/Table/GenericTable";
+import { toast } from "react-toastify";
 
 
 const Stock = () => {
+    const navigate = useNavigate();
+
+    let {token} = useSelector(state => state.authenticate);
+    useEffect(()=>{
+      if(!token) {
+        toast.error("Login first")
+        setTimeout(navigate('/'),1000) 
+      }
+    } , [token , navigate])
+    
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const {companyId} = useSelector((state) => state.selectedCompany);
-
     const [showRows, setRowsToShow] = useState(5);
+    const [deleteId,setDeleteId]=useState(null)
+    const [initialCount, setInitialCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
+    const showNext = () => {
+        if (initialCount + showRows < filterData.length) {
+            setInitialCount(initialCount + showRows);
+        }
+    };
+
+    const showPrevious = () => {
+        if (initialCount - showRows >= 0) {
+            setInitialCount(initialCount - showRows);
+        }
+    };
     const [stockData, setStockData] = useState({
-        headers: ['SNo', 'category', 'subcategory', 'quantity', 'price', 'totalPrice', 'warehouseName', 'dateAdded','Actions'],
+        headers: ['SNo','productName', 'category', 'subcategory', 'quantity', 'price', 'totalPrice', 'warehouseName', 'dateAdded','Actions'],
         data: []
     })
 
@@ -32,7 +54,7 @@ const Stock = () => {
             const response = await fetchData(Url, method);
              console.log(response);
              if(companyId){
-                let  filterdData =  response.filter(item => companyId  === item.userId?.companyId?._id);
+                let  filterdData =  response.data.filter(item => companyId  === item.userId?.companyId?._id);
                 setStockData((prevStock) => ({
                  ...prevStock,
                  data: filterdData,
@@ -40,7 +62,7 @@ const Stock = () => {
              }else{
                 setStockData((prevStock) => ({
                     ...prevStock,
-                    data: response
+                    data: response.data
                 }
                 ))
              }
@@ -80,17 +102,37 @@ const routerSystemSettingDetail = (state,stock)=>{
     navigate(path ,{state:data})
 
 }
-    const handleDelete = () => {
+    const  handleDelete = (item) => {
+        setDeleteId(item._id)
         setIsDeleteModalOpen(true);
     };
+
+    const handleConfirmDelete = async() =>{
+       const url = baseUri + Stock_Middle_Point + "/" + deleteId;
+       const method ="Delete";
+       const response = await fetchData(url ,method);
+       setIsDeleteModalOpen(false);
+       if(response.status===200){
+        toast.success(response.data.message)
+        setStockData((prevState)=>({
+            ...prevState,
+            data:stockData.data.filter(el => el._id !=deleteId)
+        }))}
+    else {
+        toast.error(response.data.message)
+    }
+
+
+    }
 
    const filterData =stockData.data.filter((stock)=>{
     return stock.category.toLowerCase().includes(searchQuery) ||
     stock.warehouseName.toLowerCase().includes(searchQuery)
    })
 
-   const displayData =filterData.slice(0,showRows)
-    return (
+   const displayData = filterData.slice(initialCount, initialCount + showRows);
+   if(!token) return null;
+   return (
         <div>
 
 
@@ -162,24 +204,31 @@ const routerSystemSettingDetail = (state,stock)=>{
 
                     </div>
 
-                    <div className="pages flex justify-center gap-1 mt-4">
-
-
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Previous
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            1 of 1
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Next
-                        </button>
-
+                    <div className="pages ">
+                        <div className="flex justify-center gap-1">
+                            <button
+                                onClick={showPrevious}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Previous
+                            </button>
+                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                                {Math.ceil((initialCount + showRows) / showRows)} of {Math.ceil(filterData.length / showRows)}
+                            </button>
+                            <button
+                                onClick={showNext}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <DeleteModal
                     isOpen={isDeleteModalOpen}
                     onClose={() => setIsDeleteModalOpen(false)}
+                    confirmDelete={handleConfirmDelete}
+                    
                 />
 
 

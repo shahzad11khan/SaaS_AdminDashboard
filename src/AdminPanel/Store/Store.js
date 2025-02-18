@@ -9,6 +9,7 @@ import deliverReducer from '../Slice/DeliverSlice'
 import companyReducer from '../Slice/CompanySlice'
 import selectedCompanySlice from '../Slice/SelectedCompanySlice'
 import permissionSlice from '../Slice/PermissionSlice'
+import tokenSlice  from '../Slice/TokenSlice';
 
  const Store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ import permissionSlice from '../Slice/PermissionSlice'
     companies:companyReducer,
     selectedCompany:selectedCompanySlice,
     permission:permissionSlice,
+    authenticate:tokenSlice,
   },
 })
 

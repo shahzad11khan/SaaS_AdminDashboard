@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import GenericTable from "../../Components/Table/GenericTable";
 import { fetchDelivery } from "../../Slice/DeliverSlice";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 
@@ -48,6 +49,8 @@ const Delever = () => {
        deliver?.deliverStatus?.toLowerCase().includes(searchQuery)
    )
    const displayData = filterData?.slice(0,rows)
+   
+   if(!Auth()) return null;
     return (
         <div>
 

@@ -7,16 +7,19 @@ import { faEdit, faTrash  } from '@fortawesome/free-solid-svg-icons';
 import DeleteModal from '../../Components/DeleteModal';
 import { useState } from "react"; 
 import { useSelector } from 'react-redux';
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Reports = () => {
+    
     const currentTheme = useSelector((state=>state.theme.theme))
     const [isDeleteModalOpen,setIsDeleteModalOpen]= useState(false);
 
     const isopendeletemodal = ()=>{
         setIsDeleteModalOpen(true);
     }
-
+    
+    if(!Auth()) return null;
   return (
     <div>
       

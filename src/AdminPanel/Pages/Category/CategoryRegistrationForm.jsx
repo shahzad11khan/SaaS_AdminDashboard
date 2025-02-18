@@ -2,9 +2,19 @@ import { useEffect, useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CategoryRegistrationForm = () => {
+  let navigate = useNavigate()
+  let {token} = useSelector(state => state.authenticate);
+      useEffect(()=>{
+        if(!token) {
+          toast.error("Login first")
+          setTimeout(navigate('/'),1000) 
+        }
+      } , [token , navigate])
+      
   const currentTheme = useSelector((state => state.theme.theme))
   const location = useLocation();
 
@@ -42,6 +52,7 @@ const CategoryRegistrationForm = () => {
     }
   },[location.state])
 
+  if(!token) return null;
   return (
     <>
       <Navbar />

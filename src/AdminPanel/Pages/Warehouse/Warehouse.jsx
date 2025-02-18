@@ -6,11 +6,14 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWarehouse } from "../../Slice/WarehouseSlice";
 import GenericTable from "../../Components/Table/GenericTable";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Warehouse = () => {
+    
     const dispatch = useDispatch();
-    const { data: warehouseData, loading, error } = useSelector((state) => state.warehouse)
+    const { data: warehouseData, loading, error } = useSelector((state) => state.warehouse);
+    console.log(warehouseData)
     const currentTheme = useSelector((state => state.theme.theme))
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
@@ -44,7 +47,7 @@ const Warehouse = () => {
     }, [dispatch])
     console.log(warehouseData)
     let companyWarehoruse = companyId ? warehouseData.data?.filter(item => companyId  === item.userId?.companyId?._id ) : warehouseData?.data;
-
+    console.log(companyWarehoruse)
     const filterData = companyWarehoruse?.filter((warehouse) => {
         return warehouse.warehouse.toLowerCase().includes(searchQuery) ||
             warehouse.location.toLowerCase().includes(searchQuery)
@@ -52,6 +55,7 @@ const Warehouse = () => {
 
     const displayData = filterData?.slice(0, rowToShow)
 
+    if(!Auth()) return null;
 
     return (
         <div>

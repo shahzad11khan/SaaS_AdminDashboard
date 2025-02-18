@@ -14,6 +14,7 @@ import { Login_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 import { toast } from 'react-toastify';
+import { saveToken } from "../../Slice/TokenSlice";
 
 
 const SignIn = () => {
@@ -57,8 +58,11 @@ const SignIn = () => {
 
       const response = await fetchData(url, method, form);
       if(response.status === 200 ){
+        console.log(response.data.message)
+        toast.success('Login successful')
         localStorage.setItem('token' , response.data.token)
-        navigate("/admin", {state: {message:response.data.message}});
+        dispatch(saveToken(response.data.token))
+        navigate("/admin");
       }else{
         toast.error(response.data.message)
       }
