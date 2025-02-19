@@ -8,6 +8,7 @@ import { Order_Middle_Point } from "../../Components/api/middlePoints";
 import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
 import { Order_Update_End_Point } from "../../Components/api/endPoint";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const OrderForm = () => {
   const currentTheme = useSelector((state => state.theme.theme));
@@ -79,9 +80,8 @@ const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(()=>{
-if(location.state?.onlineOrder)
-  console.log(location.state?.onlineOrder)
-// console.log(location.state.onlineOrder.products.map(el => el.quantity))
+    console.log(location?.state?.onlineOrder)
+if(location?.state?.onlineOrder)
   setFormData({
     orderStatus:location.state.onlineOrder.orderStatus,
     shippingAddress:location.state.onlineOrder.shippingAddress,
@@ -97,7 +97,8 @@ if(location.state?.onlineOrder)
   }
 
   },[location.state])
-
+  
+  if(!Auth()) return null;
   return (
     <>
       <Navbar />

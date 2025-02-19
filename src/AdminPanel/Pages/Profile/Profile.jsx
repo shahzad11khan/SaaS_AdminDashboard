@@ -1,11 +1,14 @@
 import picture from "../../../../public/images/kashifppp.jpg";
+import { Auth } from "../../../utils/globleAtuhenticate";
 import Navbar from "../../Navbar/Navbar";
 import { useSelector } from 'react-redux';
 
 
 const Profile = () => {
+  
       const currentTheme = useSelector((state=>state.theme.theme))
 
+      if(!Auth()) return null;
   return (
     <>
       <Navbar />

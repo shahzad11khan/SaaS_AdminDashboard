@@ -10,9 +10,17 @@ import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify/unstyled";
 
 const CategoryRegistrationForm = () => {
+  let navigate = useNavigate()
+  let {token} = useSelector(state => state.authenticate);
+      useEffect(()=>{
+        if(!token) {
+          toast.error("Login first")
+          setTimeout(navigate('/'),1000) 
+        }
+      } , [token , navigate])
+      
   const currentTheme = useSelector((state => state.theme.theme))
   const location = useLocation();
-  const navigate = useNavigate()
   const [categoryId, setCategoryId] = useState(null)
   const [formData, setFormData] = useState({
     mainCategory: "",
@@ -65,6 +73,7 @@ const CategoryRegistrationForm = () => {
     }
   }, [location.state])
 
+  if(!token) return null;
   return (
     <>
       <Navbar />

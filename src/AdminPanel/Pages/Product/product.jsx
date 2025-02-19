@@ -9,10 +9,21 @@ import GenericTable from "../../Components/Table/GenericTable";
 import { baseUri } from "../../Components/api/baseUri";
 import { Product_Middle_Point } from "../../Components/api/middlePoints";
 import fetchData from "../../Components/api/axios";
+import { Product_Delete_End_Point } from "../../Components/api/endPoint";
+import { toast } from "react-toastify";
 
 const Product = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    let {token} = useSelector(state => state.authenticate);
+    useEffect(()=>{
+      if(!token) {
+        toast.error("Login first")
+        setTimeout(navigate('/'),1000) 
+      }
+    } , [token , navigate])
+    const [id , setId] = useState(null)
+    const dispatch = useDispatch();
     const { companyId } = useSelector((state) => state.selectedCompany);
 
 
@@ -82,12 +93,12 @@ const Product = () => {
 
     }
 
-    const handleDelete = () => {
+    const handleDelete = (item) => {
+        setId(item._id)
         setIsDeleteModalOpen(true);
-
     };
 
-    const filterData = productData.data.filter((product) => {
+    let  filterData = productData.data.filter((product) => {
         return (
             product.productName.toLowerCase().includes(searchQuery) ||
             product.productCategory.toLowerCase().includes(searchQuery) ||
@@ -100,14 +111,28 @@ const Product = () => {
         if(initialCount + showRows <= filterData.length)
             setInitialCount(initialCount + showRows)
     }
+
+    const handleConfirmDelete = async()=>{
+        const URL = baseUri + Product_Middle_Point + Product_Delete_End_Point + id;
+        const method = 'Delete';
+        const response = await fetchData(URL , method );
+        console.log(response)
+        setIsDeleteModalOpen(false)
+        toast.success(response.data.message)     
+        setProductData((prevState) => ({
+            ...prevState,
+            data: productData?.data.filter(el => el._id !== id)
+
+        })) 
+     }
     
      const showPrevious = () =>{
     if(initialCount - showRows >= 0)
         setInitialCount(initialCount -showRows)
      }
 
-    const displayData = filterData.slice(initialCount, initialCount+showRows)
-    console.log(displayData)
+    const displayData = filterData?.slice(initialCount, initialCount+showRows);
+    if(!token) return null;
     return (
         <div>
 
@@ -195,6 +220,7 @@ const Product = () => {
                 </div>
                 <DeleteModal
                     isOpen={isDeleteModalOpen}
+                    confirmDelete = {handleConfirmDelete}
                     onClose={() => setIsDeleteModalOpen(false)}
                 />
 

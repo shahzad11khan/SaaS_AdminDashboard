@@ -1,24 +1,22 @@
 import LeftSideBar from './LeftSideBar/LeftSideBar'
 import Navbar from './Navbar/Navbar'
 import Hero from './HeroSection/Hero'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 const Admin = () => {
-  let navigate = useNavigate()
-  let location = useLocation()
-  let token  = localStorage.getItem('token');
-  useEffect(
-    ()=>{
-      if(location?.state?.message){
-        toast.success(location?.state?.message)
-      }
-    },[location.state]
-  )
-  useEffect(()=>{
-    if(!token) return navigate('/')
-  },[token])
+  const navigate = useNavigate()
+  let {token} = useSelector(state => state.authenticate);
+useEffect(()=>{
+  if(!token) {
+    toast.error("Login first")
+    setTimeout(navigate('/'),1000) 
+  }
+} , [token , navigate])
+
+if (!token) return null;
   return (
     <>
     

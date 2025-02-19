@@ -48,6 +48,7 @@ function App() {
     <Router>
       <Routes>
       <Route path="/" element={<SignIn/>}/>
+      {/* authenticate  */}
         <Route path="/admin" element={<Admin/>}/>
         <Route path="/register-user" element={<Registeruser/>}/>
         <Route path="/user-registration-form" element={<UserRegistrationForm/>}/>   
@@ -60,7 +61,8 @@ function App() {
         <Route path="/stock" element={<Stock/>}/>
         <Route path="/stock-registration-form" element={<StockRegistrationForm/>}/>
         <Route path="/category" element={<Category/>}/>
-        <Route path="/category-registration-form" element={<CategoryRegistrationForm/>}/>       
+        <Route path="/category-registration-form" element={<CategoryRegistrationForm/>}/>      
+        {/* authenticate using globle routs */}
         <Route path="/byHand-order" element={<ByHandOrder/>}/>
         <Route path="/byHand-order-form" element={<ByHandOrderForm/>}/>
         <Route path="/warehouse" element={<Warehouse/>}/>
@@ -81,7 +83,7 @@ function App() {
         <Route path="/registered-online-order" element={<RegisteredOnlineOrder/>}/>
         <Route path="/registered-byHand-order" element={<RegisteredByHandOrder/>}/> 
         <Route path="/companies-data" element={<CompaniesData/>}/>  
-        <Route path="/companies-data" element={<CompaniesData/>}/> 
+        {/* <Route path="/companies-data" element={<CompaniesData/>}/>  */}
         <Route path="/delivered-data" element={<DeliveredData/>}/> 
       </Routes>
     </Router>

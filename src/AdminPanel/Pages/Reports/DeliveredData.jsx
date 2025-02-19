@@ -8,6 +8,7 @@ import { fetchOrder } from "../../Slice/OrderSlice";
 import GenericTable from "../../Components/Table/GenericTable";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 
@@ -25,7 +26,6 @@ const Delever = () => {
     const { data: deliverData, loading, error } = useSelector(
         (state) => state.deliver
       );
-      console.log(deliverData)
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10))
     }
@@ -60,7 +60,6 @@ const Delever = () => {
     // console.log(fetchOrder)
    },[dispatch])
 
-   console.log(deliverData)
     
    const filterData =deliverData?.filter((deliver)=>{
     const deliverDate = new Date(deliver.createdAt.split("T")[0]);
@@ -98,6 +97,8 @@ const Delever = () => {
 
     doc.save("DeliveredOrders.pdf");
 };
+
+    if(!Auth()) return null;
     return (
         <div>
 

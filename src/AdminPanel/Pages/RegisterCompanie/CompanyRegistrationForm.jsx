@@ -15,6 +15,15 @@ import { toast, ToastContainer } from "react-toastify";
 
 const CompanyRegistrationForm = () => {
   let navigate = useNavigate()
+
+  let {token} = useSelector(state => state.authenticate);
+  useEffect(()=>{
+    if(!token) {
+      toast.error("Login first")
+      setTimeout(navigate('/'),1000) 
+    }
+  } , [token , navigate])
+  
   const currentTheme = useSelector((state=>state.theme.theme))
   const location = useLocation();
   const [viewConfirmPassword , setViewConfirmPassword] = useState(false)
@@ -110,7 +119,7 @@ const CompanyRegistrationForm = () => {
   };
   const [id , setId] = useState(null)
   useEffect(() => {
-    console.log(location.state.companies)
+    // console.log(location.state.companies)
     if (location?.state?.companies) {
       let {companies} =location.state;         
       setFormData({
@@ -135,6 +144,7 @@ const CompanyRegistrationForm = () => {
       setId(location?.state?.companies?._id)
     }
 }, [location.state]);
+if(!token) return null;
   return (
     <>
       <ToastContainer

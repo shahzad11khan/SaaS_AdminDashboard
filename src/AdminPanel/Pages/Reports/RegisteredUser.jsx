@@ -11,6 +11,7 @@ import GenericTable from '../../Components/Table/GenericTable';
 import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice';
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Auth } from '../../../utils/globleAtuhenticate';
 
 
 
@@ -115,6 +116,7 @@ const RegisteredUser = () => {
     };
 
 
+    if(!Auth()) return null;
     return (
         <div>
 

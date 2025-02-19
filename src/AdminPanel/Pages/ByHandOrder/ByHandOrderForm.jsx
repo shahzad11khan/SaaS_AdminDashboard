@@ -2,8 +2,10 @@ import { useState } from "react";
 import Navbar from "../../Navbar/Navbar";
 import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import { useSelector } from 'react-redux';
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const ByHandRegistrationForm = () => {
+  
   const currentTheme = useSelector((state) => state.theme.theme);
 
   const [productRows, setProductRows] = useState([
@@ -69,7 +71,8 @@ const ByHandRegistrationForm = () => {
       userAddress: "",
     });
   };
-
+  
+  if(!Auth()) return null;
   return (
     <>
       <Navbar />

@@ -8,8 +8,10 @@ import { Warehouse_Middle_Point } from "../../Components/api/middlePoints";
 import { Warehouse_End_Point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
+import { Auth } from "../../../utils/globleAtuhenticate";
 
 const WarehouseRegistrationForm = () => {
+  
   const currentTheme = useSelector((state => state.theme.theme));
   const [warehouseId ,setWarehouseId] = useState(null);
 const navigate = useNavigate();
@@ -66,6 +68,7 @@ const navigate = useNavigate();
       }
   },[location.state])
 
+  if(!Auth()) return null;
   return (
     <>
       <Navbar />

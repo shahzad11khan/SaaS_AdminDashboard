@@ -13,9 +13,18 @@ import { toast } from "react-toastify";
 
 
 const Stock = () => {
+    const navigate = useNavigate();
+
+    let {token} = useSelector(state => state.authenticate);
+    useEffect(()=>{
+      if(!token) {
+        toast.error("Login first")
+        setTimeout(navigate('/'),1000) 
+      }
+    } , [token , navigate])
+    
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const {companyId} = useSelector((state) => state.selectedCompany);
     const [showRows, setRowsToShow] = useState(5);
     const [deleteId,setDeleteId]=useState(null);
@@ -123,6 +132,7 @@ const routerSystemSettingDetail = (state,stock)=>{
    })
 
    const displayData = filterData.slice(initialCount, initialCount + showRows);
+   if(!token) return null;
    return (
         <div>
 

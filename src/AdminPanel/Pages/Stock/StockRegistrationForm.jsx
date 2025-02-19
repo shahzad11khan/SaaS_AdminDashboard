@@ -10,8 +10,17 @@ import { toast} from "react-toastify";
 import { Add_Stock_End_Point } from "../../Components/api/endPoint";
 
 const StockRegistrationForm = () => {
-  const currentTheme = useSelector((state => state.theme.theme))
   const navigate = useNavigate()
+
+  let {token} = useSelector(state => state.authenticate);
+  useEffect(()=>{
+    if(!token) {
+      toast.error("Login first")
+      setTimeout(navigate('/'),1000) 
+    }
+  } , [token , navigate])
+  
+  const currentTheme = useSelector((state => state.theme.theme))
  const location= useLocation();
  const [stockId ,setStockId]=useState(null);
   const [formData, setFormData] = useState({
@@ -34,7 +43,6 @@ const StockRegistrationForm = () => {
       [name]: type === "radio" ? (checked ? value : formData[name]) : value,
     
     });  };
-
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
@@ -79,8 +87,7 @@ const StockRegistrationForm = () => {
       setStockId(location.state.stock._id)
     }
   }, [location.state]);
-  
-console.log(formData)
+  if(!token) return null;
   return (
     <>
       <Navbar />
