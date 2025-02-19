@@ -14,7 +14,8 @@ export const Company_Delete_End_Point = '/delete/';
 export const User_Update_End_Point = '/update/';
 export const User_Delete_End_Point = '/delete/';
 export const Warehouse_End_Point = '/create';
-
+export const Product_Update_End_Point = '/update/';
+export const Product_Delete_End_Point = '/delete/';
 
 
 
