@@ -241,10 +241,10 @@ const Hero = () => {
                     <FontAwesomeIcon className={`w-12 h-12 rounded-full`} icon={faWhatsapp}  style={{ color: "#25D366" }} />
                 </div> 
                 
-                <div className={`fixed bottom-2 right-10 cursor-pointer ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}
+                <div className={`fixed bottom-2 right-10 cursor-pointer `}
                     onClick={() => setIsChatBotOpen(!isChatBotOpen)}
                 >
-                    <FontAwesomeIcon icon={faCommentDots} size='3x' />
+                    <FontAwesomeIcon  icon={faCommentDots} size='3x' />
                 </div>
                 {isChatBotOpen && <ChatBot />}
 

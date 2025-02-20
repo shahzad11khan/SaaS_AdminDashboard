@@ -505,7 +505,7 @@ if(!token) return null;
                           type="radio"
                           name="isActive"
                           value={true}
-                          checked={JSON.parse(formData.isActive) == true}
+                          checked={JSON.parse(formData?.isActive) == true}
                           onChange={handleChange}
                           className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />

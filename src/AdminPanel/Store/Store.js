@@ -10,8 +10,10 @@ import companyReducer from '../Slice/CompanySlice'
 import selectedCompanySlice from '../Slice/SelectedCompanySlice'
 import permissionSlice from '../Slice/PermissionSlice'
 import tokenSlice  from '../Slice/TokenSlice';
+import chatbotReducer from '../Slice/BotSlice';
 
- const Store = configureStore({
+
+const Store = configureStore({
   reducer: {
     theme : themeReducer,
     loading: loadingReducer,
@@ -21,6 +23,7 @@ import tokenSlice  from '../Slice/TokenSlice';
     warehouse:warehouseReducer,
     deliver :deliverReducer,
     companies:companyReducer,
+    chatbot:chatbotReducer,
     selectedCompany:selectedCompanySlice,
     permission:permissionSlice,
     authenticate:tokenSlice,
