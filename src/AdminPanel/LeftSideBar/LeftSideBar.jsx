@@ -139,6 +139,12 @@ const LeftSideBar = () => {
                 </li>
               </Link>
 
+              <Link to="/daily-task">
+                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
+                  Daily Task
+                </li>
+              </Link>
+
               <li className='py-1 '>
                 <div className={`flex justify-between items-center cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`} onClick={reportToggle}>
                   {t('leftSidebar.sections.management.items.reports')}
@@ -186,11 +192,7 @@ const LeftSideBar = () => {
                 </li>
               </Link>
 
-                    {/* <Link to="/registered-byHand-order">
-                <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
-                  {t('leftSidebar.sections.management.items.byHandOrder')}
-                </li>
-              </Link> */}
+                
 
                   </ul>
                 )}

@@ -91,7 +91,7 @@ const showPrevious = () => {
   const filteredData = companyCategory?.filter((category) =>
      category.mainCategory.toLowerCase().includes(searchQuery) || category.subCategory.toLowerCase().includes(searchQuery)
   );
-  const displayData = filteredData?.slice(0, rowToShow);
+  const displayData = filteredData?.slice(initialCount,initialCount+ rowToShow);
   if(!token) return null;
   return (
     <div>
@@ -134,10 +134,10 @@ const showPrevious = () => {
             {/* back and & Category button */}
             <div className="flex gap-2">
               <Link to="/admin">
-                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} text-black rounded border`}>Back</button>
+                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Back</button>
               </Link>
               <Link to="/category-registration-form">
-                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} text-black rounded border`}>Add Category</button>
+                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Add Category</button>
               </Link>
             </div>
           </div>

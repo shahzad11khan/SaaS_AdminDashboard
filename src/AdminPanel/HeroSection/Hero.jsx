@@ -7,9 +7,13 @@ import { Stock_Middle_Point } from '../Components/api/middlePoints';
 import { User_End_Point } from '../Components/api/endPoint'
 import fetchData from '../Components/api/axios'
 import SalesGraph from '../Components/Graph';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { setLoading } from '../Slice/LoadingSlice';
 import { fetchOrder } from '../Slice/OrderSlice';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import ChatBot from '../Components/ChatBot/ChatBot';
 
 const Hero = () => {
     const dispatch = useDispatch();
@@ -18,8 +22,10 @@ const Hero = () => {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalStock, setTotalStock] = useState(0);
     const [totalProduct, setTotalProduct] = useState(0);
-    const {companyId} = useSelector((state) => state.selectedCompany);
-    
+    const [isChatBotOpen, setIsChatBotOpen] = useState(null);
+    const { companyId } = useSelector((state) => state.selectedCompany);
+
+
 
     const fetchUsers = async () => {
         try {
@@ -28,29 +34,29 @@ const Hero = () => {
             const response = await fetchData(url, method);
             console.log(response.data)
             dispatch(setLoading());
-            if(companyId){
-                let  filterdData =  response.data.users.filter(item => companyId  === item.companyId?._id);
+            if (companyId) {
+                let filterdData = response.data.users.filter(item => companyId === item.companyId?._id);
                 setTotalUsers(filterdData.length)
-             }else if (response.data.users && Array.isArray(response.data.users)) {
+            } else if (response.data.users && Array.isArray(response.data.users)) {
                 console.log(response)
-                setTotalUsers(response.data.users.length); 
+                setTotalUsers(response.data.users.length);
             }
         } catch (error) {
             console.log(error)
         }
     };
 
-   const fetchStock = async ()=>{
+    const fetchStock = async () => {
         try {
-            const url = baseUri + Stock_Middle_Point ;
+            const url = baseUri + Stock_Middle_Point;
             const method = "GET";
             const response = await fetchData(url, method);
             dispatch(setLoading());
-            if(companyId){
-                let  filterdData =  response.filter(item => companyId  ===  item.userId?.companyId?._id);
+            if (companyId) {
+                let filterdData = response.filter(item => companyId === item.userId?.companyId?._id);
                 setTotalStock(filterdData.length)
-             }else if (Array.isArray(response)) {
-                setTotalStock(response.length); 
+            } else if (Array.isArray(response)) {
+                setTotalStock(response.length);
             }
         } catch (error) {
             console.log(error)
@@ -58,26 +64,26 @@ const Hero = () => {
     }
 
 
-    const fetchProduct = async ()=>{
-        try{
-            const url = baseUri + Product_Middle_Point ;
+    const fetchProduct = async () => {
+        try {
+            const url = baseUri + Product_Middle_Point;
             const method = "GET";
-            const {data} = await fetchData(url,method);
+            const { data } = await fetchData(url, method);
             console.log(data)
             if (data) {
                 let filteredData = [];
-    
+
                 if (companyId) {
                     filteredData = data.filter(item => companyId === item.userId?.companyId?._id);
                 } else if (Array.isArray(data)) {
                     filteredData = data;
                 }
-    
+
                 setTotalProduct(filteredData.length);
             }
         }
-        catch(error){
-        console.log(error)
+        catch (error) {
+            console.log(error)
         }
         dispatch(setLoading());
 
@@ -88,9 +94,9 @@ const Hero = () => {
         fetchStock();
         fetchProduct();
         dispatch(fetchOrder());
-        
+
     }, []);
-    
+
     const balanceDetails = [
         {
             "id": 1,
@@ -143,7 +149,7 @@ const Hero = () => {
 
         }
     ]
-console.log
+    console.log
 
 
     return (
@@ -152,27 +158,27 @@ console.log
 
                 <div className="cards flex justify-start mx-2 flex-wrap gap-1 md:gap-10 lg:gap-8 ">
                     {Data.map((element) => (
-                         <div className="w-[48%] md:w-[15%]" key={element.id}>
-                         <Card
-                             id={element.id}
-                             icon={element.icon}
-                             iconBgColor={element.iconBgColor}
-                             title={element.title}
-                             total={
-                                 element.title.includes("Users") 
-                                ? totalUsers 
-                                : element.title.includes("Stock") 
-                                ? totalStock 
-                                : element.title.includes("Product")
-                                ?totalProduct
-                                : element.title.includes("O.Orders")
-                                ? onlineOrders
-                                :null
-                            }
-                            
-                                
-                             />
-                     </div>
+                        <div className="w-[48%] md:w-[15%]" key={element.id}>
+                            <Card
+                                id={element.id}
+                                icon={element.icon}
+                                iconBgColor={element.iconBgColor}
+                                title={element.title}
+                                total={
+                                    element.title.includes("Users")
+                                        ? totalUsers
+                                        : element.title.includes("Stock")
+                                            ? totalStock
+                                            : element.title.includes("Product")
+                                                ? totalProduct
+                                                : element.title.includes("O.Orders")
+                                                    ? onlineOrders
+                                                    : null
+                                }
+
+
+                            />
+                        </div>
 
                     ))}
 
@@ -183,11 +189,11 @@ console.log
                     <SalesGraph />
                 </div>
             </div>
-                           
-                
-            <div className={`rightSidebar min-h-screen mt-2  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'}  flex flex-col  w-full md:w-full lg:w-[240px] gap-4  p-4 rounded-md border border-gray-300`}>
 
-                <div className={`top ${currentTheme ==='dark' ? 'bg-[#404040]' : 'bg-orange-400 '} border border-gray-300 rounded-lg w-full p-5 text-white `}>
+
+            <div className={`rightSidebar flex flex-col relative  w-full md:w-full lg:w-[240px] min-h-screen mt-2  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'}   gap-4  p-4 rounded-md border border-gray-300`}>
+
+                <div className={`top ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-orange-400 '} border border-gray-300 rounded-lg w-full p-5 text-white `}>
                     <div className="balance">
                         <h3 className="font-bold text-2xl">$ 44.40</h3>
                         <p className="text-sm">Active balance</p>
@@ -212,7 +218,7 @@ console.log
                 </div>
 
 
-                <div className={`  ${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'} ${currentTheme=== 'dark' ?'text-white':'text-black' }  border-gray-300 border-2 rounded-lg p-5   `}>
+                <div className={`  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border-gray-300 border-2 rounded-lg p-5   `}>
                     <div className="balance">
                         <h3 className="text-lg font-medium">Upcoming Payment</h3>
                     </div>
@@ -230,6 +236,19 @@ console.log
                         ))}
                     </div>
                 </div>
+                
+                <div className={`flex fixed bottom-14 right-10 cursor-pointer `}>
+                    <FontAwesomeIcon className={`w-12 h-12 rounded-full`} icon={faWhatsapp}  style={{ color: "#25D366" }} />
+                </div> 
+                
+                <div className={`fixed bottom-2 right-10 cursor-pointer ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}
+                    onClick={() => setIsChatBotOpen(!isChatBotOpen)}
+                >
+                    <FontAwesomeIcon icon={faCommentDots} size='3x' />
+                </div>
+                {isChatBotOpen && <ChatBot />}
+
+               
             </div>
 
         </div>

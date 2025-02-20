@@ -144,6 +144,32 @@ const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, 
                   );
                 }
 
+                if (header.toLowerCase() === 'date') {
+                  return (
+                    <td
+                      key={index}
+                      className={`px-4 py-2 ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                        } text-center`}
+                    >
+                      {item.date}
+
+                    </td>
+                  );
+                }
+
+                if (header.toLowerCase() === 'days') {
+                  return (
+                    <td
+                      key={index}
+                      className={`px-4 py-2 ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                        } text-center`}
+                    >
+                      {item.days}
+
+                    </td>
+                  );
+                }
+
                 if (header === 'productDescription') {
                   return (
                     <td
