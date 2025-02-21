@@ -9,23 +9,24 @@ const ChatBot = () => {
   const { data } = useSelector((state) => state.chatbot);
   const [messages, setMessages] = useState([]);
   const [userQuery, setUserQuery] = useState("");
+  const [isFirstLoad ,setIsFirstLoad] = useState(true);
 
   useEffect(() => {
     dispatch(fetchChatbot());
   }, [dispatch]);
 
   useEffect(() => {
-    if (data) {
+    if (data && !isFirstLoad ) {
       setMessages(prevMessages => [...prevMessages, { text: data, sender: "bot" }]);
     }
-  }, [data]);
+  }, [data,isFirstLoad]);
 
   const handleSendMessage = async () => {
     if (userQuery.trim() !== "") {
       setMessages(prevMessages => [...prevMessages, { text: userQuery, sender: "user" }]);
       
       await dispatch(fetchChatbot(userQuery));
-      
+      setIsFirstLoad(false);
       setUserQuery("");
     }
   };
