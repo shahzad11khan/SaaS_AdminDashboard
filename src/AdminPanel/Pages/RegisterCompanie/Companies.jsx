@@ -32,6 +32,7 @@ const Companies = () => {
     const currentTheme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
     const { data: companiesData, loading, error  } = useSelector((state) => state.companies);
+    console.log(companiesData)
     
 
     useEffect(() => {
@@ -81,7 +82,9 @@ const handleConfirmDelete = async()=>{
     if(initialCount - rowToShow >= 0)
     setInitialCount(initialCount -rowToShow)
  }
+ console.log(filterData)
 const displayData = filterData.slice(initialCount,initialCount+ rowToShow);
+console.log(displayData)
 if (!token) return null;
 
     return (

@@ -149,7 +149,6 @@ const Hero = () => {
 
         }
     ]
-    console.log
 
 
     return (
@@ -236,19 +235,27 @@ const Hero = () => {
                         ))}
                     </div>
                 </div>
-                
-                <div className={`flex fixed bottom-14 right-10 cursor-pointer `}>
-                    <FontAwesomeIcon className={`w-12 h-12 rounded-full`} icon={faWhatsapp}  style={{ color: "#25D366" }} />
-                </div> 
-                
+
+                {companyId ? (
+                    <a
+                        href={`https://wa.me/+923489822281?text=Can You send me more detail about products?`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex fixed bottom-14 right-10 cursor-pointer"
+                    >
+                        <FontAwesomeIcon className="w-12 h-12 rounded-full" icon={faWhatsapp} style={{ color: "#25D366" }} />
+                    </a>
+                ) : null}
+
+
                 <div className={`fixed bottom-2 right-10 cursor-pointer `}
                     onClick={() => setIsChatBotOpen(!isChatBotOpen)}
                 >
-                    <FontAwesomeIcon  icon={faCommentDots} size='3x' />
+                    <FontAwesomeIcon icon={faCommentDots} size='3x' />
                 </div>
                 {isChatBotOpen && <ChatBot />}
 
-               
+
             </div>
 
         </div>

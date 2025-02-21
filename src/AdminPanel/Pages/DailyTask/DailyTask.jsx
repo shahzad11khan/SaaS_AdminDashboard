@@ -13,7 +13,7 @@ const DailyTask = () => {
         const currentDate = new Date();
         const initialData = [{
             date: currentDate.toLocaleDateString(),
-            days: 30
+            days: 35
         }];
         return initialData;
     };
@@ -30,6 +30,7 @@ const DailyTask = () => {
             };
             const updatedData =[newEntry, ...prevData];
             localStorage.setItem("dailyTaskData",JSON.stringify(updatedData));
+            
             return updatedData
         });
     };

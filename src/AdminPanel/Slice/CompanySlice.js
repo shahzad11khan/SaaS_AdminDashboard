@@ -7,6 +7,7 @@ export const fetchCompanies = createAsyncThunk("companies/fetchCompanies", async
     const URL = baseUri + Companies_Middle_Point;
     const method = "GET";
     const response = await fetchData(URL, method);
+    console.log(response)
     if(response.status !== 200){
         return thunkApi.rejectWithValue('something went wrong')
     }

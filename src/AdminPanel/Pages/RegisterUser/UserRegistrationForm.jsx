@@ -109,7 +109,7 @@ const UserRegistrationForm = () => {
 
     try{
       let response;
-      console.log(location?.state.state)
+      // console.log(location?.state.state)
       if(location?.state?.state === 'edit'){
         console.log("hello")
         const url = baseUri + User_Middle_Point + User_Update_End_Point+id;
@@ -122,7 +122,7 @@ const UserRegistrationForm = () => {
          response = await fetchData(URL , method , Data );
       }
       console.log(response)
-      if(response.status === 200){
+      if(response.status === 201){
         toast.success(response.data.message)
         navigate('/register-user')
       }else{

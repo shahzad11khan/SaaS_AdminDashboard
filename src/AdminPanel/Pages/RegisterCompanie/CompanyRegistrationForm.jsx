@@ -104,7 +104,7 @@ const CompanyRegistrationForm = () => {
         response = await fetchData(url, method , Data );
       }
       console.log(response)      
-      if(response.status === 200){
+      if(response.status === 200 || response.status === 201 ){
         toast.success(response.data.success)
         navigate(-1)
       }else{
@@ -505,7 +505,7 @@ if(!token) return null;
                           type="radio"
                           name="isActive"
                           value={true}
-                          checked={JSON.parse(formData?.isActive) == true}
+                          // checked={JSON.parse(formData?.isActive) == true}
                           onChange={handleChange}
                           className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
@@ -518,7 +518,7 @@ if(!token) return null;
                           type="radio"
                           name="isActive"
                           value={false}
-                          checked={JSON.parse(formData.isActive) == false}
+                          // checked={JSON.parse(formData.isActive) == false}
                           onChange={handleChange}
                           className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
