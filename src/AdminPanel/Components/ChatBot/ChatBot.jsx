@@ -22,39 +22,39 @@ const ChatBot = () => {
 
   const handleSendMessage = async () => {
     if (userQuery.trim() !== "") {
-      // Add user message to chat
       setMessages(prevMessages => [...prevMessages, { text: userQuery, sender: "user" }]);
       
-      // Dispatch chatbot action
       await dispatch(fetchChatbot(userQuery));
       
-      // Clear input field
       setUserQuery("");
     }
   };
 
   return (
     <div>
-      <div className={`fixed bottom-6 right-24 ${currentTheme === 'dark' ? 'bg-[#404040] text-white' : 'bg-[#F0FFF8]'}  p-4 shadow-lg rounded-md w-[300px] h-[400px] flex flex-col border`}>
-        <div className="flex border-b pb-2 mb-2 gap-2">
-          <img className="w-8 h-8 rounded-full" src={companyId ? companyImg : "../../../images/justLogo.svg"} alt="" />
-          <p className="font-semibold">{companyId ? companyName : "CompanyName"}</p>
+      <div className={`fixed bottom-6 right-24 ${currentTheme === 'dark' ? 'bg-[#2C2C2C] text-white' : 'bg-[#F0FFF8]'}  p-4 shadow-lg rounded-lg w-[300px] h-[400px] flex flex-col border border-gray-300`}>
+        <div className="flex border-b pb-2 mb-2 gap-2 items-center">
+          <img className="w-10 h-10 rounded-full border border-gray-400" src={companyId ? companyImg : "../../../images/justLogo.svg"} alt="" />
+          <p className="font-semibold text-lg">{companyId ? companyName : "CompanyName"}</p>
         </div>
 
         <div 
-          className="flex-1 overflow-y-auto mb-2 px-2" 
+          className="flex-1 overflow-y-auto mb-2 px-2 space-y-2" 
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
+          <div className="flex justify-center text-gray-500 ">
+            {messages.length === 0 ? <p>What can I help you with?</p> : null}
+          </div>
           {messages.map((message, index) => (
             <div 
               key={index} 
-              className={`mb-2 ${message.sender === "user" ? "text-right" : "text-left"}`}
+              className={`mb-2 flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
             >
               <div 
-                className={`inline-block p-2 rounded-lg max-w-[80%] break-words ${
+                className={`p-3 rounded-lg max-w-[80%] break-words shadow-md text-sm ${
                   message.sender === "user" 
-                    ? "bg-blue-500 text-white" 
-                    : `${currentTheme === 'dark' ? 'bg-gray-600' : 'bg-gray-200'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`
+                    ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-bl-none" 
+                    : `${currentTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} text-black rounded-br-none` 
                 }`}
               >
                 {message.text}
@@ -63,13 +63,13 @@ const ChatBot = () => {
           ))}
         </div>
 
-        <div className="flex gap-1 mt-auto">
+        <div className="flex gap-2 mt-auto border-t pt-2">
           <input
             type="text"
             value={userQuery}
             onChange={(e) => setUserQuery(e.target.value)}
             placeholder="Type a message..."
-            className={`flex-1 p-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-white'}  border border-gray-300 rounded-md focus:outline-none`}
+            className={`flex-1 p-2 rounded-md text-sm focus:outline-none shadow-inner ${currentTheme === 'dark' ? 'bg-[#404040] text-white' : 'bg-white border border-gray-300'}`}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
                 handleSendMessage();
@@ -77,7 +77,7 @@ const ChatBot = () => {
             }}
           />
           <button 
-            className="bg-blue-500 text-white px-3 rounded-md hover:bg-blue-600" 
+            className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition"
             onClick={handleSendMessage}
           >
             Send
