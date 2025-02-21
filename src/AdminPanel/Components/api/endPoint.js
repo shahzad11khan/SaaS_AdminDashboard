@@ -17,6 +17,9 @@ export const Warehouse_End_Point = '/create';
 
 export const Product_Update_End_Point = '/update/';
 export const Product_Delete_End_Point = '/delete/';
+export const Chatbot_End_Point = '/chat';
+
+
 
 
 

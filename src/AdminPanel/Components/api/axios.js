@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const fetchData = async (url, method = "GET", data = {}, params = {}) => {
-
   try {
     const config = {
       url,
