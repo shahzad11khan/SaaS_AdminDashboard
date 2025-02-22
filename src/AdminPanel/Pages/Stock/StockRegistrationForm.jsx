@@ -45,14 +45,13 @@ const StockRegistrationForm = () => {
     });  };
     const handleSubmit = async (e) => {
       e.preventDefault();
-    let response;
       try {
         
         const isEdit = !!stockId;
         const data = { ...formData, isActive: formData.isActive };
         const url= baseUri + Stock_Middle_Point + (isEdit ? "/" + stockId : Add_Stock_End_Point)
         const method =(isEdit ? "PUT" : "POST");
-        response = await fetchData(url,method,data)
+      const response = await fetchData(url,method,data)
     
         if (response?.status === 200 || response?.status === 201) {
           console.log(response.data);
@@ -244,26 +243,7 @@ const StockRegistrationForm = () => {
             </div>
 
             <div className="flex flex-col lg:flex-row justify-between mt-3">
-            {/* <div className="w-full lg:w-[350px]">
-                <label
-                  htmlFor="productAddedDate"
-                  className="block text-sm font-medium"
-                >
-                  Added Date <span className="text-red-500">*</span>
-                </label>
-                <input
-                type="date"
-                  name="productAddedDate"
-                  id="productAddedDate"
-                  value={formData.productAddedDate}
-                  onChange={handleChange}
-                  className={`w-full mt-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "text-white" : "text-black"
-                    } ${currentTheme === "dark" ? "bg-[#404040]" : "white]"}`}
-                  required
-                >
-
-                </input>
-              </div> */}
+          
                       <div className="w-full lg:w-[350px]">
                 <label htmlFor="warehouseName" className="block text-sm font-medium">
                 Warehouse<span className="text-red-500">*</span>

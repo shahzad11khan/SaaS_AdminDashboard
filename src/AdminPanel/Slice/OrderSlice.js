@@ -16,7 +16,7 @@ const orderSlice = createSlice({
     initialState:{
         data:[],
         loading:false,
-        error:false,
+        // error:false,
     },
 
     extraReducers: (builder) => {
@@ -30,10 +30,10 @@ const orderSlice = createSlice({
         state.data=action.payload
       })
 
-      builder.addCase(fetchOrder.rejected, (state, action) => {
-        state.loading=false,
-        state.error=action.error.message
-      })
+      // builder.addCase(fetchOrder.rejected, (state, action) => {
+      //   state.loading=false,
+      //   state.error=action.error.message
+      // })
     },
   })
 

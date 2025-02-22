@@ -6,6 +6,10 @@ import GenericTable from "../../Components/Table/GenericTable";
 import { fetchCategories } from "../../Slice/CategorySlice";
 import DeleteModal from "../../Components/DeleteModal";
 import { useState, useEffect } from "react";
+import { baseUri } from "../../Components/api/baseUri";
+import { Category_Middle_Point } from "../../Components/api/middlePoints";
+import { Category_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
 
 const Category = () => {
@@ -22,6 +26,9 @@ const Category = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [rowToShow, setRowsToShow] = useState(5);
   const [searchQuery, setSearchQuery] = useState("");
+  const [initialCount, setInitialCount] = useState(0);
+  const [deleteId,setDeleteId]=useState(null);
+
 
   const currentTheme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
@@ -30,6 +37,17 @@ const Category = () => {
   );
   const {companyId} = useSelector((state) => state.selectedCompany);
 
+  const showNext = () => {
+    if (initialCount + rowToShow < filteredData.length) {
+        setInitialCount(initialCount + rowToShow);
+    }
+};
+
+const showPrevious = () => {
+    if (initialCount - rowToShow >= 0) {
+        setInitialCount(initialCount - rowToShow);
+    }
+};
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -44,9 +62,21 @@ const Category = () => {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
-  const handleDelete = () => {
+  const handleDelete = (item) => {
+    setDeleteId(item._id)
     setIsDeleteModalOpen(true);
   };
+
+  const handleConfirmDelete = async() =>{
+    const url = baseUri + Category_Middle_Point + Category_End_Point + "/" + deleteId;
+    const method ="Delete";
+    const response = await fetchData(url ,method);
+    setIsDeleteModalOpen(false);
+
+     toast.success(response.data.message)
+     dispatch(fetchCategories());
+
+ }
 
   const handleEdit = (item) => {
     routerSystemSettingDetail("edit",item)
@@ -61,7 +91,7 @@ const Category = () => {
   const filteredData = companyCategory?.filter((category) =>
      category.mainCategory.toLowerCase().includes(searchQuery) || category.subCategory.toLowerCase().includes(searchQuery)
   );
-  const displayData = filteredData?.slice(0, rowToShow);
+  const displayData = filteredData?.slice(initialCount,initialCount+ rowToShow);
   if(!token) return null;
   return (
     <div>
@@ -104,10 +134,10 @@ const Category = () => {
             {/* back and & Category button */}
             <div className="flex gap-2">
               <Link to="/admin">
-                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} text-black rounded border`}>Back</button>
+                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Back</button>
               </Link>
               <Link to="/category-registration-form">
-                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} text-black rounded border`}>Add Category</button>
+                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>Add Category</button>
               </Link>
             </div>
           </div>
@@ -123,13 +153,33 @@ const Category = () => {
               onDelete={handleDelete}
             />
           </div>
-          <div className="pages flex justify-center gap-1 mt-4">
-            <button className="px-4 py-2 bg-[#F0FFF8] text-black rounded border">Previous</button>
-            <button className="px-4 py-2 bg-[#F0FFF8] text-black rounded border">1 of 1</button>
-            <button className="px-4 py-2 bg-[#F0FFF8] text-black rounded border">Next</button>
-          </div>
+          <div className="pages ">
+                        <div className="flex justify-center gap-1">
+                            <button
+                                onClick={showPrevious}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Previous
+                            </button>
+                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                                {Math.ceil((initialCount + rowToShow) / rowToShow)} of {Math.ceil(filteredData?.length / rowToShow)}
+                            </button>
+                            <button
+                                onClick={showNext}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
         </div>
-        <DeleteModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} />
+        <DeleteModal 
+        isOpen={isDeleteModalOpen} 
+        onClose={() => setIsDeleteModalOpen(false)}
+        confirmDelete={handleConfirmDelete}
+
+        
+        />
       </div>
     </div>
   );

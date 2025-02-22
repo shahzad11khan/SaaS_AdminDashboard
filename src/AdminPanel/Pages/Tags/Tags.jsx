@@ -6,6 +6,11 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchTag } from "../../Slice/TagSlice";
 import GenericTable from "../../Components/Table/GenericTable";
+import { baseUri } from "../../Components/api/baseUri";
+import { Tag_Middle_Point } from "../../Components/api/middlePoints";
+import { Tag_End_Point } from "../../Components/api/endPoint";
+import fetchData from "../../Components/api/axios";
+import { toast } from "react-toastify";
 import { Auth } from "../../../utils/globleAtuhenticate";
 
 
@@ -15,10 +20,12 @@ const Tags = () => {
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
     const { data: tagData, error, loading } = useSelector((state) => state.tags)
-
+    const [deleteId,setDeleteId]=useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
+    const [initialCount, setInitialCount] = useState(0);
+
     const { companyId } = useSelector((state) => state.selectedCompany);
 
     const handleRowChange = (e) => {
@@ -29,7 +36,17 @@ const Tags = () => {
         setSearchQuery(e.target.value.toLowerCase());
     }
 
-
+    const showNext = () => {
+        if (initialCount + rowToShow < filterData.length) {
+            setInitialCount(initialCount + rowToShow);
+        }
+    };
+    
+    const showPrevious = () => {
+        if (initialCount - rowToShow >= 0) {
+            setInitialCount(initialCount - rowToShow);
+        }
+    };
 
 
     const handleEdit = (item) => {
@@ -41,11 +58,22 @@ const Tags = () => {
         const path = `/tag-registration-form`;
         const data = { state, tag }
         navigate(path, { state: data })
-
     }
-    const handleDelete = () => {
+    const handleDelete = (item) => {
         setIsDeleteModalOpen(true);
+        setDeleteId(item._id)        
     }
+
+    const handleConfirmDelete = async() =>{
+        const url = baseUri + Tag_Middle_Point + Tag_End_Point + "/" + deleteId;
+        const method ="Delete";
+        const response = await fetchData(url ,method);
+        setIsDeleteModalOpen(false);
+    
+         toast.success(response.data.message)
+         dispatch(fetchTag());
+    
+     }
 
     useEffect(() => {
         dispatch(fetchTag());
@@ -121,25 +149,31 @@ const Tags = () => {
 
                         />
                     </div>
-
-                    <div className="pages flex justify-center gap-1 mt-4">
-
-
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Previous
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            1 of 1
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Next
-                        </button>
-
+                    <div className="pages ">
+                        <div className="flex justify-center gap-1">
+                            <button
+                                onClick={showPrevious}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Previous
+                            </button>
+                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                                {Math.ceil((initialCount + rowToShow) / rowToShow)} of {Math.ceil(filterData?.length / rowToShow)}
+                            </button>
+                            <button
+                                onClick={showNext}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <DeleteModal
                     isOpen={isDeleteModalOpen}
                     onClose={() => setIsDeleteModalOpen(false)}
+                    confirmDelete={handleConfirmDelete}
+
                 />
 
             </div>

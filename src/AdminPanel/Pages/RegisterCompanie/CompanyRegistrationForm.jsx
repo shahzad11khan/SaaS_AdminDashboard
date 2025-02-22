@@ -107,7 +107,7 @@ console.log(formData)
         response = await fetchData(url, method , Data );
       }
       console.log(response)      
-      if(response.status === 200 || response.status === 201){
+      if(response.status === 200 || response.status === 201 ){
         toast.success(response.data.success)
         navigate(-1)
       }else{

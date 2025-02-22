@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchWarehouse } from "../../Slice/WarehouseSlice";
 import GenericTable from "../../Components/Table/GenericTable";
+import { baseUri } from "../../Components/api/baseUri";
+import { Warehouse_Middle_Point } from "../../Components/api/middlePoints";
+import fetchData from "../../Components/api/axios";
+import { toast } from "react-toastify";
 import { Auth } from "../../../utils/globleAtuhenticate";
 
 
@@ -17,8 +21,10 @@ const Warehouse = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
+    const [initialCount, setInitialCount] = useState(0);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const {companyId} = useSelector((state) => state.selectedCompany);
+    const [deleteId, setDeleteId] = useState(null);
+    const { companyId } = useSelector((state) => state.selectedCompany);
 
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10))
@@ -27,20 +33,43 @@ const Warehouse = () => {
         setSearchQuery(e.target.value.toLowerCase());
     }
     const handleEdit = (item) => {
-        routerSystemSettingDetail("edit",item)
+        routerSystemSettingDetail("edit", item)
     };
-  
+
     const navigate = useNavigate();
 
-    const routerSystemSettingDetail = (state,warehouse)=>{
-        const path =`/warehouse-registration-form`;
-        const data ={state,warehouse}
-        navigate(path ,{state:data})
+    const routerSystemSettingDetail = (state, warehouse) => {
+        const path = `/warehouse-registration-form`;
+        const data = { state, warehouse }
+        navigate(path, { state: data })
     }
 
-    const handleDelete = () =>{
+    const handleDelete = (item) => {
         setIsDeleteModalOpen(true);
+        setDeleteId(item._id);
     }
+
+    const handleConfirmDelete = async()=>{
+        const url = baseUri + Warehouse_Middle_Point + "/" + deleteId;
+        const method = "Delete";
+        const response = await fetchData(url,method);
+        console.log(response);
+        setIsDeleteModalOpen(false);
+        toast.success(response.data.message);
+        dispatch(fetchWarehouse());
+
+    }
+    const showNext = () => {
+        if (initialCount + rowToShow < filterData.length) {
+            setInitialCount(initialCount + rowToShow);
+        }
+    };
+
+    const showPrevious = () => {
+        if (initialCount - rowToShow >= 0) {
+            setInitialCount(initialCount - rowToShow);
+        }
+    };
 
     useEffect(() => {
         dispatch(fetchWarehouse());
@@ -106,32 +135,41 @@ const Warehouse = () => {
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
-                    {loading && <p>Loading...</p>}
-                    {error && <p>Error: {error}</p>}
+                        {loading && <p>Loading...</p>}
+                        {error && <p>Error: {error}</p>}
                         <GenericTable
-                        headers={['SNo' ,'warehouse' ,'location' , 'manager' , 'createdAt', 'updatedAt','Actions']}
-                        data={displayData}
-                        currentTheme={currentTheme}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
+                            headers={['SNo', 'warehouse', 'location', 'manager', 'createdAt', 'updatedAt', 'Actions']}
+                            data={displayData}
+                            currentTheme={currentTheme}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
                         />
                     </div>
-                    <div className="pages flex justify-center gap-1 mt-4">
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Previous
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            1 of 1
-                        </button>
-                        <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                            Next
-                        </button>
-
+                    <div className="pages ">
+                        <div className="flex justify-center gap-1">
+                            <button
+                                onClick={showPrevious}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Previous
+                            </button>
+                            <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
+                                {Math.ceil((initialCount + rowToShow) / rowToShow)} of {Math.ceil(filterData?.length / rowToShow)}
+                            </button>
+                            <button
+                                onClick={showNext}
+                                className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <DeleteModal
                     isOpen={isDeleteModalOpen}
                     onClose={() => setIsDeleteModalOpen(false)}
+                    confirmDelete={handleConfirmDelete}
+
                 />
 
             </div>

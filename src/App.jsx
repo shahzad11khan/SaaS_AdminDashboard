@@ -36,6 +36,7 @@ import RegisteredByHandOrder from './AdminPanel/Pages/Reports/RegisteredByHandOr
 import RegisteredOnlineOrder from './AdminPanel/Pages/Reports/RegisterOnlineOrders';
 import CompaniesData from './AdminPanel/Pages/RegisterCompanie/CompaniesData';
 import DeliveredData from './AdminPanel/Pages/Reports/DeliveredData';
+import DailyTask from './AdminPanel/Pages/DailyTask/DailyTask';
 import { useSelector } from 'react-redux';
 
 
@@ -84,7 +85,12 @@ function App() {
         <Route path="/registered-byHand-order" element={<RegisteredByHandOrder/>}/> 
         <Route path="/companies-data" element={<CompaniesData/>}/>  
         {/* <Route path="/companies-data" element={<CompaniesData/>}/>  */}
-        <Route path="/delivered-data" element={<DeliveredData/>}/> 
+        <Route path="/delivered-data" element={<DeliveredData/>}/>
+        {/* no authentication */}
+        <Route path="/daily-task" element={<DailyTask/>}/>
+
+
+         
       </Routes>
     </Router>
     

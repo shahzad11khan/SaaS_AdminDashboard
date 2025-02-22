@@ -27,9 +27,10 @@ const Stock = () => {
     const dispatch = useDispatch();
     const {companyId} = useSelector((state) => state.selectedCompany);
     const [showRows, setRowsToShow] = useState(5);
-    const [deleteId,setDeleteId]=useState(null)
+    const [deleteId,setDeleteId]=useState(null);
     const [initialCount, setInitialCount] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
+
     const showNext = () => {
         if (initialCount + showRows < filterData.length) {
             setInitialCount(initialCount + showRows);
@@ -213,7 +214,7 @@ const routerSystemSettingDetail = (state,stock)=>{
                                 Previous
                             </button>
                             <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} rounded border`}>
-                                {Math.ceil((initialCount + showRows) / showRows)} of {Math.ceil(filterData.length / showRows)}
+                                {Math.ceil((initialCount + showRows) / showRows)} of {Math.ceil(filterData?.length / showRows)}
                             </button>
                             <button
                                 onClick={showNext}
