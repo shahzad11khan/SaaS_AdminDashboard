@@ -32,7 +32,7 @@ const Category = () => {
 
   const currentTheme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
-  const { data: categoryData, loading, error } = useSelector(
+  const { data: categoryData,  error } = useSelector(
     (state) => state.categories
   );
   const {companyId} = useSelector((state) => state.selectedCompany);
@@ -143,7 +143,7 @@ const showPrevious = () => {
           </div>
           {/* table Content */}
           <div className="table-container overflow-x-auto">
-            {loading && <p>Loading...</p>}
+            {/* {loading && <Spinner/>} */}
             {error && <p>Error: {error}</p>}
             <GenericTable
               headers={['Sno', 'mainCategory' ,'subCategory', 'createdAt', 'updatedAt', 'Actions']}
