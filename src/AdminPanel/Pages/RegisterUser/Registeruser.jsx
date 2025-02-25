@@ -33,6 +33,7 @@ const Registeruser = () => {
     const currentTheme = useSelector((state) => state.theme.theme);
     const [id , setId] = useState(null);
     const { companyId} = useSelector((state) => state.selectedCompany );
+    const {userId} = useSelector(state => state.authenticate)
 
     const fetchUsers = async () => {
         try {
@@ -40,13 +41,22 @@ const Registeruser = () => {
             const method = "GET";
             const response = await fetchData(url, method);
             console.log(response)
+            console.log(userId)
             if(companyId){
                let  filterdData =  response.data.users.filter(item => companyId  === item.companyId?._id);
                setUserData((prevState) => ({
                 ...prevState,
                 data: filterdData,
             }))
-            }else{
+            }
+            else if (userId){
+                let  filterdData =  response.data.users.filter(item => userId  === item.companyId?._id);
+                setUserData((prevState) => ({
+                 ...prevState,
+                 data: filterdData,
+                }))
+            }
+            else{
                 setUserData((prevState) => ({
                     ...prevState,
                     data: response.data.users,
@@ -102,6 +112,7 @@ const Registeruser = () => {
         console.log(response)
         setIsDeleteModalOpen(false)
         if(response.status=== 200){
+            console.log('hello')
             toast.success(response.data.message)
             setUserData((prevState) => ({
                 ...prevState,

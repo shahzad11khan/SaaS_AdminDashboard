@@ -15,18 +15,17 @@ import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Order = () => {
-    Auth()
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("");
     const [initialCount, setInitialCount] = useState(0);
     const currentTheme = useSelector((state => state.theme.theme))
+    const {userId} = useSelector((state => state.authenticate))
     const dispatch = useDispatch();
     const [deleteId,setDeleteId]=useState(null);
     const { data: orderData, loading, error } = useSelector((state) => state.orders)
     const { companyId } = useSelector((state) => state.selectedCompany);
 
-console.log(orderData)
     const handleRowChange = (e) => {
         const selectedValue = parseInt(e.target.value, 10);
         setRowsToShow(selectedValue)
@@ -76,12 +75,11 @@ console.log(orderData)
     }
     useEffect(() => {
         dispatch(fetchOrder());
-
     }, [dispatch]);
-    console.log(orderData)
-    let companyOnlineOrder = companyId ? orderData.data.filter(item => companyId  === item.userId?.companyId?._id ) : orderData.data ;
-
-    const filterData = companyOnlineOrder?.data.filter((order) => {
+    let companyOnlineOrder = companyId ?orderData?.filter(item => companyId  === item.userId?.companyId?._id ) 
+    : userId ?orderData?.filter(item => userId  === item.userId?.companyId?._id ) 
+    : orderData ;
+    const filterData = companyOnlineOrder?.filter((order) => {
         console.log(orderData)
         return order.orderStatus.toLowerCase().includes(searchQuery)
 

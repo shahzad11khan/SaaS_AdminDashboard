@@ -51,7 +51,7 @@ const CompanyRegistrationForm = () => {
   const [previewUrl, setPreviewUrl] = useState(defaultPic)
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
-    console.log(name, value, type, files)
+    console.log(name , value , type)
     if (type === 'file') {
       // console.log(files[0])
       const file = files[0];
@@ -65,7 +65,11 @@ const CompanyRegistrationForm = () => {
         reader.readAsDataURL(file);
       }
       setFormData({ ...formData, [name]: file });
-    } else {
+    } else if(type === 'radio') {
+      let toBoolean = value === 'true';
+console.log('toBoolean' , toBoolean)
+      setFormData({ ...formData, [name]: toBoolean });
+    }else{
       setFormData({ ...formData, [name]: value });
     }
   };
@@ -80,7 +84,6 @@ const CompanyRegistrationForm = () => {
     }
     setNext((prevNext) => prevNext + 1)
   }
-  console.log("object keys", Object.keys(formData))
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,7 +94,7 @@ const CompanyRegistrationForm = () => {
         Data.append(key, formData[key]);
       } else { console.log(key) }
     });
-
+console.log(formData)
     try {
       let response;
       if(location?.state?.mode === 'edit'){
@@ -144,6 +147,10 @@ const CompanyRegistrationForm = () => {
       setId(location?.state?.companies?._id)
     }
 }, [location.state]);
+
+
+console.log(formData.isActive)
+
 if(!token) return null;
   return (
     <>
@@ -172,6 +179,7 @@ if(!token) return null;
           transition: 'all 0.8s ease',
         }}
       />
+
       <Navbar />
       <div className="flex flex-col lg:flex-row ">
         <LeftSideBar />
@@ -499,13 +507,17 @@ if(!token) return null;
                   <div className="flex flex-col lg:flex-row justify-between mt-5">
                     {/* active  */}
                     {/* company Logo */}
-                    <div className="w-full lg:w-[350px] flex items-center mt-2 ">
+                    <div className="w-full lg:w-[350px] flex gap-5 items-center mt-2 ">
                       <label className="flex items-center mr-4">
                         <input
                           type="radio"
                           name="isActive"
                           value={true}
-                          // checked={JSON.parse(formData?.isActive) == true}
+                          checked={formData.isActive === true
+                            // typeof formData.isActive === "boolean"
+                            //   &&  formData.isActive
+                              // : formData.isActive && formData.isActive.toLowerCase() === "true"
+                          }
                           onChange={handleChange}
                           className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
@@ -518,10 +530,16 @@ if(!token) return null;
                           type="radio"
                           name="isActive"
                           value={false}
-                          // checked={JSON.parse(formData.isActive) == false}
+                          checked={
+                            formData.isActive === false
+                            // typeof formData.isActive === "boolean"
+                            //   && formData.isActive
+                              // : formData.isActive && formData.isActive.toLowerCase() === "false"
+                          }                          
                           onChange={handleChange}
                           className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
                         />
+                        
                         <span className="ml-2 text-sm font-medium  ">
                           InActive
                         </span>

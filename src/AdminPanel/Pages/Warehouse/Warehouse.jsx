@@ -25,7 +25,7 @@ const Warehouse = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
     const { companyId } = useSelector((state) => state.selectedCompany);
-
+    const {userId} = useSelector(state => state.authenticate)
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10))
     }
@@ -75,7 +75,10 @@ const Warehouse = () => {
         dispatch(fetchWarehouse());
     }, [dispatch])
     console.log(warehouseData)
-    let companyWarehoruse = companyId ? warehouseData.data?.filter(item => companyId  === item.userId?.companyId?._id ) : warehouseData?.data;
+    let companyWarehoruse = companyId ? warehouseData?.filter(item => companyId  === item.userId?.companyId?._id ) 
+    :userId?
+    warehouseData.filter(item => userId  === item.userId?.companyId?._id ) 
+    : warehouseData;
     console.log(companyWarehoruse)
     const filterData = companyWarehoruse?.filter((warehouse) => {
         return warehouse.warehouse.toLowerCase().includes(searchQuery) ||

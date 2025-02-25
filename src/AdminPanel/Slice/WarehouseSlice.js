@@ -9,7 +9,7 @@ export const fetchWarehouse = createAsyncThunk("warehouse/fetchWarehouse", async
     const method ="GET";
     const response = await fetchData(URL,method);
     console.log("API Response:", response); 
-    return response
+    return response.data
 })
 
 const warehouseSlice = createSlice({

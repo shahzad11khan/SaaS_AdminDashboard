@@ -24,11 +24,14 @@ const RegisteredUser = () => {
     const [initialCount, setInitialCount] = useState(0);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-
+    
+    const { companyId} = useSelector((state) => state.selectedCompany );
+    const {userId} = useSelector(state => state.authenticate)
     const [userData, setUserData] = useState({
         headers: ['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status',],
         data: []
     });
+    console.log(userData)
     const [searchQuery, setSearchQuery] = useState('');
 
     const fetchUsers = async () => {
@@ -36,13 +39,28 @@ const RegisteredUser = () => {
             const url = baseUri + User_Middle_Point + User_End_Point;
             const method = "GET";
             const response = await fetchData(url, method);
-            console.log(response)
         
             dispatch(setLoading());
-            setUserData((prevState) => ({
-                ...prevState,
-                data: response.data,
-            }));
+            if(companyId){
+                let  filterdData =  response?.data?.users?.filter(item => companyId  === item.companyId?._id);
+                setUserData((prevState) => ({
+                 ...prevState,
+                 data: filterdData,
+             }))
+             }
+             else if (userId){
+                 let  filterdData =  response?.data?.users?.filter(item => userId  === item.companyId?._id);
+                 setUserData((prevState) => ({
+                  ...prevState,
+                  data: filterdData,
+                 }))
+             }
+             else{
+                 setUserData((prevState) => ({
+                     ...prevState,
+                     data: response.data.users,
+                 }));
+             }
         } catch (error) {
             console.log(error)
         }
@@ -71,7 +89,7 @@ const RegisteredUser = () => {
             setInitialCount(initialCount - showRows);
         }
     };
-    const filterData = userData?.data?.users?.filter((user) => {
+    const filterData = userData?.data?.filter((user) => {
         const userDate = new Date(user.createdAt.split("T")[0]);
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -127,9 +145,7 @@ const RegisteredUser = () => {
                 <div className='flex flex-col  lg:ml-10 w-full lg:w-[1000px] gap-3'>
                     <div className="para">
                         <p className={`underline text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>User Registration</p>
-
                     </div>
-
                     <div className="info flex flex-col lg:flex-row justify-between  items-center gap-2">
                         <div className='flex flex-col lg:flex-row gap-2 items-center w-full lg:w-[auto]'>
                             <div className={`flex items-center ${currentTheme === 'dark' ? 'text-white' : 'text-black'} gap-2`}>

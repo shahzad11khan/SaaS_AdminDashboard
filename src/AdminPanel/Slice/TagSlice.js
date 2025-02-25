@@ -9,7 +9,7 @@ export const fetchTag = createAsyncThunk("tags/fetchTag", async()=>{
     const URL =baseUri + Tag_Middle_Point +Tag_End_Point;
     const method ="GET";
     const response = await fetchData(URL,method);
-    return response
+    return response.data
 })
 
 const tagSlice = createSlice({

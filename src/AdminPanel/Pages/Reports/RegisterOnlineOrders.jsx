@@ -20,6 +20,8 @@ const RegisteredOnlineOrder = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
     const { data: orderData, loading, error } = useSelector((state) => state.orders)
+    const {userId} = useSelector((state => state.authenticate))
+    const {companyId} = useSelector((state) => state.selectedCompany);
 
 
     const handleRowChange = (e) => {
@@ -29,8 +31,6 @@ const RegisteredOnlineOrder = () => {
     const handleSearchQuery = (e) => {
         setSearchQuery(e.target.value.toLowerCase());
     }
-
-
 
     useEffect(() => {
         dispatch(fetchOrder());
@@ -66,9 +66,14 @@ const RegisteredOnlineOrder = () => {
         doc.save("OnlineOrders.pdf");
     };
 
+    let onlineRegesteredOrder = companyId ?
+    orderData?.data?.filter(item => companyId  === item.userId?.companyId?._id ) 
+     : userId?
+     orderData?.data?.filter(item => userId  === item.userId?.companyId?._id ) 
+     :
+     orderData?.data ;
 
-
-    const filterData = orderData?.data?.filter((order) => {
+    const filterData = onlineRegesteredOrder?.filter((order) => {
         const orderDate = new Date(order.createdAt.split("T")[0]);
         const start = new Date(startDate);
         const end = new Date(endDate);

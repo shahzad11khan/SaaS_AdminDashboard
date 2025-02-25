@@ -74,7 +74,7 @@ function App() {
         <Route path="/tag-registration-form" element={<TagRegistrationForm/>}/>
         <Route path="/online-order" element={<OnlineOrder/>}/>
         <Route path="/online-order-form" element={<OnlineOrderForm/>}/>
-        <Route path="/delever" element={<Delever/>}/>
+        <Route path="/deliver" element={<Delever/>}/>
         <Route path="/delivery-form" element={<DeliveryForm/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/registered-companies" element={<RegisteredCompanies/>}/>
