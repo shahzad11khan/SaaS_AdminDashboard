@@ -56,17 +56,18 @@ const SignIn = () => {
     const url = baseUri + Login_Middle_Point + Login_End_Point;
     const method = "POST";
 
-      const response = await fetchData(url, method, form);
-      if(response.status === 200 ){
-        console.log(response.data.message)
-        toast.success('Login successful')
-        localStorage.setItem('token' , response.data.token)
-        dispatch(saveToken(response.data.token))
-        navigate("/admin");
-      }else{
-        toast.error(response.data.message)
-      }
-      dispatch(setLoading())
+    const response = await fetchData(url, method, form);
+    console.log(response)
+    if(response.status === 200 ){
+      console.log(response.data.message)
+      toast.success('Login successful')
+      localStorage.setItem('token' , response.data.token)
+      dispatch(saveToken(response.data.token))
+      navigate("/admin");
+    }else{
+      toast.error(response.data.message)
+    }
+    dispatch(setLoading())
 
   };
 

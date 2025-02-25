@@ -25,6 +25,8 @@ const RegisteredStock = () => {
         headers: ['SNo', 'category', 'subcategory', 'quantity', 'price', 'totalPrice', 'warehouseName', 'dateAdded'],
         data: []
     })
+    const { companyId} = useSelector((state) => state.selectedCompany );
+    const {userId} = useSelector(state => state.authenticate)
 
     const FetchStock = async () => {
         try {
@@ -33,11 +35,26 @@ const RegisteredStock = () => {
             const method = 'GET';
             const response = await fetchData(Url, method);
              console.log(response);
-            setStockData((prevStock) => ({
-                ...prevStock,
-                data: response.data
-            }
-            ))
+             if(companyId){
+                let  filterdData =  response?.data?.filter(item => companyId  === item.companyId?._id);
+                setStockData((prevState) => ({
+                 ...prevState,
+                 data: filterdData,
+             }))
+             }
+             else if (userId){
+                 let  filterdData =  response?.data?.filter(item => userId  === item.companyId?._id);
+                 setStockData((prevState) => ({
+                  ...prevState,
+                  data: filterdData,
+                 }))
+             }
+             else{
+                setStockData((prevState) => ({
+                     ...prevState,
+                     data: response.data,
+                 }));
+             }
             dispatch(setLoading());
         }
         catch (error) {

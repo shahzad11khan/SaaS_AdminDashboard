@@ -148,6 +148,7 @@ console.log(formData)
     }
 }, [location.state]);
 
+
 console.log(formData.isActive)
 
 if(!token) return null;
@@ -512,10 +513,10 @@ if(!token) return null;
                           type="radio"
                           name="isActive"
                           value={true}
-                          checked={
-                            typeof formData.isActive === "boolean"
-                              ? formData.isActive
-                              : formData.isActive && formData.isActive.toLowerCase() === "true"
+                          checked={formData.isActive === true
+                            // typeof formData.isActive === "boolean"
+                            //   &&  formData.isActive
+                              // : formData.isActive && formData.isActive.toLowerCase() === "true"
                           }
                           onChange={handleChange}
                           className="cursor-pointer w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
@@ -530,8 +531,9 @@ if(!token) return null;
                           name="isActive"
                           value={false}
                           checked={
-                            typeof formData.isActive === "boolean"
-                              && formData.isActive
+                            formData.isActive === false
+                            // typeof formData.isActive === "boolean"
+                            //   && formData.isActive
                               // : formData.isActive && formData.isActive.toLowerCase() === "false"
                           }                          
                           onChange={handleChange}

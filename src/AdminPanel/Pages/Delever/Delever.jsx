@@ -12,12 +12,12 @@ import { Auth } from "../../../utils/globleAtuhenticate";
 
 const Delever = () => {
     const {companyId} = useSelector((state) => state.selectedCompany);
+    const {userId} = useSelector((state) => state.authenticate);
     const dispatch =useDispatch();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const currentTheme = useSelector((state => state.theme.theme))
     const [rows, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("")
-
     const { data: deliveryData, loading, error } = useSelector(
         (state) => state.deliver
       );
@@ -43,7 +43,9 @@ const Delever = () => {
     dispatch(fetchDelivery())
    },[dispatch])
    console.log(deliveryData)
-   let companyOrderDelivery = companyId ? deliveryData?.data?.filter(item => companyId  === item.userId?.companyId?._id ) :deliveryData?.data;
+   let companyOrderDelivery = companyId ? deliveryData?.filter(item => companyId  === item.userId?.companyId?._id ) 
+   :userId?deliveryData?.filter(item => userId  === item.userId?.companyId?._id ) 
+   :deliveryData?.data;
 
    const filterData = companyOrderDelivery?.filter((deliver) =>
        deliver?.deliverStatus?.toLowerCase().includes(searchQuery)

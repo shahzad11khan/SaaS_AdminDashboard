@@ -48,6 +48,8 @@ const Userrole = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showRows, setRowsToShow] = useState(5);
     const { companyId} = useSelector((state) => state.selectedCompany );
+    const { userId} = useSelector((state) => state.authenticate );
+
     const processPermissions = () => {
         if (!permissions) return; 
     
@@ -57,7 +59,7 @@ const Userrole = () => {
         console.log("Extracted Permissions:", uniqueArr); 
     
         if (companyId) {
-            let filteredData = permissions.filter(item => companyId === item.companyId?._id);
+            let filteredData = permissions?.filter(item => companyId === item.companyId?._id );
             if (filteredData.length > 0) {
                 setUserPermission((prevState) => ({
                     ...prevState,
@@ -65,7 +67,16 @@ const Userrole = () => {
                     data: filteredData, 
                 }));
             }
-        } else {
+        }
+        else if (userId){
+            let filteredData = permissions?.filter(item => companyId === item.companyId?._id );
+            setUserPermission((prevState) => ({
+                ...prevState,
+                headers2: uniqueArr, 
+                data: filteredData, 
+            }));
+        }
+        else {
             setUserPermission((prevState) => ({
                 ...prevState,
                 headers2: uniqueArr, 

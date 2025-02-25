@@ -21,7 +21,8 @@ const Delever = () => {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [initialCount, setInitialCount] = useState(0);
-
+    const {userId} = useSelector((state => state.authenticate))
+    const {companyId} = useSelector((state) => state.selectedCompany);
 
     const { data: deliverData, loading, error } = useSelector(
         (state) => state.deliver
@@ -60,8 +61,14 @@ const Delever = () => {
     // console.log(fetchOrder)
    },[dispatch])
 
-    
-   const filterData =deliverData?.filter((deliver)=>{
+   let delevered = companyId ?
+   deliverData?.filter(item => companyId  === item.userId?.companyId?._id ) 
+    : userId?
+    deliverData?.filter(item => userId  === item.userId?.companyId?._id ) 
+    :
+    deliverData?.data ;
+
+   const filterData =delevered?.filter((deliver)=>{
     const deliverDate = new Date(deliver.createdAt.split("T")[0]);
     const start = new Date(startDate);
     const end = new Date(endDate);

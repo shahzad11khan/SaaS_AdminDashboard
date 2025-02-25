@@ -15,8 +15,6 @@ import { Auth } from "../../../utils/globleAtuhenticate";
 
 
 const Tags = () => {
-    
-
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
     const { data: tagData, error, loading } = useSelector((state) => state.tags)
@@ -27,6 +25,7 @@ const Tags = () => {
     const [initialCount, setInitialCount] = useState(0);
 
     const { companyId } = useSelector((state) => state.selectedCompany);
+    const { userId } = useSelector((state) => state.authenticate);
 
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10));
@@ -79,7 +78,11 @@ const Tags = () => {
         dispatch(fetchTag());
     }, [dispatch]);
     console.log(tagData)
-    let companyTags = companyId ? tagData?.data.filter(item => companyId === item.userId?.companyId?._id) : tagData.data;
+    let companyTags = companyId ? 
+    tagData?.filter(item => companyId === item.userId?.companyId?._id)
+    :userId?
+    tagData?.filter(item => userId === item.userId?.companyId?._id)
+    : tagData;
     console.log(companyTags)
     const filterData = companyTags?.filter((tag) => {
         return tag.description.toLowerCase().includes(searchQuery) ||

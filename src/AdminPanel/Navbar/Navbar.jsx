@@ -12,7 +12,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [mobileView, setmobileView] = useState(false);
   const [LangisOpen, setLangIsOpen] = useState(false);
-
+  const {userId , loginCompanyName , companyLogo} = useSelector(state => state.authenticate)
   const Navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -55,6 +55,11 @@ const Navbar = () => {
                 <div className='flex items-center gap-2'>
                   <img src={companyImg} alt="Logo" className="rounded-full w-9 h-9 " />
                   <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{companyName}</span>
+                </div>
+                :userId?
+                <div className='flex items-center gap-2'>
+                  <img src={companyLogo} alt="Logo" className="rounded-full w-9 h-9 " />
+                  <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{loginCompanyName}</span>
                 </div>
                 :
                 <div className='flex items-center gap-2'>
@@ -103,7 +108,7 @@ const Navbar = () => {
                 <i className={`fas fa-globe text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-[#013D29]'}`}></i>
               </button>
               {LangisOpen && (
-                <ul className={`absolute ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
+                <ul className={`absolute z-10 ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
                   <li onClick={() => handleChange("ur")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
                     <img
                       src="https://flagcdn.com/w40/pk.png"
@@ -137,14 +142,15 @@ const Navbar = () => {
               >
                 {companyId ?
                   <img src={companyImg} alt="Logo" className="rounded-full w-10 h-10 " />
-
+                  :userId?
+                  <img src={companyLogo} alt="Logo" className="rounded-full w-10 h-10 " />
                   :
                   <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " />
 
                 }
               </button>
               {isOpen && (
-                <ul className={`absolute mt-1 ml-[-25px] ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded shadow-lg`}>
+                <ul className={`z-10 absolute mt-1 ml-[-25px] ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded shadow-lg`}>
                   <Link to="/profile">
                     <li className="px-2 py-1 hover:bg-gray-100 cursor-pointer">{t("navbar.right.profile")}</li>
                   </Link>

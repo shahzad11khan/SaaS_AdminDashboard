@@ -24,7 +24,7 @@ const Hero = () => {
     const [totalProduct, setTotalProduct] = useState(0);
     const [isChatBotOpen, setIsChatBotOpen] = useState(null);
     const { companyId } = useSelector((state) => state.selectedCompany);
-
+    const {userId} = useSelector((state)=> state.authenticate)
 
 
     const fetchUsers = async () => {
@@ -32,12 +32,16 @@ const Hero = () => {
             const url = baseUri + User_Middle_Point + User_End_Point;
             const method = "GET";
             const response = await fetchData(url, method);
-            console.log(response.data)
             dispatch(setLoading());
             if (companyId) {
                 let filterdData = response.data.users.filter(item => companyId === item.companyId?._id);
                 setTotalUsers(filterdData.length)
-            } else if (response.data.users && Array.isArray(response.data.users)) {
+            } 
+            else if(userId){
+                let filterdData = response.data.users.filter(item => userId === item.companyId?._id);
+                setTotalUsers(filterdData.length)
+            }
+            else if (response.data.users && Array.isArray(response.data.users)) {
                 console.log(response)
                 setTotalUsers(response.data.users.length);
             }
@@ -53,9 +57,14 @@ const Hero = () => {
             const response = await fetchData(url, method);
             dispatch(setLoading());
             if (companyId) {
-                let filterdData = response.filter(item => companyId === item.userId?.companyId?._id);
+                let filterdData = response?.data.filter(item => companyId === item.userId?.companyId?._id);
                 setTotalStock(filterdData.length)
-            } else if (Array.isArray(response)) {
+            }
+            else if(userId){
+                let filterdData = response.data.filter(item => userId === item.companyId?._id);                
+                setTotalStock(filterdData.length)
+            }
+            else if (Array.isArray(response)) {
                 setTotalStock(response.length);
             }
         } catch (error) {
@@ -69,13 +78,15 @@ const Hero = () => {
             const url = baseUri + Product_Middle_Point;
             const method = "GET";
             const { data } = await fetchData(url, method);
-            console.log(data)
             if (data) {
                 let filteredData = [];
-
                 if (companyId) {
                     filteredData = data.filter(item => companyId === item.userId?.companyId?._id);
-                } else if (Array.isArray(data)) {
+                } 
+                else if(userId){
+                    filteredData = data.filter(item => userId === item.userId?.companyId?._id);                
+                }
+                else if (Array.isArray(data)) {
                     filteredData = data;
                 }
 
