@@ -141,8 +141,7 @@ const LeftSideBar = () => {
 
               <Link to="/daily-task">
                 <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
-                  Daily Task
-                </li>
+                {t('leftSidebar.sections.management.items.dailyTask')}                </li>
               </Link>
 
               <li className='py-1 '>

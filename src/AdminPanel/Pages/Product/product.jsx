@@ -15,15 +15,15 @@ import { toast } from "react-toastify";
 const Product = () => {
     const navigate = useNavigate();
 
-    let {token , userId} = useSelector(state => state.authenticate);
+    let { token, userId } = useSelector(state => state.authenticate);
 
-    useEffect(()=>{
-      if(!token) {
-        toast.error("Login first")
-        setTimeout(navigate('/'),1000) 
-      }
-    } , [token , navigate])
-    const [id , setId] = useState(null)
+    useEffect(() => {
+        if (!token) {
+            toast.error("Login first")
+            setTimeout(navigate('/'), 1000)
+        }
+    }, [token, navigate])
+    const [id, setId] = useState(null)
     const dispatch = useDispatch();
     const { companyId } = useSelector((state) => state.selectedCompany);
 
@@ -34,8 +34,8 @@ const Product = () => {
     });
 
     const [showRows, setRowsToShow] = useState(5);
-    const [initialCount , setInitialCount]  = useState(0)
-    const [searchQuery , setSearchQuery] = useState('');
+    const [initialCount, setInitialCount] = useState(0)
+    const [searchQuery, setSearchQuery] = useState('');
 
     const handleSearchQuery = (e) => {
         setSearchQuery(e.target.value.toLowerCase());
@@ -51,18 +51,18 @@ const Product = () => {
         try {
             const Url = baseUri + Product_Middle_Point;
             const method = "GET";
-            const {data} = await fetchData(Url, method);
+            const { data } = await fetchData(Url, method);
             dispatch(setLoading());
             console.log(data)
-            if(companyId){
-                let  filterdData =  data.filter(item => companyId  === item.userId?.companyId?._id);
+            if (companyId) {
+                let filterdData = data.filter(item => companyId === item.userId?.companyId?._id);
                 setProductData((prevState) => ({
                     ...prevState,
                     data: filterdData,
                 }))
             }
-            else if(userId){
-                let  filterdData =  data.filter(item => userId  === item.userId?.companyId?._id);
+            else if (userId) {
+                let filterdData = data.filter(item => userId === item.userId?.companyId?._id);
                 setProductData((prevState) => ({
                     ...prevState,
                     data: filterdData,
@@ -72,7 +72,7 @@ const Product = () => {
                 setProductData((prevState) => ({
                     ...prevState,
                     data: data
-    
+
                 }))
             }
 
@@ -107,7 +107,7 @@ const Product = () => {
         setIsDeleteModalOpen(true);
     };
 
-    let  filterData = productData.data.filter((product) => {
+    let filterData = productData.data.filter((product) => {
         return (
             product.productName.toLowerCase().includes(searchQuery) ||
             product.productCategory.toLowerCase().includes(searchQuery) ||
@@ -116,32 +116,32 @@ const Product = () => {
         )
     })
 
-    const showNext = () =>{
-        if(initialCount + showRows <= filterData.length)
+    const showNext = () => {
+        if (initialCount + showRows <= filterData.length)
             setInitialCount(initialCount + showRows)
     }
 
-    const handleConfirmDelete = async()=>{
+    const handleConfirmDelete = async () => {
         const URL = baseUri + Product_Middle_Point + Product_Delete_End_Point + id;
         const method = 'Delete';
-        const response = await fetchData(URL , method );
+        const response = await fetchData(URL, method);
         console.log(response)
         setIsDeleteModalOpen(false)
-        toast.success(response.data.message)     
+        toast.success(response.data.message)
         setProductData((prevState) => ({
             ...prevState,
             data: productData?.data.filter(el => el._id !== id)
 
-        })) 
-     }
-    
-     const showPrevious = () =>{
-    if(initialCount - showRows >= 0)
-        setInitialCount(initialCount -showRows)
-     }
+        }))
+    }
 
-    const displayData = filterData?.slice(initialCount, initialCount+showRows);
-    if(!token) return null;
+    const showPrevious = () => {
+        if (initialCount - showRows >= 0)
+            setInitialCount(initialCount - showRows)
+    }
+
+    const displayData = filterData?.slice(initialCount, initialCount + showRows);
+    if (!token) return null;
     return (
         <div>
 
@@ -219,7 +219,7 @@ const Product = () => {
                             Previous
                         </button>
                         <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                        {Math.ceil((initialCount + showRows)/ (showRows))} of {Math.ceil((filterData.length)/showRows)}
+                            {Math.ceil((initialCount + showRows) / (showRows))} of {Math.ceil((filterData.length) / showRows)}
                         </button>
                         <button onClick={showNext} className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
                             Next
@@ -229,7 +229,7 @@ const Product = () => {
                 </div>
                 <DeleteModal
                     isOpen={isDeleteModalOpen}
-                    confirmDelete = {handleConfirmDelete}
+                    confirmDelete={handleConfirmDelete}
                     onClose={() => setIsDeleteModalOpen(false)}
                 />
 
