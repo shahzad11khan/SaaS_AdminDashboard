@@ -26,6 +26,8 @@ const RegisteredProduct = () => {
     const [searchQuery , setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const { companyId} = useSelector((state) => state.selectedCompany );
+    const {userId} = useSelector(state => state.authenticate)
 
     const handleSearchQuery = (e) =>{
         setSearchQuery(e.target.value.toLowerCase());
@@ -57,11 +59,26 @@ const RegisteredProduct = () => {
             const response = await fetchData(Url, method);
             dispatch(setLoading());
             console.log(response)
-            setProductData((prevState) => ({
-                ...prevState,
-                data: response.data
-
-            }))
+            if(companyId){
+                let  filterdData =  response.data.filter(item => companyId  === item.userId?.companyId?._id);
+                setProductData((prevState) => ({
+                 ...prevState,
+                 data: filterdData,
+             }))
+             }
+             else if (userId){
+                 let  filterdData =  response.data.filter(item => userId  === item.userId?.companyId?._id);
+                 setProductData((prevState) => ({
+                  ...prevState,
+                  data: filterdData,
+                 }))
+             }
+             else{
+                setProductData((prevState) => ({
+                     ...prevState,
+                     data: response.data,
+                 }));
+             }
         }
         catch (error) {
             console.log(error)

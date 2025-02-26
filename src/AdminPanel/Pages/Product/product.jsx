@@ -15,7 +15,8 @@ import { toast } from "react-toastify";
 const Product = () => {
     const navigate = useNavigate();
 
-    let {token} = useSelector(state => state.authenticate);
+    let {token , userId} = useSelector(state => state.authenticate);
+
     useEffect(()=>{
       if(!token) {
         toast.error("Login first")
@@ -59,7 +60,15 @@ const Product = () => {
                     ...prevState,
                     data: filterdData,
                 }))
-            } else {
+            }
+            else if(userId){
+                let  filterdData =  data.filter(item => userId  === item.userId?.companyId?._id);
+                setProductData((prevState) => ({
+                    ...prevState,
+                    data: filterdData,
+                }))
+            }
+            else {
                 setProductData((prevState) => ({
                     ...prevState,
                     data: data

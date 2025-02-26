@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 const Stock = () => {
     const navigate = useNavigate();
 
-    let {token} = useSelector(state => state.authenticate);
+    let {token , userId} = useSelector(state => state.authenticate);
     useEffect(()=>{
       if(!token) {
         toast.error("Login first")
@@ -53,14 +53,21 @@ const Stock = () => {
             const Url = baseUri + Stock_Middle_Point;
             const method = 'GET';
             const response = await fetchData(Url, method);
-             console.log(response);
              if(companyId){
                 let  filterdData =  response.data.filter(item => companyId  === item.userId?.companyId?._id);
                 setStockData((prevStock) => ({
                  ...prevStock,
                  data: filterdData,
              }))
-             }else{
+             }
+             else if(userId){
+                let  filterdData =  response.data.filter(item => userId  === item.userId?.companyId?._id);
+                setStockData((prevStock) => ({
+                 ...prevStock,
+                 data: filterdData,
+             }))
+             }
+             else{
                 setStockData((prevStock) => ({
                     ...prevStock,
                     data: response.data

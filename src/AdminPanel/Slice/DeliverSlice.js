@@ -8,7 +8,8 @@ export const fetchDelivery = createAsyncThunk("categories/fetchCategories", asyn
     const URL = baseUri + Deliver_Middle_Point + Deliver_End_Point;
     const method = "GET";
     const response = await fetchData(URL, method);
-    return response;
+    console.log(response)
+    return response.data;
 });
 
 const deliverSlice = createSlice({

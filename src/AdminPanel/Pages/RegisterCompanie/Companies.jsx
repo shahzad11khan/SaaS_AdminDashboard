@@ -23,20 +23,26 @@ const Companies = () => {
       }
     } , [token , navigate])
     
+    
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
     const [initialCount,setInitialCount]=useState(0);
     const [searchQuery, setSearchQuery] = useState("");
     const [id , setId] = useState(null)
+    const [filteredCompanies, setFilteredCompanies] = useState([]);
 
     const currentTheme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
     const { data: companiesData, loading, error  } = useSelector((state) => state.companies);
+    console.log(companiesData)
     
+    useEffect(() => {
+        setFilteredCompanies(companiesData);
+      }, [companiesData]);
 
     useEffect(() => {
         dispatch(fetchCompanies());
-    }, [dispatch]);
+    }, []);
 
     const handleRowChange = (e) => {
         setRowsToShow(parseInt(e.target.value, 10));
@@ -56,7 +62,7 @@ const Companies = () => {
         navigate("/register-form", { state: { mode: "edit", companies: item } });
     };
 
-    let filterData = companiesData.filter((companies) =>
+    let filterData = filteredCompanies.filter((companies) =>
       companies.companyName.toLowerCase().includes(searchQuery) ||
       companies.ownerName.toLowerCase().includes(searchQuery) ||
       companies.address.toLowerCase().includes(searchQuery) ||
@@ -69,12 +75,19 @@ const Companies = () => {
 }
 
 const handleConfirmDelete = async()=>{
+    console.log(id)
     const URL = baseUri + Companies_Middle_Point + Company_Delete_End_Point + id;
-    const method = 'Delete';
+    console.log(URL)
+    const method = 'DELETE';
     const response = await fetchData(URL , method );
+    console.log(response)
     setIsDeleteModalOpen(false)
-    toast.success(response.data.message)
-    filterData = companiesData.filter(el => el._id !== id)
+    if (response.status === 200) {
+        toast.success(response.data.message);
+        setFilteredCompanies(prev => prev.filter(el => el._id !== id)); // Update state safely
+    } else {   
+        toast.error(response.data.message);
+    }
  }
 
  const showPrevious = () =>{

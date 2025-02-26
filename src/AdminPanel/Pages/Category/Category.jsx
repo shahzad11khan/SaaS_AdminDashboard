@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 const Category = () => {
   const navigate = useNavigate();
 
-    let {token} = useSelector(state => state.authenticate);
+    let {token , userId} = useSelector(state => state.authenticate);
       useEffect(()=>{
         if(!token) {
           toast.error("Login first")
@@ -32,7 +32,7 @@ const Category = () => {
 
   const currentTheme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
-  const { data: categoryData, loading, error } = useSelector(
+  const { data: categoryData} = useSelector(
     (state) => state.categories
   );
   const {companyId} = useSelector((state) => state.selectedCompany);
@@ -87,7 +87,12 @@ const showPrevious = () => {
     navigate(path ,{state:data})
    }
    console.log(categoryData)
-   let companyCategory = companyId ? categoryData.data.filter(item => companyId  === item.userId?.companyId?._id ) : categoryData.data ;
+   let companyCategory = companyId ?
+    categoryData?.filter(item => companyId  === item.userId?.companyId?._id ) 
+    : userId?
+    categoryData?.filter(item => userId  === item.userId?.companyId?._id ) 
+    :
+    categoryData ;
   const filteredData = companyCategory?.filter((category) =>
      category.mainCategory.toLowerCase().includes(searchQuery) || category.subCategory.toLowerCase().includes(searchQuery)
   );
@@ -143,8 +148,8 @@ const showPrevious = () => {
           </div>
           {/* table Content */}
           <div className="table-container overflow-x-auto">
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
+            {/* {loading && <Spinner/>} */}
+            {/* {error && <p>Error: {error}</p>} */}
             <GenericTable
               headers={['Sno', 'mainCategory' ,'subCategory', 'createdAt', 'updatedAt', 'Actions']}
               data={displayData}
