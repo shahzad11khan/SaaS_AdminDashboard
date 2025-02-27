@@ -18,7 +18,7 @@ const Delever = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const [rows, setRowsToShow] = useState(5);
     const [searchQuery, setSearchQuery] = useState("")
-    const { data: deliveryData, loading, error } = useSelector(
+    const { data: deliveryData} = useSelector(
         (state) => state.deliver
       );
 
@@ -105,8 +105,7 @@ const Delever = () => {
 
                     </div>
                     <div className="table-container overflow-x-auto">
-                               {loading && <p>Loading...</p>}
-                               {error && <p>Error: {error}</p>}
+                              
                                <GenericTable
                                  headers={['SNo',  'createdAt', 'updatedAt', 'Actions']}
                                  data={displayData}

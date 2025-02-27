@@ -1,35 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit"
-import {jwtDecode} from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 const tokenSlice = createSlice({
-    name : 'token',
-    initialState:{
-        token:null,
+    name: 'token',
+    initialState: {
+        token: null,
         userId: null,
         loginCompanyName: null,
         companyLogo: null
     },
-    reducers:{
-        saveToken:(state , action)=>{
+    reducers: {
+        saveToken: (state, action) => {
             console.log(jwtDecode(action.payload));
-            let {userId , companyLogo , companyName , companyId ,userImage , userName , role    } = jwtDecode(action.payload);
-            if(role === 'user' ){
+            let { userId, companyLogo, companyName, companyId, userImage, userName, role } = jwtDecode(action.payload);
+            if (role === 'user') {
                 state.userId = companyId;
                 state.companyLogo = userImage;
-                state.loginCompanyName= userName;
+                state.loginCompanyName = userName;
             }
-            else if(role === 'superadmin'){
-                    state.userId = null
+            else if (role === 'superadmin') {
+                state.userId = null
             }
-            else{
+            else {
                 state.companyLogo = companyLogo;
                 state.userId = userId;
                 state.loginCompanyName = companyName;
             }
             state.token = action.payload;
+        },
+        removedToken: (state) => {
+            state.token = null,
+            localStorage.clear()
         }
     }
-}) 
+})
 
-export const {saveToken} = tokenSlice.actions;
+export const { saveToken, removedToken } = tokenSlice.actions;
 export default tokenSlice.reducer;

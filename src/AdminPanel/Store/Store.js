@@ -12,6 +12,8 @@ import permissionSlice from '../Slice/PermissionSlice'
 import tokenSlice  from '../Slice/TokenSlice';
 import chatbotReducer from '../Slice/BotSlice';
 import socketSliceReducer from '../Slice/socketSlice'
+import { addStateToLocalStorage ,loadStateFromLocalStorage } from '../../utils/LocalStorage';
+const persistedState = loadStateFromLocalStorage();
 
 const Store = configureStore({
   reducer: {
@@ -29,6 +31,9 @@ const Store = configureStore({
     authenticate:tokenSlice,
     socket :socketSliceReducer
   },
+  preloadedState : persistedState
 })
+
+Store.subscribe(()=>{addStateToLocalStorage(Store.getState())})
 
 export default Store;

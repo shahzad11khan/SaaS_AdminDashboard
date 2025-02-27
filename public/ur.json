@@ -52,7 +52,8 @@
                     "registeredStock": "رجسٹرڈ اسٹاک",
                     "tag": "ٹگ",
                     "onlineOrder": "آن لائن آرڈر",
-                    "deliver": "ترسیل"
+                    "deliver": "ترسیل",
+                    "dailyTask": "روزانہ کا کام"
                 }
             },
             "notification": {

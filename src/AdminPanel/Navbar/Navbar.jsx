@@ -1,18 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toggleTheme } from '../Slice/ThemeSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { removedToken } from '../Slice/TokenSlice';
 import { googleLogout } from '@react-oauth/google';
+import io from "socket.io-client";
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const currentTheme = useSelector((state) => state.theme.theme);
   const [isOpen, setIsOpen] = useState(false);
-  const [mobileView, setmobileView] = useState(false);
-  const [LangisOpen, setLangIsOpen] = useState(false);
-  const {userId , loginCompanyName , companyLogo} = useSelector(state => state.authenticate)
+  const [mobileView, setMobileView] = useState(false);
+  const [LangIsOpen, setLangIsOpen] = useState(false);
+  const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
+  // const socket = io("http://localhost:5000"); for local
+  // const socket = io("https://saas-serversidescript.vercel.app"); 
+  const socket = io("https://saasserversidescript-production.up.railway.app"); // for live
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  useEffect(() => {
+    socket.on("newOrder", () => {
+      setNotificationCount((prev) => prev + 1);
+    });
+
+    return () => {
+      socket.off("newOrder");
+    };
+  }, []);
   const Navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -21,11 +37,11 @@ const Navbar = () => {
 
 
   const toggleLanguage = () => {
-    setLangIsOpen(!LangisOpen);
+    setLangIsOpen(!LangIsOpen);
   };
 
   const toggleMobile = () => {
-    setmobileView(!mobileView);
+    setMobileView(!mobileView);
   };
 
   const toggleMode = () => {
@@ -36,7 +52,7 @@ const Navbar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
+    dispatch(removedToken())
     googleLogout();
     Navigate('/');
 
@@ -56,16 +72,16 @@ const Navbar = () => {
                   <img src={companyImg} alt="Logo" className="rounded-full w-9 h-9 " />
                   <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{companyName}</span>
                 </div>
-                :userId?
-                <div className='flex items-center gap-2'>
-                  <img src={companyLogo} alt="Logo" className="rounded-full w-9 h-9 " />
-                  <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{loginCompanyName}</span>
-                </div>
-                :
-                <div className='flex items-center gap-2'>
-                  <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " />
-                  <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{t('navbar.left.cName')}</span>
-                </div>
+                : userId ?
+                  <div className='flex items-center gap-2'>
+                    <img src={companyLogo} alt="Logo" className="rounded-full w-9 h-9 " />
+                    <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{loginCompanyName}</span>
+                  </div>
+                  :
+                  <div className='flex items-center gap-2'>
+                    <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " />
+                    <span className={`text-2xl ${currentTheme === 'dark' ? 'text-white' : 'text-black'} `}>{t('navbar.left.cName')}</span>
+                  </div>
               }
             </Link>
           </div>
@@ -93,21 +109,27 @@ const Navbar = () => {
 
 
           <div className="hidden lg:flex items-center  space-x-4 mr-7">
-            <button className={`w-8 h-8 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded`} onClick={toggleMode}>
+            <button className={`w-10 h-10 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040] text-white' : 'bg-[#F0FFF8] text-black'} border border-gray-300 rounded-full`} onClick={toggleMode}>
               <i className={`fas ${currentTheme === 'dark' ? 'fa-sun' : 'fa-moon'} text-xl`}></i>
             </button>
 
-            <button className={`w-8 h-8 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded`}>
-              <i className="fas fa-bell text-xl"></i>
+            <button className={`relative flex justify-center items-center w-10 h-10 rounded-full transition-colors duration-200 border border-gray-300  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'}`}>
+              <i className={`fas fa-bell text-xl ${currentTheme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}></i>
+
+              {notificationCount > 0 && (
+                <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-1 -right-1">
+                  {notificationCount}
+                </span>
+              )}
             </button>
 
             <div className="relative">
               <button
-                className={`flex items-center border border-gray-300 rounded-full px-2 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}
+                className={`w-10 h-10 flex items-center border border-gray-300 rounded-full px-2 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}
                 onClick={toggleLanguage}>
                 <i className={`fas fa-globe text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-[#013D29]'}`}></i>
-              </button>
-              {LangisOpen && (
+              </button>   
+              {LangIsOpen && (
                 <ul className={`absolute z-10 ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
                   <li onClick={() => handleChange("ur")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
                     <img
@@ -142,10 +164,10 @@ const Navbar = () => {
               >
                 {companyId ?
                   <img src={companyImg} alt="Logo" className="rounded-full w-10 h-10 " />
-                  :userId?
-                  <img src={companyLogo} alt="Logo" className="rounded-full w-10 h-10 " />
-                  :
-                  <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " />
+                  : userId ?
+                    <img src={companyLogo} alt="Logo" className="rounded-full w-10 h-10 " />
+                    :
+                    <img src="../../../images/justLogo.svg" alt="Logo" className="w-6 h-6 " />
 
                 }
               </button>
@@ -182,21 +204,27 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <button className={`w-8 h-8 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded`} onClick={toggleMode}>
+              <button className={`w-10 h-10 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded-full`} onClick={toggleMode}>
                 <i className={`fas ${currentTheme === 'dark' ? 'fa-sun' : 'fa-moon'} text-xl`}></i>
               </button>
 
-              <button className={`w-8 h-8 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded`}>
-                <i className="fas fa-bell text-xl"></i>
+              <button className={`relative w-10 h-10 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded-full`}>
+              <i className={`fas fa-bell text-xl `}></i>
+
+              {notificationCount > 0 && (
+                <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-1 -right-1">
+                  {notificationCount}
+                </span>
+              )}
               </button>
 
               <div className="relative">
-                <button
-                  className={`flex items-center bg-[#F0FFF8] border border-gray-300 rounded-full px-2 py-1 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}
+                
+              <button className={`w-10 h-10 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded-full`}
                   onClick={toggleLanguage}>
                   <i className={`fas fa-globe text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-[#013D29]'}`}></i>
                 </button>
-                {LangisOpen && (
+                {LangIsOpen && (
                   <ul className={`absolute ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
                     <li onClick={() => handleChange("ur")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
                       <img

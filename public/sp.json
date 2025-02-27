@@ -55,7 +55,9 @@
                     
                     "tag": "Etiqueta",
                     "onlineOrder": "Pedido en línea",
-                    "deliver": "Entregar"
+                    "deliver": "Entregar",
+                    "dailyTask": "Tarea Diaria"
+
                 }
             },
             "notification": {
