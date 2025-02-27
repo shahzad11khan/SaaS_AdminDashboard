@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { removedToken } from '../Slice/TokenSlice';
 import { googleLogout } from '@react-oauth/google';
 import io from "socket.io-client";
+import { baseUri } from '../Components/api/baseUri';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -16,8 +17,10 @@ const Navbar = () => {
   const [LangIsOpen, setLangIsOpen] = useState(false);
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
-  // const socket = io("https://saas-serversidescript.vercel.app"); 
-  const socket = io("https://saasserversidescript-production.up.railway.app"); // for live
+  // const socket = io("https://saas-serversidescript.vercel.app"); // for live
+  const socket = io(baseUri, {
+    transports: ["websocket", "polling"]
+  });
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {

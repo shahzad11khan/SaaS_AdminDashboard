@@ -7,15 +7,12 @@ import store from '../src/AdminPanel/Store/Store.js'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SocketProvider from './SocketProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <GoogleOAuthProvider clientId="907716263386-aa3ssqua2jurap1vtgqloge7p1od17hk.apps.googleusercontent.com">
       <Provider store={store}>
-      <SocketProvider>
       <App />
-    </SocketProvider>
         <ToastContainer
           position="top-right"
           autoClose={3000}
