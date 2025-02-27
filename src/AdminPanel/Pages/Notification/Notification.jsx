@@ -12,7 +12,7 @@ const Notification = () => {
   const notifications = useSelector((state) => state.notifications);
 
   useEffect(() => {
-    const socket = io("https://saasserversidescript-production-9f7d.up.railway.app");
+    const socket = io("https://saasserversidescript-production-162a.up.railway.app");
 
     socket.on("orderNotification", (order) => {
       dispatch(addNotification(order));
