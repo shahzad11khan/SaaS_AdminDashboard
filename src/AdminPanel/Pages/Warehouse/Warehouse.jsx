@@ -16,7 +16,7 @@ import { Auth } from "../../../utils/globleAtuhenticate";
 const Warehouse = () => {
     
     const dispatch = useDispatch();
-    const { data: warehouseData, error } = useSelector((state) => state.warehouse);
+    const { data: warehouseData } = useSelector((state) => state.warehouse);
     console.log(warehouseData)
     const currentTheme = useSelector((state => state.theme.theme))
     const [rowToShow, setRowsToShow] = useState(5);
@@ -138,7 +138,7 @@ const Warehouse = () => {
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
-                        {error && <p>Error: {error}</p>}
+                       
                         <GenericTable
                             headers={['SNo', 'warehouse', 'location', 'manager', 'createdAt', 'updatedAt', 'Actions']}
                             data={displayData}

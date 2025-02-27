@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toggleTheme } from '../Slice/ThemeSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { removedToken } from '../Slice/TokenSlice';
 import { googleLogout } from '@react-oauth/google';
 import io from "socket.io-client";
 
@@ -11,11 +12,12 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state) => state.theme.theme);
   const [isOpen, setIsOpen] = useState(false);
-  const [mobileView, setmobileView] = useState(false);
-  const [LangisOpen, setLangIsOpen] = useState(false);
+  const [mobileView, setMobileView] = useState(false);
+  const [LangIsOpen, setLangIsOpen] = useState(false);
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
-  const socket = io("https://saas-serversidescript.vercel.app"); // for live
+  // const socket = io("https://saas-serversidescript.vercel.app"); 
+  const socket = io("https://saasserversidescript-production.up.railway.app"); // for live
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
@@ -35,11 +37,11 @@ const Navbar = () => {
 
 
   const toggleLanguage = () => {
-    setLangIsOpen(!LangisOpen);
+    setLangIsOpen(!LangIsOpen);
   };
 
   const toggleMobile = () => {
-    setmobileView(!mobileView);
+    setMobileView(!mobileView);
   };
 
   const toggleMode = () => {
@@ -50,7 +52,7 @@ const Navbar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.clear()
+    dispatch(removedToken())
     googleLogout();
     Navigate('/');
 
@@ -127,7 +129,7 @@ const Navbar = () => {
                 onClick={toggleLanguage}>
                 <i className={`fas fa-globe text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-[#013D29]'}`}></i>
               </button>   
-              {LangisOpen && (
+              {LangIsOpen && (
                 <ul className={`absolute z-10 ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
                   <li onClick={() => handleChange("ur")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
                     <img
@@ -207,6 +209,8 @@ const Navbar = () => {
               </button>
 
               <button className={`relative w-10 h-10 flex justify-center items-center ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'} border border-gray-300 rounded-full`}>
+              <i className={`fas fa-bell text-xl `}></i>
+
               {notificationCount > 0 && (
                 <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-1 -right-1">
                   {notificationCount}
@@ -220,7 +224,7 @@ const Navbar = () => {
                   onClick={toggleLanguage}>
                   <i className={`fas fa-globe text-xl ${currentTheme === 'dark' ? 'text-white' : 'text-[#013D29]'}`}></i>
                 </button>
-                {LangisOpen && (
+                {LangIsOpen && (
                   <ul className={`absolute ml-[-15px] w-20 mt-1 text-center  ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  border border-gray-300 rounded `}>
                     <li onClick={() => handleChange("ur")} className="flex  px-2 py-2 text-left  hover:bg-gray-100 cursor-pointer">PK
                       <img
