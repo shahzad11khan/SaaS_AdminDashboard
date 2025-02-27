@@ -16,9 +16,7 @@ const Navbar = () => {
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
   // const socket = io("https://saas-serversidescript.vercel.app"); // for live
-  const socket = io("https://saas-serversidescript.vercel.app", {
-    transports: ["websocket", "polling"]
-  });
+  const socket = io("https://saasserversidescript-production-9f7d.up.railway.app");
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
