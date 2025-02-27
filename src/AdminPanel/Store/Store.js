@@ -11,7 +11,7 @@ import selectedCompanySlice from '../Slice/SelectedCompanySlice'
 import permissionSlice from '../Slice/PermissionSlice'
 import tokenSlice  from '../Slice/TokenSlice';
 import chatbotReducer from '../Slice/BotSlice';
-
+import socketSliceReducer from '../Slice/socketSlice'
 
 const Store = configureStore({
   reducer: {
@@ -27,6 +27,7 @@ const Store = configureStore({
     selectedCompany:selectedCompanySlice,
     permission:permissionSlice,
     authenticate:tokenSlice,
+    socket :socketSliceReducer
   },
 })
 

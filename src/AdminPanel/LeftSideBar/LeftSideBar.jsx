@@ -206,9 +206,11 @@ const LeftSideBar = () => {
               {t('leftSidebar.sections.notification.title')}
             </h2>
             <ul>
+              <Link to={'/notification'}>
               <li className={`py-1 ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'} cursor-pointer`}>
-                {t('leftSidebar.sections.notification.items.transaction')}
+                Notification
               </li>
+              </Link>
               <li className={`py-1 ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'} cursor-pointer`}>
                 {t('leftSidebar.sections.notification.items.message')}
               </li>

@@ -38,7 +38,7 @@ import CompaniesData from './AdminPanel/Pages/RegisterCompanie/CompaniesData';
 import DeliveredData from './AdminPanel/Pages/Reports/DeliveredData';
 import DailyTask from './AdminPanel/Pages/DailyTask/DailyTask';
 import { useSelector } from 'react-redux';
-
+import Notification from './AdminPanel/Pages/notification/Notification';
 
 function App() {
   const currentTheme = useSelector((state) => state.theme.theme);
@@ -88,7 +88,8 @@ function App() {
         <Route path="/delivered-data" element={<DeliveredData/>}/>
         {/* no authentication */}
         <Route path="/daily-task" element={<DailyTask/>}/>
-
+        <Route path="/notification" element={<Notification/>}/>
+        
 
          
       </Routes>
