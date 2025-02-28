@@ -16,8 +16,8 @@ const Navbar = () => {
   const [LangIsOpen, setLangIsOpen] = useState(false);
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
-  // const socket = io("https://saas-serversidescript.vercel.app"); 
-  const socket = io("https://saasserversidescript-production.up.railway.app"); // for live
+  // const socket = io("https://saas-serversidescript.vercel.app"); // for live
+  const socket = io("https://saasserversidescript-production-162a.up.railway.app");
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {

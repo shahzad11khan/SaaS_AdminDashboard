@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from '@react-oauth/google';
 import Spinner from "../../Components/Spinner";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { baseUri } from '../../Components/api/baseUri'
 import { Login_Middle_Point } from '../../Components/api/middlePoints'
 import { Login_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
-import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
+// import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 import { toast } from 'react-toastify';
 import { saveToken } from "../../Slice/TokenSlice";
 
@@ -24,7 +24,8 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [LangIsOpen, setLanguageIsOpen] = useState(false);
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state.loading.isLoading)
+  // const selector = useSelector((state) => state.loading.isLoading)
+  const [isLoading , setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
@@ -51,13 +52,16 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(setLoading());
+    // dispatch(setLoading());
+    setIsLoading(true);
 
     const url = baseUri + Login_Middle_Point + Login_End_Point;
     const method = "POST";
 
     const response = await fetchData(url, method, form);
     console.log(response)
+    setIsLoading(false)
+
     if(response.status === 200 ){
       console.log(response.data.message)
       toast.success('Login successful')
@@ -67,7 +71,7 @@ const SignIn = () => {
     }else{
       toast.error(response.data.message)
     }
-    dispatch(setLoading())
+    // dispatch(setLoading())
 
   };
 
@@ -77,7 +81,7 @@ const SignIn = () => {
       <div className={`flex flex-col items-center justify-center min-h-screen bg-[#F0FFF8] px-4`}>
         <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg relative">
 
-          {selector && (
+          {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-white opacity-45 rounded-lg">
               <Spinner />
 

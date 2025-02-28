@@ -20,10 +20,10 @@ const Order = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [initialCount, setInitialCount] = useState(0);
     const currentTheme = useSelector((state => state.theme.theme))
-    const {userId} = useSelector((state => state.authenticate))
+    const { userId } = useSelector((state => state.authenticate))
     const dispatch = useDispatch();
-    const [deleteId,setDeleteId]=useState(null);
-    const { data: orderData, loading, error } = useSelector((state) => state.orders)
+    const [deleteId, setDeleteId] = useState(null);
+    const { data: orderData } = useSelector((state) => state.orders)
     const { companyId } = useSelector((state) => state.selectedCompany);
 
     const handleRowChange = (e) => {
@@ -39,16 +39,16 @@ const Order = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const handleConfirmDelete = async() =>{
+    const handleConfirmDelete = async () => {
         const url = baseUri + Order_Middle_Point + Order_Update_End_Point + "/" + deleteId;
-        const method ="Delete";
-        const response = await fetchData(url ,method);
+        const method = "Delete";
+        const response = await fetchData(url, method);
         setIsDeleteModalOpen(false);
-    
-         toast.success(response.data.message)
-         dispatch(fetchOrder());
-    
-     }
+
+        toast.success(response.data.message)
+        dispatch(fetchOrder());
+
+    }
     const handleEdit = (item) => {
         routerSystemSettingDetail("edit", item)
     };
@@ -58,7 +58,7 @@ const Order = () => {
             setInitialCount(initialCount + rowToShow);
         }
     };
-    
+
     const showPrevious = () => {
         if (initialCount - rowToShow >= 0) {
             setInitialCount(initialCount - rowToShow);
@@ -76,17 +76,18 @@ const Order = () => {
     useEffect(() => {
         dispatch(fetchOrder());
     }, [dispatch]);
-    let companyOnlineOrder = companyId ?orderData?.filter(item => companyId  === item.userId?.companyId?._id ) 
-    : userId ?orderData?.filter(item => userId  === item.userId?.companyId?._id ) 
-    : orderData ;
+
+    let companyOnlineOrder = companyId ? orderData?.filter(item => companyId === item.userId?.companyId?._id)
+        : userId ? orderData?.filter(item => userId === item.userId?.companyId?._id)
+            : orderData;
     const filterData = companyOnlineOrder?.filter((order) => {
-        console.log(orderData)
-        return order.orderStatus.toLowerCase().includes(searchQuery)
+
+        return order.orderStatus.toLowerCase().includes(searchQuery) &&
+        order.orderStatus.toLowerCase()!=="delivered"
 
     })
-    const displayData = filterData?.slice(0, rowToShow)
-
-    if(!Auth()) return null;
+    const displayData = filterData?.slice(initialCount, initialCount + rowToShow);
+    if (!Auth()) return null;
     return (
         <div>
 
@@ -136,20 +137,13 @@ const Order = () => {
                                     Back
                                 </button>
                             </Link>
-{/* 
-                            <Link to="/online-order-form">
-                                <button className={`px-4 py-2 ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} ${currentTheme === 'dark' ? 'text-white' : 'text-black'}  rounded  border`}>
-                                    Add Order
-                                </button>
-                            </Link> */}
                         </div>
 
                     </div>
                     <div className="table-container overflow-x-auto">
 
 
-                        {loading && <p>Loading...</p>}
-                        {error && <p>Error: {error}</p>}
+
                         <GenericTable
                             headers={['Sno', 'createdAt', 'orderStatus', 'paymentMethod', 'shippingAddress', 'totalAmount', 'updatedAt', 'Actions']}
                             data={displayData}

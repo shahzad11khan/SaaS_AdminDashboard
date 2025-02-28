@@ -11,6 +11,7 @@ import selectedCompanySlice from '../Slice/SelectedCompanySlice'
 import permissionSlice from '../Slice/PermissionSlice'
 import tokenSlice  from '../Slice/TokenSlice';
 import chatbotReducer from '../Slice/BotSlice';
+import usersReducer  from '../Slice/UsersSlice';
 import { addStateToLocalStorage ,loadStateFromLocalStorage } from '../../utils/LocalStorage';
 const persistedState = loadStateFromLocalStorage();
 
@@ -19,11 +20,12 @@ const Store = configureStore({
     theme : themeReducer,
     loading: loadingReducer,
     orders :orderReducer,
+    users:usersReducer,
     categories:categoryReducer,
     tags:tagsReducer,
     warehouse:warehouseReducer,
     deliver :deliverReducer,
-    companies:companyReducer,
+    companies:companyReducer, 
     chatbot:chatbotReducer,
     selectedCompany:selectedCompanySlice,
     permission:permissionSlice,

@@ -6,16 +6,19 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { baseUri } from '../../Components/api/baseUri'
 import { User_Middle_Point } from '../../Components/api/middlePoints'
-import { User_Delete_End_Point, User_End_Point } from '../../Components/api/endPoint'
+// import { User_Delete_End_Point, User_End_Point } from '../../Components/api/endPoint'
+import { User_Delete_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import GenericTable from '../../Components/Table/GenericTable';
-import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
+// import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 import { toast } from 'react-toastify';
+import { fetchUsers ,deleteUser } from '../../Slice/UsersSlice';
 
 
 
 
-const Registeruser = () => {
+
+const RegisterUser = () => {
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -25,52 +28,53 @@ const Registeruser = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [showRows, setRowsToShow] = useState(5);
     const [initialCount, setInitialCount] = useState(0);
-    const [userData, setUserData] = useState({
-        headers: ['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status', 'Actions'],
-        data: [],
-    });
+    // const [userData, setUserData] = useState({
+    //     headers: ['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status', 'Actions'],
+    //     data: [],
+    // });
     const [searchQuery, setSearchQuery] = useState('');
     const currentTheme = useSelector((state) => state.theme.theme);
     const [id , setId] = useState(null);
-    const { companyId} = useSelector((state) => state.selectedCompany );
-    const {userId} = useSelector(state => state.authenticate)
+    const {data: userData}= useSelector((state)=>state.users) 
+    // const { companyId} = useSelector((state) => state.selectedCompany );
+    // const {userId} = useSelector(state => state.authenticate)
 
-    const fetchUsers = async () => {
-        try {
-            const url = baseUri + User_Middle_Point + User_End_Point;
-            const method = "GET";
-            const response = await fetchData(url, method);
-            console.log(response)
-            console.log(userId)
-            if(companyId){
-               let  filterdData =  response.data.users.filter(item => companyId  === item.companyId?._id);
-               setUserData((prevState) => ({
-                ...prevState,
-                data: filterdData,
-            }))
-            }
-            else if (userId){
-                let  filterdData =  response.data.users.filter(item => userId  === item.companyId?._id);
-                setUserData((prevState) => ({
-                 ...prevState,
-                 data: filterdData,
-                }))
-            }
-            else{
-                setUserData((prevState) => ({
-                    ...prevState,
-                    data: response.data.users,
-                }));
-            }
-            dispatch(setLoading());
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const fetchUsers = async () => {
+    //     try {
+    //         const url = baseUri + User_Middle_Point + User_End_Point;
+    //         const method = "GET";
+    //         const response = await fetchData(url, method);
+    //         console.log(response)
+    //         console.log(userId)
+    //         if(companyId){
+    //            let  filterdData =  response.data.users.filter(item => companyId  === item.companyId?._id);
+    //            setUserData((prevState) => ({
+    //             ...prevState,
+    //             data: filterdData,
+    //         }))
+    //         }
+    //         else if (userId){
+    //             let  filterdData =  response.data.users.filter(item => userId  === item.companyId?._id);
+    //             setUserData((prevState) => ({
+    //              ...prevState,
+    //              data: filterdData,
+    //             }))
+    //         }
+    //         else{
+    //             setUserData((prevState) => ({
+    //                 ...prevState,
+    //                 data: response.data.users,
+    //             }));
+    //         }
+    //         dispatch(setLoading());
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+    dispatch(fetchUsers());
+    }, [dispatch]);
 
     const handleSearchQuery = (e) => {
         setSearchQuery(e.target.value.toLowerCase());
@@ -91,13 +95,16 @@ const Registeruser = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const filterData = userData.data.filter((user) => {
+    const filterData = userData.filter((user) => {
         return (
-            user.username.toLowerCase().includes(searchQuery) ||
-            user.email.toLowerCase().includes(searchQuery) ||
-            user.role.toLowerCase().includes(searchQuery)
+            (user.username.toLowerCase().includes(searchQuery) ||
+             user.email.toLowerCase().includes(searchQuery) ||
+             user.role.toLowerCase().includes(searchQuery))
+            && user.role.toLowerCase() !== "superadmin"
         );
     });
+    
+    console.log(filterData)
 
     const showNext = () => {
         if (initialCount + showRows < filterData.length) {
@@ -112,12 +119,9 @@ const Registeruser = () => {
         console.log(response)
         setIsDeleteModalOpen(false)
         if(response.status=== 200){
-            console.log('hello')
-            toast.success(response.data.message)
-            setUserData((prevState) => ({
-                ...prevState,
-                data: userData.data.filter(el => el._id !== id),
-            }))
+           
+            dispatch(deleteUser(id))
+            toast.success(response.data.message);
         }     
         else{    
             toast.error(response.data.message)
@@ -199,7 +203,7 @@ const Registeruser = () => {
                     </div>
                     <div className="table-container overflow-x-auto">
                         {userData && <GenericTable
-                            headers={userData.headers}
+                            headers={['SNo', 'username', 'email', 'confirmPassword', 'dateOfBirth', 'role', 'userLogoUrl', 'status', 'Actions']}
                             data={displayData}
                             currentTheme={currentTheme}
                             onEdit={handleEdit}
@@ -236,7 +240,7 @@ const Registeruser = () => {
     );
 };
 
-export default Registeruser;
+export default RegisterUser;
 
 
 
