@@ -5,18 +5,20 @@ import { Order_End_Point } from '../Components/api/endPoint'
 import fetchData from '../Components/api/axios'
 
 export const fetchOrder = createAsyncThunk("orders/fetchOrder",async()=>{
-    const URL =baseUri + Order_Middle_Point +Order_End_Point;
+    const URL =baseUri + Order_Middle_Point + Order_End_Point;
     const method ="GET";
     const response = await fetchData(URL,method);
+    // console.log(response.data)
     return response.data
 })
+
 
 const orderSlice = createSlice({
     name: 'orders',
     initialState:{
         data:[],
         loading:false,
-        // error:false,
+        error:false,
     },
 
     extraReducers: (builder) => {
@@ -30,10 +32,10 @@ const orderSlice = createSlice({
         state.data=action.payload
       })
 
-      // builder.addCase(fetchOrder.rejected, (state, action) => {
-      //   state.loading=false,
-      //   state.error=action.error.message
-      // })
+      builder.addCase(fetchOrder.rejected, (state, action) => {
+        state.loading=false,
+        state.error=action.error.message
+      })
     },
   })
 

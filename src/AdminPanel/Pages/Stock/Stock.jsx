@@ -120,8 +120,10 @@ const routerSystemSettingDetail = (state,stock)=>{
        const method ="Delete";
        const response = await fetchData(url ,method);
        setIsDeleteModalOpen(false);
+       toast.success(response.data.message)
+       console.log(response.data.message)
        if(response.status===200){
-        toast.success(response.data.message)
+        console.log(response)
         setStockData((prevState)=>({
             ...prevState,
             data:stockData.data.filter(el => el._id !=deleteId)

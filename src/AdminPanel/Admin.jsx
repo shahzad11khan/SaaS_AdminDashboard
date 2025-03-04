@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import FirebaseNotification from '../utils/FirebaseNotification'
 
 const Admin = () => {
   const navigate = useNavigate()
@@ -19,7 +20,7 @@ useEffect(()=>{
 if (!token) return null;
   return (
     <>
-    
+    <FirebaseNotification />
      <Navbar/>
      <div className='flex flex-col lg:flex-row'>
       <LeftSideBar/>

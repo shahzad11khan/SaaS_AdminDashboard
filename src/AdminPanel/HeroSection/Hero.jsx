@@ -55,6 +55,7 @@ const Hero = () => {
             const url = baseUri + Stock_Middle_Point;
             const method = "GET";
             const response = await fetchData(url, method);
+            console.log(response)
             dispatch(setLoading());
             if (companyId) {
                 let filterdData = response?.data.filter(item => companyId === item.userId?.companyId?._id);
@@ -64,8 +65,9 @@ const Hero = () => {
                 let filterdData = response.data.filter(item => userId === item.companyId?._id);                
                 setTotalStock(filterdData.length)
             }
-            else if (Array.isArray(response)) {
-                setTotalStock(response.length);
+            else if (Array.isArray(response.data)) {
+                console.log(response.data)
+                setTotalStock(response.data.length);
             }
         } catch (error) {
             console.log(error)
