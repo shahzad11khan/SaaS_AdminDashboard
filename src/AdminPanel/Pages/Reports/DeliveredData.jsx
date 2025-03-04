@@ -24,7 +24,7 @@ const Delever = () => {
     const {userId} = useSelector((state => state.authenticate))
     const {companyId} = useSelector((state) => state.selectedCompany);
 
-    const { data: deliverData, loading, error } = useSelector(
+    const { data: deliverData } = useSelector(
         (state) => state.deliver
       );
     const handleRowChange = (e) => {
@@ -185,8 +185,7 @@ const Delever = () => {
 
                     </div>
                     <div className="table-container overflow-x-auto">
-                               {loading && <p>Loading...</p>}
-                               {error && <p>Error: {error}</p>}
+                    
                                <GenericTable
                                  headers={['SNo',  'createdAt', 'updatedAt', 'Actions']}
                                  data={displayData}

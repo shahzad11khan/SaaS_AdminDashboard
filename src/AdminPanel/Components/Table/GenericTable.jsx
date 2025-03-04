@@ -107,7 +107,7 @@ const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, 
           data?.map((item, idx) => (
             <tr
               key={item.sno}
-              className={`hover:bg-gray-100 ${currentTheme === 'dark' ? 'hover:bg-[#404052]' : ''
+              className={` ${currentTheme === 'dark' ? 'hover:bg-[#404052]' : 'hover:bg-gray-100'
                 }`}
             >
               {headers.map((header, index) => {

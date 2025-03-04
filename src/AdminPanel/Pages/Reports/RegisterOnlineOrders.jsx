@@ -19,7 +19,7 @@ const RegisteredOnlineOrder = () => {
 
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
-    const { data: orderData, loading, error } = useSelector((state) => state.orders)
+    const { data: orderData } = useSelector((state) => state.orders)
     const {userId} = useSelector((state => state.authenticate))
     const {companyId} = useSelector((state) => state.selectedCompany);
 
@@ -179,8 +179,7 @@ const RegisteredOnlineOrder = () => {
                     <div className="table-container overflow-x-auto">
 
 
-                        {loading && <p>Loading...</p>}
-                        {error && <p>Error: {error}</p>}
+               
                         <GenericTable
                             headers={['Sno', 'createdAt', 'orderStatus', 'paymentMethod', 'shippingAddress', 'totalAmount', 'updatedAt']}
                             data={displayData}
