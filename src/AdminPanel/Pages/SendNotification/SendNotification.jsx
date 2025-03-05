@@ -39,25 +39,42 @@ const SendNotification = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleSelectedFormChange = (e) => {
     const { name, value } = e.target;
     setSelectedForm({
       ...selectedForm,
       [name]: value,
     });
+    let selectedItem ;
+    if(name==="selectedField"){
+      selectedItem  = selectedForm.userType === "users" ?userData.find((user)=>user.fcmToken===value) :
+      companyData.find((company)=>company.fcmToken===value)
+    }
+    if(selectedItem){
+      setFormData((prev)=>({
+        ...prev,
+        fcmToken :selectedItem.fcmToken,
+      }))
+    }
+
+    
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData, "Selected User : ", selectedForm.selectedUser);
+    console.log("Form Data of all registered user & Submitted:", formData, "Selected User : ", selectedForm.selectedUser);
   };
 
   const handleSingleSubmit =async (e) =>{
-    console.log("Form Data Submitted:", formData, "Selected User : ", selectedForm.selectedUser);
+    console.log("Sending Notification:", formData);
 
     e.preventDefault();
     const url = baseUri + Notification_Middle_Point + Notification_End_Point;
     const method = "POST";
+    if(!formData.fcmToken){
+      toast.error("Selected a user or company with valid fcmToken")
+    }
     const response = await fetchData(url,method,formData)
     if (response?.status === 200 || response?.status === 201) {
       console.log(response)
@@ -192,7 +209,7 @@ const SendNotification = () => {
                         </label>
                         {selectedForm.userType === "users" ? (
                           <select
-                            name="fcmToken"
+                            name="selectedField"
                             value={selectedForm.selectedUser}
                             onChange={handleSelectedFormChange}
                             className={`w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "bg-[#404040] text-white" : "bg-white"}`}
@@ -206,7 +223,7 @@ const SendNotification = () => {
                         ) : (
                           <select
                             className={`w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013D29] ${currentTheme === "dark" ? "bg-[#404040] text-white" : "bg-white"}`}
-                            name="fcmToken"
+                            name="selectedField"
                             value={selectedForm.selectedCompany}
                             onChange={handleSelectedFormChange}
                           >
