@@ -3,19 +3,18 @@ import LeftSideBar from "../../LeftSideBar/LeftSideBar";
 import Navbar from "../../Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "../../Slice/UsersSlice";
-import { fetchCompanies } from "../../Slice/CompanySlice";
-import { baseUri } from "../../Components/api/baseUri";
-import { Notification_Middle_Point } from "../../Components/api/middlePoints";
-import { Notification_End_Point } from "../../Components/api/endPoint";
+import { fetchCompanies } from "../../Slice/CompanySlice";import { allNotification_Middle_Point, Notification_Middle_Point } from "../../Components/api/middlePoints";
+import { allCompanies_Notification_End_Point, allUsers_Notification_End_Point, Notification_End_Point } from "../../Components/api/endPoint";
 import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
+import { notificationBaseUrl } from "../../Components/api/baseUri";
 
 const SendNotification = () => {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state) => state.theme.theme);
   const { data: userData } = useSelector((state) => state.users)
   const {data : companyData} = useSelector((state)=>state.companies)
-
+  const [targetType,setTargetType]= useState(null);
   const [allUserAndCompany, setAllUserAndCompany] = useState(false);
   const [selectUserAndCompany, setSelectedUserAndCompany] = useState(false);
 
@@ -61,16 +60,29 @@ const SendNotification = () => {
     
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log("Form Data of all registered user & Submitted:", formData, "Selected User : ", selectedForm.selectedUser);
-  };
+    console.log("Form Data of all user or companies submit:", formData);
+    const url = notificationBaseUrl + allNotification_Middle_Point + (targetType === "Users" ? allUsers_Notification_End_Point : allCompanies_Notification_End_Point);
+    const method ="POST";
+  const response = await fetchData(url,method,formData)
+  console.log(response.status)
+
+  if (response?.status ===200 || response?.status ===201){
+    console.log("Response of all",response)
+    toast.success("Message Send Successfully")
+    
+  }  
+  else{
+    toast.error("Failed to send notification")
+  }
+};
 
   const handleSingleSubmit =async (e) =>{
     console.log("Sending Notification:", formData);
 
     e.preventDefault();
-    const url = baseUri + Notification_Middle_Point + Notification_End_Point;
+    const url = notificationBaseUrl + Notification_Middle_Point + Notification_End_Point;
     const method = "POST";
     if(!formData.fcmToken){
       toast.error("Selected a user or company with valid fcmToken")
@@ -80,9 +92,9 @@ const SendNotification = () => {
       console.log(response)
       toast.success("Message Send Successfully")
     }
-    else
+    else{
     toast.error("Failed to send notification")
-
+    }
   }
 
   const filterUser =userData?.filter(el=> el.fcmToken !== null);
@@ -145,12 +157,22 @@ const SendNotification = () => {
                           ></input>
                         </div>
 
+                       <div className="flex gap-5 ">
+                       <button
+                          type="submit"
+                          onClick={()=>{setTargetType("Users")}}
+                          className={` px-4 py-2 rounded  ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-[#F0FFF8]'} border border-gray-300`}
+                        >
+                           Send to Users
+                        </button>
                         <button
                           type="submit"
-                          className={`w-full px-4 py-2 rounded  ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-[#F0FFF8]'} border border-gray-300`}
-                        >
-                          Send Notification
-                        </button>
+                          className={` px-4 py-2 rounded  ${currentTheme === 'dark' ? 'text-white bg-[#404040]' : 'text-black bg-[#F0FFF8]'} border border-gray-300`}
+                          onClick={()=>{setTargetType("Companies")}}
+                       >
+                          Send to Companies
+                          </button>
+                       </div>
                       </form>
                     </div>
                   }

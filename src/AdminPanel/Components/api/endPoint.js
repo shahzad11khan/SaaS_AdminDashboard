@@ -18,6 +18,8 @@ export const Product_Update_End_Point = '/update/';
 export const Product_Delete_End_Point = '/delete/';
 export const Chatbot_End_Point = '/chat';
 export const Notification_End_Point ="/send-notification";
+export const allCompanies_Notification_End_Point ="/send-notification-to-all-companies"
+export const allUsers_Notification_End_Point = "/send-notification-to-all-users"
 
 
 

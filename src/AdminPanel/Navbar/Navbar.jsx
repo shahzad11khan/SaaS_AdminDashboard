@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { removedToken } from '../Slice/TokenSlice';
 import { googleLogout } from '@react-oauth/google';
 import io from "socket.io-client";
+import { toast } from 'react-toastify';
+import { baseUri } from '../Components/api/baseUri';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -17,12 +19,13 @@ const Navbar = () => {
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
   // const socket = io("https://saas-serversidescript.vercel.app"); // for live
-  const socket = io("https://saasserversidescript-production-162a.up.railway.app");
+  const socket = io(baseUri);
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     socket.on("newOrder", () => {
       setNotificationCount((prev) => prev + 1);
+      toast.info("You have a new notification");
     });
 
     return () => {
@@ -35,6 +38,7 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  
 
   const toggleLanguage = () => {
     setLangIsOpen(!LangIsOpen);
@@ -120,6 +124,7 @@ const Navbar = () => {
                 <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-1 -right-1">
                   {notificationCount}
                 </span>
+            
               )}
             </button>
 
