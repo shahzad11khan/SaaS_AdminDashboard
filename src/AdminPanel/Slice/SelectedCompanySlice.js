@@ -6,6 +6,10 @@ const SelectedCompanySlice = createSlice({
         companyId:null,
         companyName: null,
         companyImg:null,
+        companyEmail:null,
+        companyPhoneNumber:null,
+        companyRegistrationNumber:null
+        
     },
 
     reducers :{
@@ -14,6 +18,9 @@ const SelectedCompanySlice = createSlice({
             state.companyId =  action.payload.cId;
             state.companyName = action.payload.cName;
             state.companyImg = action.payload.cImg;
+            state.companyEmail=action.payload.companyEmail;
+            state.companyPhoneNumber=action.payload.companyPhoneNumber;
+            state.companyRegistrationNumber= action.payload.companyRegistrationNumber
         },
         removeSelectedCompany:(state) =>{
             state.companyId = null;

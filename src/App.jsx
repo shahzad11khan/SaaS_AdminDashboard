@@ -38,6 +38,7 @@ import CompaniesData from './AdminPanel/Pages/RegisterCompanie/CompaniesData';
 import DeliveredData from './AdminPanel/Pages/Reports/DeliveredData';
 import DailyTask from './AdminPanel/Pages/DailyTask/DailyTask';
 import SendNotification from './AdminPanel/Pages/SendNotification/SendNotification';
+import PrintOrder from './AdminPanel/Pages/OnlineOrder/PrintOrder';
 import { useSelector } from 'react-redux';
 
 
@@ -90,10 +91,7 @@ function App() {
         {/* no authentication */}
         <Route path="/daily-task" element={<DailyTask/>}/>
         <Route path="/send-notification" element={<SendNotification/>}/>
-
-
-        
-
+        <Route path="/print-order-data" element={<PrintOrder/>}/>
 
          
       </Routes>
