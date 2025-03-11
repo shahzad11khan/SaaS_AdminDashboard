@@ -75,14 +75,14 @@ const ByHandOrder = () => {
                     <thead>
                         <tr>
                             {customerdata?.headers.map((item, index) => (
-                                 <th key={index} className={`${currentTheme=== 'dark' ?'bg-[#404040]':'bg-[#F0FFF8]'}  ${currentTheme=== 'dark' ?'text-white':'text-black'} border-b px-4 py-2`}>{item}</th>
+                                 <th key={index} className={`${currentTheme=== 'dark' ?' bg-[#404040]':'bg-[#F0FFF8]'}  ${currentTheme=== 'dark' ?'text-white':'text-black'} border-b px-4 py-2`}>{item}</th>
                             ))}
                         </tr>
                     </thead>
 
                     <tbody>
                         {customerdata.data.map((item , index) => (
-                            <tr key={index} className={`hover:bg-gray-100 ${currentTheme === 'dark' ? 'hover:bg-[#404052]' : ''  }`}>
+                            <tr key={index} className={`${currentTheme === 'dark' ? 'hover:bg-[#404052]' : ''  }`}>
                                 <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.serial_no}</td>
                                 <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.customer_name}</td>
                                 <td className={`px-4 py-2 ${currentTheme=== 'dark' ?'text-white':'text-black'} text-center`}>{item.email}</td>

@@ -6,7 +6,7 @@ import { removeSelectedCompany } from '../Slice/SelectedCompanySlice';
 const LeftSideBar = () => {
   const dispatch =  useDispatch()
   const { t } = useTranslation();
-  const [isOpen, setisOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [compDropdownOpen, setcompDropdownOpen] = useState(false);
   const [reportDropdownOpen, setReportDropdownOpen] = useState(false);
 
@@ -20,8 +20,8 @@ const LeftSideBar = () => {
     setReportDropdownOpen(!reportDropdownOpen)
   }
 
-  const sideBartoggle = () => {
-    setisOpen(!isOpen)
+  const sideBarToggle = () => {
+    setIsOpen(!isOpen)
   }
 
   const {companyId} = useSelector((state) => state.selectedCompany );
@@ -32,7 +32,7 @@ const LeftSideBar = () => {
 
       <button
         className="lg:hidden p-2 absolute top-2 left-2 z-50 bg-[#219b53] text-white rounded"
-        onClick={sideBartoggle}
+        onClick={sideBarToggle}
       >
         <i className="fas fa-bars"></i>
       </button>
@@ -41,9 +41,8 @@ const LeftSideBar = () => {
       <div className={`${isOpen ? 'w-full sm:w-full' : 'hidden'} relative lg:block  flex flex-col  
       ${currentTheme === 'dark' ? 'bg-[#404040]' : 'bg-[#F0FFF8]'} 
       ${currentTheme === 'dark' ? 'text-white' : 'text-black'} w-full sm:w-full md:w-full lg:w-[250px] min-h-screen  border border-gray-300  z-40 rounded-xl`}>
+       
         <div className='middle ms-5 mt-5'>
-
-
           <div className='flex flex-col'>
             <h2 className='text-xl'>{t('leftSidebar.sections.dashboard.title')}</h2>
             <ul>
@@ -77,12 +76,22 @@ const LeftSideBar = () => {
                       </li>
                     </Link>
 
+                    <Link to="/send-notification">
+                      <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
+                        {/* {t('leftSidebar.sections.dashboard.companies.registerUser')} */}
+                    Send Notification
+                      </li>
+                    </Link>
+
+                 
+
                   </ul>
                 )}
               </li>
 
 
             </ul>
+            
           </div>
 
 
@@ -151,8 +160,6 @@ const LeftSideBar = () => {
                 </div>
                 {reportDropdownOpen && (
                   <ul className="pl-4">
-
-
                     <Link to="/registered-companies">
                       <li className={`py-1  cursor-pointer ${currentTheme === 'dark' ? 'hover:underline hover:text-white hover:bg-[#404052]' : 'hover:underline hover:text-black hover:bg-gray-100'}`}>
                       {t('leftSidebar.sections.management.items.registeredCompanies')}

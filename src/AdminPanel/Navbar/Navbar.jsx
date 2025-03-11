@@ -17,11 +17,21 @@ const Navbar = () => {
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
   // const socket = io("https://saas-serversidescript.vercel.app"); // for live
-  const socket = io("https://saasserversidescript-production-162a.up.railway.app");
+  const socket = io("http://localhost:5000");
   const [notificationCount, setNotificationCount] = useState(0);
+  const { companyName, companyId, companyImg } = useSelector((state) => state.selectedCompany);
 
   useEffect(() => {
-    socket.on("newOrder", () => {
+    
+    // if (!companyId) return;
+
+    // // Join the company-specific room
+    // socket.emit("joinCompany", companyId);
+    // console.log(`🏢 Joined company room: ${companyId}`);
+
+    // Listen for new order notifications
+    socket.on("newOrder", (order) => {
+      console.log("📦 New order received:", order);
       setNotificationCount((prev) => prev + 1);
     });
 
@@ -58,7 +68,6 @@ const Navbar = () => {
 
   }
 
-  const { companyName, companyId, companyImg } = useSelector((state) => state.selectedCompany);
 
   return (
     <div className='flex justify-between items-center '>

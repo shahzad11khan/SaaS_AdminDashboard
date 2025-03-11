@@ -26,8 +26,6 @@ if (!token) return null;
       <LeftSideBar/>
       <Hero/>
      </div>
-     
-    
     </>
 
   )

@@ -6,11 +6,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { baseUri } from '../../Components/api/baseUri'
 import { User_Middle_Point } from '../../Components/api/middlePoints'
-// import { User_Delete_End_Point, User_End_Point } from '../../Components/api/endPoint'
 import { User_Delete_End_Point } from '../../Components/api/endPoint'
 import fetchData from '../../Components/api/axios'
 import GenericTable from '../../Components/Table/GenericTable';
-// import { setLoading } from '../../../AdminPanel/Slice/LoadingSlice'
 import { toast } from 'react-toastify';
 import { fetchUsers ,deleteUser } from '../../Slice/UsersSlice';
 

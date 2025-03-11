@@ -20,10 +20,7 @@ const app = initializeApp(firebaseConfig)
 const messaging = getMessaging(app);
 
 const  FirebaseNotification = () =>{
-
   const {token:userToken} = useSelector(state => state.authenticate)
-
-
   useEffect(()=>{
     regesterServiceWorker()
     requestPermission()
@@ -47,8 +44,8 @@ const regesterServiceWorker = async()=>{
 
 const requestPermission = async() =>{
   try{
-    const permission = await Notification.requestPermission();
-    if(permission !== "granted")throw new Error("permission not allowed");
+    // const permission = await Notification.requestPermission();
+    // if(permission !== "granted")throw new Error("permission not allowed");
 
     const token = await getToken(messaging , {
       vapidKey:"BOXKKIurvZdRzxPnSik7saJXYY1q1vzpVrfQiW0g8FM2QwBula2y0WGNtsttbZ0Guv8lfoQeWZAu1InVIO5HbLw",

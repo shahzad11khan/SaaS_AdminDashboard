@@ -18,7 +18,7 @@ const RegisteredCompanies = () => {
     const [endDate, setEndDate] = useState("");
     const currentTheme = useSelector((state) => state.theme.theme);
     const dispatch = useDispatch();
-    const { data: companiesData, loading, error } = useSelector((state) => state.companies);
+    const { data: companiesData } = useSelector((state) => state.companies);
     
    
 
@@ -168,8 +168,7 @@ if(!Auth()) return null;
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
-                        {loading && <p>Loading...</p>}
-                        {error && <p>Error: {error}</p>}
+                       
                         <GenericTable
                             headers={['Sno', 'companyName', 'email', 'ownerName', 'registrationNumber','createdAt','updatedAt']}
                             data={displayData}

@@ -19,7 +19,7 @@ const Order = () => {
 
     const currentTheme = useSelector((state => state.theme.theme))
     const dispatch = useDispatch();
-    const { data: orderData, loading, error } = useSelector((state) => state.orders)
+    const { data: orderData } = useSelector((state) => state.orders)
 
 
     const handleRowChange = (e) => {
@@ -110,9 +110,7 @@ const Order = () => {
                     </div>
                     <div className="table-container overflow-x-auto">
 
-                      
-                        {loading && <p>Loading...</p>}
-                        {error && <p>Error: {error}</p>}
+                  
                         <GenericTable
                             headers={['Sno', 'createdAt', 'orderStatus','paymentMethod','shippingAddress','totalAmount','updatedAt','Actions']}
                             data={displayData}
