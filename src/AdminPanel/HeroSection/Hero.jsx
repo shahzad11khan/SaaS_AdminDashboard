@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import ChatBot from '../Components/ChatBot/ChatBot';
+import InterCompanyChat from '../Components/ChatBot/InterCompanyChat';
 
 const Hero = () => {
     const dispatch = useDispatch();
@@ -22,9 +23,16 @@ const Hero = () => {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalStock, setTotalStock] = useState(0);
     const [totalProduct, setTotalProduct] = useState(0);
-    const [isChatBotOpen, setIsChatBotOpen] = useState(null);
+    // const [isChatBotOpen, setIsChatBotOpen] = useState(null);
     const { companyId } = useSelector((state) => state.selectedCompany);
-    const {userId} = useSelector((state)=> state.authenticate)
+    const { userId } = useSelector((state) => state.authenticate)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [activeChat, setActiveChat] = useState(null);
+
+    const handleChatSelect = (type) => {
+        setActiveChat(type);
+        setIsDropdownOpen(false);
+    };
 
 
     const fetchUsers = async () => {
@@ -36,8 +44,8 @@ const Hero = () => {
             if (companyId) {
                 let filterdData = response.data.users.filter(item => companyId === item.companyId?._id);
                 setTotalUsers(filterdData.length)
-            } 
-            else if(userId){
+            }
+            else if (userId) {
                 let filterdData = response.data.users.filter(item => userId === item.companyId?._id);
                 setTotalUsers(filterdData.length)
             }
@@ -61,8 +69,8 @@ const Hero = () => {
                 let filterdData = response?.data.filter(item => companyId === item.userId?.companyId?._id);
                 setTotalStock(filterdData.length)
             }
-            else if(userId){
-                let filterdData = response.data.filter(item => userId === item.companyId?._id);                
+            else if (userId) {
+                let filterdData = response.data.filter(item => userId === item.companyId?._id);
                 setTotalStock(filterdData.length)
             }
             else if (Array.isArray(response.data)) {
@@ -84,9 +92,9 @@ const Hero = () => {
                 let filteredData = [];
                 if (companyId) {
                     filteredData = data.filter(item => companyId === item.userId?.companyId?._id);
-                } 
-                else if(userId){
-                    filteredData = data.filter(item => userId === item.userId?.companyId?._id);                
+                }
+                else if (userId) {
+                    filteredData = data.filter(item => userId === item.userId?.companyId?._id);
                 }
                 else if (Array.isArray(data)) {
                     filteredData = data;
@@ -261,14 +269,33 @@ const Hero = () => {
                 ) : null}
 
 
-                <div className={`fixed bottom-2 right-10 cursor-pointer `}
-                    onClick={() => setIsChatBotOpen(!isChatBotOpen)}
+                <div
+                    className="fixed bottom-2 right-10 cursor-pointer"
+                    onClick={() => {
+                        if (activeChat) {
+                            setActiveChat(null);
+                        } else {
+                            setIsDropdownOpen((prev) => !prev);      
+
+                        
+                        }
+                    }}
                 >
-                    <FontAwesomeIcon icon={faCommentDots} size='3x' />
+                    <FontAwesomeIcon icon={faCommentDots} size="3x" />
                 </div>
-                {isChatBotOpen && <ChatBot />}
+                {isDropdownOpen && (
+                    <div className={` ${currentTheme === 'dark' ? 'bg-[#404040] text-white' : 'bg-[#F0FFF8] text-black'}  absolute bottom-24 right-20 bg- shadow-md rounded-lg p-2 w-48`}>
+                        <div className="cursor-pointer underline p-2 hover:bg-gray-200" onClick={() => handleChatSelect('bot')}>
+                            Chat with Bot
+                        </div>
+                        <div className="cursor-pointer underline p-2 hover:bg-gray-200" onClick={() => handleChatSelect('companies')}>
+                            Chat with Companies
+                        </div>
+                    </div>
+                )}
 
-
+                {activeChat === 'bot' && <ChatBot />}
+                {activeChat === 'companies' && <InterCompanyChat />}
             </div>
 
         </div>
