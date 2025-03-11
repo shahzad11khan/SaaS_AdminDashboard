@@ -16,8 +16,7 @@ const Navbar = () => {
   const [LangIsOpen, setLangIsOpen] = useState(false);
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
-  // const socket = io("https://saas-serversidescript.vercel.app"); // for live
-  const socket = io("http://localhost:5000");
+  const socket = io("https://saasserversidescript-production-befa.up.railway.app"); // for live
   const [notificationCount, setNotificationCount] = useState(0);
   const { companyName, companyId, companyImg } = useSelector((state) => state.selectedCompany);
 
