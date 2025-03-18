@@ -10,12 +10,12 @@ import FirebaseNotification from '../utils/FirebaseNotification'
 const Admin = () => {
   const navigate = useNavigate()
   let {token} = useSelector(state => state.authenticate);
-useEffect(()=>{
-  if(!token) {
-    toast.error("Login first")
-    setTimeout(navigate('/'),1000) 
-  }
-} , [token , navigate])
+  useEffect(()=>{
+    if(!token) {
+      toast.error("Login first")
+      setTimeout(navigate('/'),1000) 
+    }
+  } , [token , navigate])
 
 if (!token) return null;
   return (

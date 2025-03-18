@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { removedToken } from '../Slice/TokenSlice';
 import { googleLogout } from '@react-oauth/google';
 import io from "socket.io-client";
+import { toast } from 'react-toastify';
+import { baseUri } from '../Components/api/baseUri';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -16,22 +18,24 @@ const Navbar = () => {
   const [LangIsOpen, setLangIsOpen] = useState(false);
   const { userId, loginCompanyName, companyLogo } = useSelector(state => state.authenticate)
   // const socket = io("http://localhost:5000"); for local
-  const socket = io("https://saasserversidescript-production-befa.up.railway.app"); // for live
+  // const socket = io("https://saas-serversidescript.vercel.app"); // for live
+  const socket = io(baseUri);
   const [notificationCount, setNotificationCount] = useState(0);
   const { companyName, companyId, companyImg } = useSelector((state) => state.selectedCompany);
 
   useEffect(() => {
     
-    // if (!companyId) return;
+    if (!companyId) return;
 
     // // Join the company-specific room
-    // socket.emit("joinCompany", companyId);
-    // console.log(`🏢 Joined company room: ${companyId}`);
+    socket.emit("joinCompany", companyId);
+    console.log(`🏢 Joined company room: ${companyId}`);
 
     // Listen for new order notifications
     socket.on("newOrder", (order) => {
       console.log("📦 New order received:", order);
       setNotificationCount((prev) => prev + 1);
+      toast.info("You have a new notification");
     });
 
     return () => {
@@ -44,6 +48,7 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  
 
   const toggleLanguage = () => {
     setLangIsOpen(!LangIsOpen);
@@ -128,6 +133,7 @@ const Navbar = () => {
                 <span className="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-1 -right-1">
                   {notificationCount}
                 </span>
+            
               )}
             </button>
 

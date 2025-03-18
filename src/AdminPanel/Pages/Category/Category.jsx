@@ -16,12 +16,13 @@ const Category = () => {
   const navigate = useNavigate();
 
     let {token , userId} = useSelector(state => state.authenticate);
-      useEffect(()=>{
-        if(!token) {
-          toast.error("Login first")
-          setTimeout(navigate('/'),1000) 
-        }
-      } , [token , navigate])
+    useEffect(() => {
+      if (!token) {
+        toast.error("Login first");
+        setTimeout(() => navigate('/'), 1000);
+      }
+    }, [token, navigate]);
+    
       
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [rowToShow, setRowsToShow] = useState(5);
@@ -87,6 +88,7 @@ const showPrevious = () => {
     navigate(path ,{state:data})
    }
    console.log(categoryData)
+   console.log("Type of categoryData:", typeof categoryData);
    let companyCategory = companyId ?
     categoryData?.filter(item => companyId  === item.userId?.companyId?._id ) 
     : userId?

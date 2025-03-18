@@ -11,6 +11,8 @@ import { Order_Update_End_Point } from "../../Components/api/endPoint";
 import { Order_Middle_Point } from "../../Components/api/middlePoints";
 import fetchData from "../../Components/api/axios";
 import { toast } from "react-toastify";
+// import jsPDF from "jspdf";
+// import "jspdf-autotable";
 import { Auth } from "../../../utils/globleAtuhenticate";
 
 
@@ -22,6 +24,7 @@ const Order = () => {
     const currentTheme = useSelector((state => state.theme.theme))
     const { userId } = useSelector((state => state.authenticate))
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [deleteId, setDeleteId] = useState(null);
     const { data: orderData } = useSelector((state) => state.orders)
     const { companyId } = useSelector((state) => state.selectedCompany);
@@ -53,6 +56,58 @@ const Order = () => {
         routerSystemSettingDetail("edit", item)
     };
 
+    // const handlePrint = (item) =>{
+    //     console.log("item data :",item)
+    //     const pdfHeaders = ["sNo","Order Status","Payment Method","Shipping Address","Total Amount","createdAt","updatedAt"]
+
+    //     const doc = new jsPDF();
+    //     doc.setFontSize(8);
+
+    //             doc.text("User Name ",14,10);
+    //             doc.text("Product Name",14,14);
+    //             doc.text("Tell : ",14,18);
+    //             doc.text("Email",14,22);
+
+    //             doc.text("Invoice",150,10);
+    //             doc.text("Printed At: " + new Date().toLocaleDateString(), 150, 14);
+    //             doc.text("Printed by",150,18)
+
+        
+    //             const tableHeader =pdfHeaders.map((header)=>header);
+    //             const tableData = [
+    //                 [
+    //                     1,
+    //                     item.orderStatus || "N/A",
+    //                     item.paymentMethod || "N/A",
+    //                     item.shippingAddress || "N/A",
+    //                     item.totalAmount || "N/A",
+    //                     item.createdAt ? item.createdAt.split("T")[0] : "N/A",
+    //                     item.updatedAt ? item.updatedAt.split("T")[0] : "N/A",
+    //                 ]
+    //             ];
+        
+    //             doc.autoTable({
+    //                 head:[tableHeader],
+    //                 body:tableData,
+    //                 startY:30,
+                 
+    //             });
+        
+    //             doc.save("OrderDetail.pdf")
+
+
+    // }
+    const handlePrint=(item)=>{
+        goToInvoicePage(item)
+
+    }
+    const goToInvoicePage = (item) => {
+        const path = `/print-order-data`;
+        console.log(item)
+        navigate(path, { state: { item } }); 
+    };
+    
+
     const showNext = () => {
         if (initialCount + rowToShow < filterData.length) {
             setInitialCount(initialCount + rowToShow);
@@ -64,9 +119,6 @@ const Order = () => {
             setInitialCount(initialCount - rowToShow);
         }
     };
-
-
-    const navigate = useNavigate();
 
     const routerSystemSettingDetail = (state, onlineOrder) => {
         const path = `/online-order-form`;
@@ -145,11 +197,12 @@ const Order = () => {
 
 
                         <GenericTable
-                            headers={['Sno', 'createdAt', 'orderStatus', 'paymentMethod', 'shippingAddress', 'totalAmount', 'updatedAt', 'Actions']}
+                            headers={['Sno', 'createdAt', 'orderStatus', 'paymentMethod', 'shippingAddress', 'totalAmount', 'updatedAt', 'Action']}
                             data={displayData}
                             currentTheme={currentTheme}
                             onEdit={handleEdit}
                             onDelete={handleDelete}
+                            onPrint={handlePrint}
 
                         />
 

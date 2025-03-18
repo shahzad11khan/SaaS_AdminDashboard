@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faBoxOpen } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faBoxOpen ,faPrint} from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 // import { useSelector } from 'react-redux';
 
-const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, onDelete }) => {
+const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, onPrint, onDelete }) => {
 
   return (
     <table className="border-collapse border border-gray-300 w-full overflow-x-auto whitespace-nowrap">
@@ -131,6 +131,35 @@ const GenericTable = ({ headers, headers2,headers3, data, currentTheme, onEdit, 
                     </td>
                   );
                 }
+
+                if (header.toLowerCase() ==='action') {
+                  return (
+                    <td
+                      key={index}
+                      className={`px-4 py-2 ${currentTheme === 'dark' ? 'text-white' : 'text-black'
+                        } text-center`}
+                    >
+                      <FontAwesomeIcon
+                        icon={faPrint}
+                        className="text-green-500 mr-2 cursor-pointer "
+                        target="_blank" 
+                                                onClick={() => onPrint(item)}
+                      />
+                      <FontAwesomeIcon
+                        icon={faEdit}
+                        className="text-green-500 mr-2 cursor-pointer"
+                        onClick={() => onEdit(item)}
+                      />
+                      <FontAwesomeIcon
+                        icon={faTrash}
+                        className="text-red-500 cursor-pointer"
+                        onClick={() => onDelete(item)}
+                      />
+                        
+                    </td>
+                  );
+                }
+                
                 if (header.toLowerCase() === 'sno') {
                   return (
                     <td
@@ -275,6 +304,7 @@ GenericTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   currentTheme: PropTypes.oneOf(['light', 'dark']).isRequired,
   onEdit: PropTypes.func.isRequired,
+  onPrint: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
 

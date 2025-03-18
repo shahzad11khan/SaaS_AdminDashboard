@@ -23,12 +23,15 @@ const CompaniesData = () => {
         dispatch(fetchCompanies());
     }, [dispatch]);
 
-    const setSelectedCompany=(cmpny)=>{
-        console.log(cmpny)
+    const setSelectedCompany=(company)=>{
+        console.log("company:",company)
         let data = {
-            cId : cmpny._id,
-            cName : cmpny.companyName,
-            cImg :cmpny.companyLogo,
+            cId : company._id,
+            cName : company.companyName,
+            cImg :company.companyLogo,
+            companyEmail:company.email,
+            companyPhoneNumber:company.phoneNumber,
+            companyRegistrationNumber:company.registrationNumber
         }
         dispatch(selectCompany(data))
         navigate('/admin')

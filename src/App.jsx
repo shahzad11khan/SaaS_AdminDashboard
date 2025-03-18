@@ -38,6 +38,7 @@ import CompaniesData from './AdminPanel/Pages/RegisterCompanie/CompaniesData';
 import DeliveredData from './AdminPanel/Pages/Reports/DeliveredData';
 import DailyTask from './AdminPanel/Pages/DailyTask/DailyTask';
 import SendNotification from './AdminPanel/Pages/SendNotification/SendNotification';
+import PrintOrder from './AdminPanel/Pages/OnlineOrder/PrintOrder';
 import { useSelector } from 'react-redux';
 
 function App() {
@@ -63,7 +64,7 @@ function App() {
         <Route path="/stock-registration-form" element={<StockRegistrationForm/>}/>
         <Route path="/category" element={<Category/>}/>
         <Route path="/category-registration-form" element={<CategoryRegistrationForm/>}/>      
-        {/* authenticate using globle routs */}
+      {/* authenticate using globle routs */}
         <Route path="/byHand-order" element={<ByHandOrder/>}/>
         <Route path="/byHand-order-form" element={<ByHandOrderForm/>}/>
         <Route path="/warehouse" element={<Warehouse/>}/>
@@ -89,6 +90,7 @@ function App() {
         {/* no authentication */}
         <Route path="/daily-task" element={<DailyTask/>}/>
         <Route path="/send-notification" element={<SendNotification/>}/>
+        <Route path="/print-order-data" element={<PrintOrder/>}/>       
       </Routes>
     </Router>
     

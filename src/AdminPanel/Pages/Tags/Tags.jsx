@@ -17,7 +17,7 @@ import { Auth } from "../../../utils/globleAtuhenticate";
 const Tags = () => {
     const dispatch = useDispatch();
     const currentTheme = useSelector((state => state.theme.theme))
-    const { data: tagData, error, loading } = useSelector((state) => state.tags)
+    const { data: tagData } = useSelector((state) => state.tags)
     const [deleteId,setDeleteId]=useState(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [rowToShow, setRowsToShow] = useState(5);
@@ -141,8 +141,7 @@ const Tags = () => {
                         </div>
                     </div>
                     <div className="table-container overflow-x-auto">
-                        {loading && <p>Loading...</p>}
-                        {error && <p>Error: {error}</p>}
+                        
                         <GenericTable
                             headers={['Sno', 'tagNumber', 'description', 'createdAt', 'updatedAt', 'Actions']}
                             data={displayData}
